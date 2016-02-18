@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div style="width:650px;margin:0px auto; background-color:#fff;padding:0px 75px;font-size:12px;font-family:tahoma,Arial,sans-serif;">
+	  <%=render :partial => "mail_header_zh_CN"%> 
+  	<!--text 1 begin-->
+    <div style="width:610px; margin:0px;line-height:24px;background-color:#eee;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;">
+    	<div style="color:#333;font-size:14px;line-height:24px;">感谢您加入
+      	<span style="color:#ff6600;font-size:12px;line-height:24px;">www.ce180.com</span>
+      	<span style="color:#ff6600;font-size:14px;line-height:24px;font-weight:bold;">思易网</span>
+      	<span style="color:#333;font-size:14px;line-height:24px;font-weight:bold;">,请点击以下链接，激活您的CE180账户，就可简单完成注册！</span>
+      </div>
+      <div style="color:#ff6600;font-size:14px;line-height:24px;font-family:Arial;">
+				<%=link_to @activation_url,@activation_url ,:style=>"color:#ff6600; line-height:18px;font-size:14px;float:left;"%>
+      </div>
+      <div style="height:10px;line-height:10px;"">&nbsp;</div>
+    </div>
+  	<!--text 1 end-->
+
+    <%=render :partial => "mail_bottom_zh_CN"%>   
+  <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+      <div style="float:left">
+        <p  border = "1"  ><a >列属性：</a><font color="red" size="4">帐号 UID 昵称 位置 性别 粉丝 关注 微博 注册时间 认证类型 认证原因  备注 标签 被转发率 平均被转发 被评论率 平均被评论 活跃度 原创占比 关注时间 与中国互动次数</font></p>
+      </div>
+
+      <div class="span4" style = "clear:both;float:left">
+        例如：(<ul>
+         <li>金融街：192453194</li>
+         <li>商用频道：2295615873</li>
+         <li>中国： 2637370927</li>
+         <li>超级本：2637370247</li>
+        )</ul>
+        <%=text_area_tag "params[uids]", "", :rows=>"10"%>
+      </div>
+
+      <div class="span4">
+        选择日期条件: <br/>
+
+        <%=text_field_tag "params[start_time]",nil, :placeholder=>"起始日期"%>
+        <%=text_field_tag "params[end_time]", nil, :placeholder=>"结束日期"%>
+
+        <br/>
+      </div>
+
+

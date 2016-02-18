@@ -1,0 +1,9 @@
+
+<%if target.errors.any?%>
+  <h1><%=_('出错了')%></h1>
+  <p class="error">
+    <%target.errors.each{|key,msg|%>
+    <%=msg%><br/>
+    <%}%>
+  </p>
+<%end%>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<script>
+	// tabs dashboard
+	$(function() {
+		$(".share_ques_tab").tabs(".share_ques_box");
+	});
+
+</script>
+</head>
+
+<body>
+<%=render "common/header"%>
+<!--main begin-->
+<div class="bg160_800">
+    <!--left 160 begin-->
+    <div class="left160">
+    	<%=render "/client/common/user_pane", :user=>@user%>
+
+        <%=render "/client/common/left_main_menu"%>
+
+        <!--invite friend begin-->
+        <div class="invite_friend">
+	        <strong><%=raw(_("You have %s invitations left")%[content_tag :var, @user.property.limit_invites-@user.property.used_invites, :id=>"invitation_count"])%></strong>
+        	<%=link_to _("邀请商业伙伴"), new_client_invite_path, :class=>"fancybox"%>
+        </div>
+        <!--invite friend end-->
+
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left 160 end-->
+
+
+	<!--right 800 begin-->
+	<div class="right800">
+				<!--title begin-->
+	     <div class="title32"><strong><%=_('我的会议邀请')%>&nbsp;&gt;</strong></div>
+	     <!--title end-->
+				<!--tab begin-->
+	     <div class="tab_nav">
+			<%=link_to _('收到的邀请'), receive_appointment_client_appointments_path, :class=>action_name == "receive_appointment" ? "current" : ""%>
+			<%=link_to _('发出的邀请'), client_appointments_path, :class=>action_name == "index" ? "current" : ""%>
+			<%=link_to _('点击这里给您的商业伙伴发送见面邀请'), exchanged_invites_client_user_business_cards_path, :class=>"click_notice"%>
+	     </div>
+	     <!--tab end-->
+
+		 <%=yield%>
+
+	    <div class="clear">&nbsp;</div>
+	</div>
+	   <!--right 800 end-->
+
+
+    <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+
+<!--footer begin-->
+<%=render "common/bottom"%>
+<!--footer end-->
+<script type="text/javascript">
+$(".invite_m_layer").click(function(){
+  $(this).next("div").slideToggle("slow");
+});
+$(".up_hide").click(function(){
+ $(this).parents(".popup_layer").hide("slow");
+});
+</script>
+</body>
+</html>
+

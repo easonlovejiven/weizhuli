@@ -1,0 +1,96 @@
+  <div class="info_name">
+    礼品库
+  </div>
+
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+
+    <table class='table table-bordered table-hover post-list'>
+      <tr>
+        <td width="30%"><%=_('名称')%>: </td>
+        <td>
+        <%=@intel_gift.name%>
+        </td>
+      </tr>
+      <tr>
+        <td width="30%"><%=_('类别')%>: </td>
+        <td>
+        <%=@intel_gift.category%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('OWNER')%>: </td>
+        <td>
+        <%=@intel_gift.owner%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('价格')%>: </td>
+        <td>
+        <%=@intel_gift.price%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('共购买数量')%>: </td>
+        <td>
+        <%=@intel_gift.number%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('备注')%>: </td>
+        <td>
+        <%=@intel_gift.description%>
+        </td>
+      </tr>
+
+
+    </table>
+
+<%=_('入库记录')%>: 
+          <table class='table table-bordered'>
+            <tr>
+              <th>数量</th>
+              <th>创建时间</th>
+            </tr>
+            <%@intel_gift.intel_gift_purchases.each{|purchase|%>
+            <tr>
+              <td><%=purchase.number%></td>
+              <td><%=l purchase.created_at%></td>
+            </tr>
+            <%}%>
+          </table>
+
+    <div class="form-buttom">
+      <%=link_to "编辑",edit_intel_gift_path(@intel_gift.id), :class=>"btn btn-primary"%>
+      <%=link_to "删除",intel_gift_path(@intel_gift.id), :class=>"btn btn-warning",:method=>:delete,:confirm=>"确定要删除吗?"%> 
+      <%=link_to "购买入库",new_intel_gift_purchase_path(intel_gift_id:@intel_gift.id), :class=>"btn"%> |
+
+      <%=link_to "返回", intel_gifts_path%>
+    </div>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+
+
+
+<%end%>

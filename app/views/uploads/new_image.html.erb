@@ -1,0 +1,119 @@
+<%content_for(:special_head) do%>
+  <%= javascript_include_tag 'swfobject',"uploadify/jquery.uploadify.v2.1.0.min" %>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+  var after_upload = null;
+    $(function(){
+      /*
+      $("#uploader").uploadify($.extend(website.uploadify_global_config,{
+        onOpen : function(){
+          
+        },
+        onComplete: function(event,queueId,fileObj,response,data){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").enable();
+          
+          try{
+            if(after_upload!=null) after_upload($.parseJSON(response));
+          }catch(e){}
+          window.close();
+
+        },
+        onError : function(event,queueId,fileObj,errorObj){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          $("#new_image_upload_form button[name=submit]").enable();
+        },
+        
+        onProgress : function(event,queueId,fileObj,response,data){
+          console.log("========== starting upload ===========");
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").disable();
+        
+        },
+        onAllComplete : function(){
+        
+        }
+      }));
+
+      $("#new_image_upload_form button").click(function(){
+        var alt = $("#new_image_upload_form input[name=alt]").val();
+        var desc = $("#new_image_upload_form textarea[name=description]").val();
+        post_data = {
+          alt : alt,
+          desc : desc
+        }
+        $('#uploader').uploadifySettings('scriptData', post_data)
+        $('#uploader').uploadifyUpload();
+      });
+      */
+
+    });
+
+
+
+  </script>
+
+<%end%>
+
+<div class="upload_Claim">
+    <div class="prompt">
+    	<strong>上传图片要求：</strong>
+	<p>照片没有明显模糊感，越清晰越好，图片尺寸在1020*1871像素以上，</p>
+	<p>最佳分辨率为360dpi，单张容量不要超过10M</p>
+    </div>
+    <div class="inner uploadbtn">
+      <%form_for @upload,:html => { :multipart => true }  do |f| -%>
+	<div class="up_input">
+		<%=f.hidden_field :tmp_content_type%>
+		<%=hidden_field_tag :callback%>
+		<%=f.label :attachment, _("选择图片")%> : <%=f.file_field :attachment%>
+	</div>
+	<div id="uploader">
+	</div>
+	<div class="up_d">
+		<%=hidden_field_tag :callback,params[:callback]%>
+		<button type="submit" name="submit"><%=_('上传')%></button>
+	</div>
+      <%end -%>
+    </div>
+  </div>
+</div>
+
+<style>
+#dialog #wrapper{padding:0px;background-color:#fff;}
+#dialog #main{width:100%;}
+.block h2.title{ background: url(/images/title_bg.jpg) repeat-x scroll 0 -29px transparent;height: 29px;line-height: 29px;overflow: hidden;color: #464646;font-size: 14px;font-weight:normal;padding-left:10px;}
+#dialog{width:542px;height:150px;overflow:hidden;}
+#dialog #main .block{height:150px;}
+#dialog #main .block .inner{padding-left:10px;}
+.success{padding:10px 0px;}
+.up_input{float:left;}
+.up_input label{font-size:14px;color:#333;line-height:30px;}
+.up_input input{height:30px;line-height:30px;}
+.up_d{float:right;padding-right:30px;}
+.up_d button{
+    background: url(/images/send_massege_bt.jpg) 0px 0px no-repeat;
+    border:0px;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    font-family: "微软雅黑";
+    font-size: 14px;
+    height: 35px;
+    line-height: 35px;
+    padding: 0;
+    width: 85px;
+}
+.notice{color:#FF6600;font-size:14px;line-height:20px;}
+</style>

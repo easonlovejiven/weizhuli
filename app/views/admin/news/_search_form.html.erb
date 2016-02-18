@@ -1,0 +1,18 @@
+<!-- search form -->
+<div id="search">
+<%=form_for :search, nil, :html=>{:method=>"get"} do |form|%>
+<%params[:search] ||= {}%>
+<%=form.label :title_contains , "title"%> : <%=form.text_field :title_contains ,:value=>params[:search][:title_contains],:size=>15%>
+<% 
+  if params[:search][:industry_id_equals]
+     session[:search_industry_name] = params[:search][:industry_id_equals]
+  else
+    session[:search_industry_name] = nil
+  end
+%>
+<%= form.select :industry_id_equals, options_for_select(@industries_id, session[:search_industry_name]), { :include_blank => true,:prompt => "Select an industry if needed" }  %>
+<%= form.select :locale_equals, options_for_select([["English","en"],["Chinese","zh_CN"]], params[:search][:locale_equals]), { :include_blank => true,:prompt => "Select language"} %>
+<%=submit_tag "search"%>
+<%end%>
+</div>
+<!-- end search -->

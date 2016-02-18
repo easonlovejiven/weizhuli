@@ -1,0 +1,17 @@
+<div class="block">
+  <h3><%= t("web-app-theme.nav", :default => "nav") %></h3>
+  <ul class="navigation">
+    <li class="<%= 'current' if controller_name == 'user' %>">
+      <%= link_to _('用户统计'), stats_user_index_url %>
+    </li>
+    <li class="<%= 'current' if controller_name == 'orders' %>">
+      <%= link_to _('订单统计'), stats_orders_url %>
+    </li>
+    <li class="<%= 'current' if controller_name == 'events' %>">
+      <%= link_to _('活动统计'), stats_events_url %>
+    </li>
+    <li class="<%= 'current' if controller_name == 'business_card' %>">
+      <%= link_to _('名片统计'), stats_business_card_index_url %>
+    </li>
+  </ul>
+</div>

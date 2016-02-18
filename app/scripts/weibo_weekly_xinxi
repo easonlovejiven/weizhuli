@@ -1,0 +1,81 @@
+英特尔中国,英特尔中国天天事,英特尔商用频道,超极本,高通中国,Snapdragon骁龙,联想,ThinkPad,
+东芝电脑,戴尔中国,ASUS华硕,Acer宏碁,惠普电脑,杜蕾斯官方微博,,英特尔新极客,ARM中国,AMD中国,戴尔促销
+
+
+
+
+
+
+
+
+ #新老粉丝
+filename = "tmp_weibo_list_20130902.csv"
+CSV.open filename,"wb" do |csv|
+
+  csv << %w{UID 昵称 位置 性别 粉丝 关注 微博 注册时间 认证 认证原因 新老粉丝 微博URL 发布时间 MID 动作}
+
+  WeiboDetail.where("uid = ?",2637370927).where("post_at between ? and ?",'2013-8-26','2013-9-1').each{|weibo|
+
+    forwards = WeiboForward.where("weibo_id= ?",weibo.weibo_id)
+    comments = WeiboComment.where("weibo_id= ?",weibo.weibo_id)
+
+    forwards.each{|forward|
+      uid = forward.forward_uid
+
+
+      a = WeiboAccount.find_by_uid(uid)
+      next if a.nil?
+
+
+      row = a.to_row
+
+      rel = WeiboUserRelation.where(uid:intel,by_uid:uid).first
+      rel = rel ? (
+              rel.follow_time ? (
+                rel.follow_time > Date.new(2013,8,19) ? "新" : "老"
+              ) : "老"
+            ) : ""
+
+      row << rel
+      row << weibo.url
+      row << weibo.post_at.strftime("%Y-%m-%d %H:%S")
+      row << weibo.weibo_id
+
+      row << "转发"
+      csv << row
+    }
+
+
+    comments.each{|comment|
+      uid = comment.comment_uid
+
+
+      a = WeiboAccount.find_by_uid(uid)
+      next if a.nil?
+
+
+      row = a.to_row
+
+      rel = WeiboUserRelation.where(uid:intel,by_uid:uid).first
+      rel = rel ? (
+              rel.follow_time ? (
+                rel.follow_time > Date.new(2013,8,19) ? "新" : "老"
+              ) : "老"
+            ) : ""
+
+      row << rel
+      row << weibo.url
+      row << weibo.post_at.strftime("%Y-%m-%d %H:%S")
+      row << weibo.weibo_id
+
+      row << "评论"
+      csv << row
+    }
+
+
+  }
+
+end
+
+
+

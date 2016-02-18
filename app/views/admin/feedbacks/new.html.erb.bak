@@ -1,0 +1,60 @@
+<% content_for :special_css do%>
+<%=stylesheet_link_tag "general"%>
+<%end%>
+
+<!--about us main begin-->
+<div class="about_block">
+  <%=render "general/left_menu"%>
+  <!--right begin-->
+  <div class="about_right">
+    <div class="about_title">
+      <strong>在先提交建议 / BUG / 问题</strong>
+    </div>
+
+    <div class="about_content">
+<% form_for(@feedback) do |f| %>
+  <%= f.error_messages %>
+      <div class="message_type">
+        <var>留言类型：</var>
+        <%=f.radio_button :feedback_type,"suggest",:id=>:feedback_type_1%>
+        <%=f.label :type_1,"意见建议"%>
+        <%=f.radio_button :feedback_type,"suggest",:id=>:feedback_type_2%>
+        <%=f.label :type_2,"BUG提交"%>
+        <%=f.radio_button :feedback_type,"suggest",:id=>:feedback_type_3%>
+        <%=f.label :type_3,"投诉举报"%>
+        <%=f.radio_button :feedback_type,"suggest",:id=>:feedback_type_4%>
+        <%=f.label :type_4,"站内求助"%>
+      </div>
+      <div class="message_type">
+          <%= f.label :user_name,"您的昵称：" %>
+          <%= f.text_field :user_name %>
+      </div>
+      <div class="message_type">
+          <%= f.label :phone,"电话号码：" %>
+          <%= f.text_field :phone %>
+      </div>
+      <div class="message_type">
+        <%= f.label :email,"邮箱地址：" %>
+        <%= f.text_field :email %>
+      </div>
+      <div class="proposals">
+          <%= f.label :content,"建议内容：" %>
+          <%= f.text_area :content %>
+      </div>
+      <div class="message_type">
+        <%= label_tag :valid_code,"验证码：" %>
+        <%= text_field_tag :valid_code %> <%=image_tag "/proof_image"%>
+      </div>
+      <div class="message_submit">
+          <%= f.submit 'Create' %>
+      </div>
+<% end %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--right end-->
+
+  <div class="clear">&nbsp;</div>
+</div>
+<!--about us main end-->

@@ -1,0 +1,88 @@
+<script>
+$(function() {
+  show_valid_code = function(){
+    $("#img_valid_code").attr("src",'/proof_image');
+  }
+  show_valid_code();
+});
+</script>
+
+
+
+
+
+
+
+
+      <!--form begin-->
+      <%=form_for @user||User.new do |form|%>
+      <div class="oForm left ">
+        <div class="oForm_unit">
+          <label>Email(登录时使用)</label>
+          <%=form.text_field  :email,:class=>"w225 required"%>
+        </div>
+        <div class="point pdL200"><%=raw form.error_message_on :email%><%=raw form.error_message_on :login%></div>
+        
+        <div class="oForm_unit">
+          <label>昵称</label>
+          <%=form.text_field  :nickname,:class=>"w225 required"%>
+        </div>
+        <div class="point pdL200"><%=raw form.error_message_on :nickname%></div>
+        
+        <div class="oForm_unit">
+          <label>密码</label>
+          <%=form.password_field  :password,:class=>"w225 required"%>
+        </div>
+        <div class="point pdL200"><%=form.error_message_on :password%></div>      
+        
+        <div class="oForm_unit">
+          <label>重复输入密码</label>
+          <%=form.password_field  :password_confirmation,:class=>"w225 required"%>
+        </div>
+        <div class="point pdL200"><%=form.error_message_on :password_confirmation%></div>
+        
+        <div class="oForm_unit">
+          <label>验证码</label>
+          <%= text_field_tag :valid_code ,'',:class=>"vCode required"%>
+          <img src="" id="img_valid_code" width="92" height="29">
+        </div>
+        <div class="point pdL200"><%=form.error_message_on :verification_code%></div>            
+        <div class="checkbox pdL200">
+          <%= check_box_tag :agreement,1, true,:class=>"checkbox" %>
+          <a href="#">《同意用户协议》</a>
+        </div>      
+        <div class="oForm_submit pdL200 mgT10">
+          <%= form.submit _('注  册'),:class=>"btn96" %>
+          <a href="login">已经注册？</a>
+        </div>       
+      </div>
+      <!--form end-->
+      <% end %>
+
+
+
+
+<script>
+
+
+$(function(){
+
+  $("#new_user").validate({
+    
+      showErrors: function(errorMap, errorList) {
+        $(errorList).each(function(idx,obj){
+          
+          $(obj.element).parents("div.oForm_unit").first().next(".point").html("<div class='formError'>"+obj.message+"</div>");
+          
+        });
+        $("#summary").html("Your form contains "
+                                       + this.numberOfInvalids() 
+                                       + " errors, see details below.");
+        //this.defaultShowErrors();
+      }
+  
+    });
+
+});
+
+</script>

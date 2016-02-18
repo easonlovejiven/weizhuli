@@ -1,0 +1,106 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Users</h2>
+
+    <!-- search form -->
+    <div id="search">
+    <%=form_for :search, nil, :html=>{:method=>"get"} do |form|%>
+    <%search  = (params[:search] ||= {})%>
+    <%=form.label :login_contains , _("用户名")%> :
+    <%=form.text_field :login_contains ,:value=>search[:login_contains],:size=>15%>
+
+    <%=form.label :created_at_gt , _("注册时间")%> :
+    <%=form.text_field :created_at_gt ,:value=>search[:created_at_gt],:size=>10%> -
+    <%=form.text_field :created_at_lt ,:value=>search[:created_at_lt],:size=>10%>
+
+    <%=form.check_box :from_events ,{:size=>15, :checked=>!search[:from_events].blank?}, 1, nil%>
+    <%=form.label :from_events , _("注册自活动")%> :
+
+    <%=submit_tag "search"%>
+    <%end%>
+    </div>
+    <!-- end search -->
+
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <th class="first">ID</th>
+           <th>
+            <%= t("activerecord.attributes.admin_user.login", :default => t("activerecord.labels.login", :default => "Login")) %>
+          </th>
+          <th>
+            <%=_("昵称")%>
+          </th>
+          <th>
+            <%=_("角色")%>
+          </th>
+          <th><%=_("状态")%></th>
+           <th><%= t("web-app-theme.created_at", :default => "Created at")  %></th>
+          <th></th>
+          <th class="last"><%= _('操作') %></th>
+        </tr>
+        <% @users.each do |user| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td>
+            <%= user.id %>
+          </td>
+           <td>
+            <span  style="display:block;width:200px;overflow:hidden" title="<%=user.login%>">
+            <%= link_to user.login, admin_user_path(user) %>
+            </span>
+          </td>
+          <td>
+            <%= link_to user.nickname, admin_user_path(user) %>
+          </td>
+          <td>
+            <%=user.roles.map(&:name)*","%>
+          </td>
+           <td>
+           <% 
+              case user.status
+                when 0
+                  concat _("已禁止")
+                when 1
+                  concat _("已激活")
+                when 2
+                  concat _("邮箱验证")
+              end
+           
+           
+            %>
+          </td>
+           <td>
+            <%= l user.created_at %>
+          </td>
+          <td>
+            <%if user.property.source == "event_attendee"%>
+              <%=link_to "E", client_event_path(user.property.source_event_id), :title=>_("用户来自于活动 ")+user.property.source_event_id.to_s, :target=>"_blank"%>
+            <%end%>
+          </td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path(user) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user) %> |
+            <%#= link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+            <%= link_to _("修改角色"), change_roles_admin_user_path(user) %>
+          </td>
+        </tr>
+        <% end -%>
+      </table>
+			<%= will_paginate @users %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :sidebar, render(:partial => 'sidebar') -%>
+

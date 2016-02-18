@@ -1,0 +1,12 @@
+<script type="text/javascript">
+<%- session_key_name = Rails.application.config.session_options[:key] -%>
+_SYS_INIT = {
+  a : "<%=uploads_path%>",
+  b : "<%= u cookies[session_key_name] %>",
+  c : "<%= u form_authenticity_token if protect_against_forgery? %>",
+  d : "<%=session_key_name%>",
+  e : "<%=new_upload_type_path("image",:layout=>'dialog')%>",
+  f : "<%=new_upload_type_path("document",:layout=>'dialog')%>"
+}
+</script>
+<script src="/js_languages/<%=I18n.locale%>"></script>

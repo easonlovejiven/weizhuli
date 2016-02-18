@@ -1,0 +1,56 @@
+// Place all the styles related to the client/account_summary controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.ic-documents-alt{
+  display: inline-block;
+  width:30px;
+  height: 30px;
+  background:url(/assets/icon_documents_alt.png) center no-repeat;
+}
+
+.account_summary{
+  ul{
+    li{
+      height:26px;
+      line-height:26px;
+      font-size:16px;
+
+      em{
+        color:#0078c6;
+        font-style: normal;
+
+        a, a:hover, a:focus{
+          color:#0078c6;
+          font-style: normal;
+        }
+      }
+    }
+  }
+}
+
+
+.fans-list-box{
+  .nav{
+    padding: 0px 15px;
+  }
+
+  .info-row{
+    color:#888;
+    td,th{
+      border-top:0px;
+    }
+  }
+}
+
+
+.date-selector{
+  border: solid 1px #ccc;
+  margin: 5px;
+  height: 28px;
+  line-height: 28px;
+  background: #fff;
+  padding: 0 5px;
+  cursor: hand;
+  cursor: pointer;
+}

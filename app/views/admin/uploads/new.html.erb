@@ -1,0 +1,49 @@
+<%content_for(:special_head) do%>
+  <%= javascript_include_tag 'swfobject',"uploadify/jquery.uploadify.v2.1.0.min" %>
+  <%- session_key_name = ActionController::Base.session_options[:key] -%>
+  <script>
+    $(function(){
+      $("#uploader").uploadify({
+        "uploader": '/javascripts/uploadify/uploadify.swf',
+        'script':   '<%=uploads_path%>.js',
+        'folder':   '',
+        'cancelImg':'/javascripts/uploadify/cancel.png',
+        'fileDataName':'upload[attachment]',
+        'auto':     true,
+        scriptData      : {
+          '<%= session_key_name %>' :encodeURIComponent('<%= u cookies[session_key_name] %>'),
+          'authenticity_token'  :encodeURIComponent('<%= u form_authenticity_token if protect_against_forgery? %>')
+        },
+        onComplete: function(event,queueId,fileObj,response,data){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+
+        }
+
+
+      });
+
+    });
+
+  </script>
+
+<%end%>
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_uploads_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_upload_path %></li>
+    </ul>
+  </div>          
+  <div class="content">            
+    <div class="inner">
+      <div id="uploader">
+      </div>
+    </div>
+  </div>
+</div>
+
+

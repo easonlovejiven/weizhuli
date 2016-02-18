@@ -1,0 +1,44 @@
+<strong><%=@screen_name%> 监控帐号互动提醒 :</strong> <br/>
+
+<table cellpadding="2" cellspacing="0" border="1" bordercolor="#ccc">
+  <tr>
+    <th width='5%'>动作</th>
+    <th width='8%'>昵称</th>
+    <th>互动内容</th>
+    <th>原微博</th>
+    <th width='10%'>链接</th>
+    <th width='10%'>时间</th>
+  </tr>
+<%@interacts.each{|interact|%>
+
+  <tr>
+    <td><%=interact[:action]%></td>
+    <td>
+      <%=interact[:user]%>
+      <%if interact[:user_type]%>
+      (<%=interact[:user_type]%>)
+      <%end%>
+    </td>
+    <td><%=interact[:content].text%></td>
+    <td>
+      <%
+      content = interact[:content]['status'] || interact[:content]['retweeted_status']
+      if content
+      %>
+      <%=content['text']%> (<%=Time.parse(content['created_at']).to_s%>)
+      <%end%>
+    </td>
+    <td><%=link_to (interact[:action]=="评论" ? "查看原微博" : "查看微博"),interact[:url]%></td>
+    <td><%=interact[:time]%></td>
+  </tr>
+<%}%>
+
+
+</table>
+
+
+
+
+
+
+

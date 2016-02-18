@@ -1,0 +1,46 @@
+<div class="mg_t10">
+    	<!--title begin-->
+      <div class="title30 m_left10"><strong><%=_('热点新闻')%></strong>
+      <a href="javascript:void(0);" class="for_change" id="hot_news"><%=_("换一换")%></a>
+      </div>
+      <!--title end-->
+
+       <%@hot_news.limit(40).in_groups_of(10,false).each do |h| %>
+        <div class = "news_change" style="display: none;">
+        <ul class="i_news">
+            <% h.each do |news| %>
+				  <li>
+					 
+				          <%= link_to truncate_u(strip_tags(news.title), :length=>30),client_news_path(news),:title=>news.title%>
+				  </li>
+          <% end %>
+        </ul>
+        </div>
+     <%end%>
+     	<div class="clear">&nbsp;</div>         
+    </div>
+
+<script type="text/javascript">
+       //<![CDATA[
+       $(document).ready(function(){
+          var a1Divs=$('#hot_news').parent().siblings('div.news_change');
+          a1Divs.eq(0).show();
+          $('#hot_news').click(function(){
+              change_num(this)
+          });
+          function change_num(obj) {
+					          var obja = $(obj);
+					          var Divs = obja.parent().siblings('div.news_change');
+					          var nDiv = Divs.filter(':visible');
+                    var idx= Divs.index(nDiv);
+                    idx++;
+					          if (idx >= Divs.length) {
+						          idx = 0;
+					          }
+                    Divs.hide();
+                    Divs.eq(idx).show();
+                    return false;
+				          }
+         });
+        //]]>
+    </script>

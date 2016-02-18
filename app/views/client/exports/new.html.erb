@@ -1,0 +1,35 @@
+  <div class="info_name">
+    数据导出
+  </div>
+
+<%
+exporter = @exportor.constantize
+
+%>
+
+<div class="row-fluid search-box radius-3">
+    <div class="title">
+      <strong><%=exporter.title%></strong>
+    </div>
+    <div class="span11 account_summary">
+      <%=form_for @export, :url=>client_exports_path do|form|%>
+      <%=form.hidden_field :exportor%>
+      <div class="span11" style="border-bottom:solid 1px #ccc;margin-bottom:10px;">
+        发送邮件给: <%=form.text_field :mail_to,:placeholder=>"例：yawei.zhang@weizhuli.com"%>
+        <br>
+        <%=form.error_message_on :mail_to%>
+        文件名后缀: <%=form.text_field :file_name_suffix,:placeholder=>"文件名后缀"%>
+        <%=form.error_message_on :file_name_suffix%>
+      </div>
+      <div class="span11">
+        <!-- params start -->
+        <%=render "client/exports/param_forms/#{@exportor.underscore.gsub(/_exportor$/,'')}", :form=>form%>
+        <!-- params end -->
+      </div>
+      <div class="span11" style="border-top:solid 1px #ccc;margin-bottom:10px;padding:10px;">
+        <%=form.submit "创建导出任务", :class=>"btn btn-primary"%>
+      </div>
+      <%end%>
+    </div>
+  </div>
+

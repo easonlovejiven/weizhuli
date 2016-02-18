@@ -1,0 +1,96 @@
+    <!--title 40 begin-->
+        <div class="title69">
+        	<div class="title69_left">
+          	<div class="title69_right">
+            	<div class="title_content">
+            		<strong><%=_('近期CE180线下活动')%></strong>
+                <%=link_to _('更多'), client_events_path, :class=>"f60"%>
+            	</div>
+              <!--tab begin-->
+              <div class="event_tab">
+               <%=link_to 'javascript:void(0);' do%><span><%=_('峰会及论坛')%></span><%end%>
+               <%=link_to 'javascript:void(0);' do%><span><%=_('教育及培训')%></span><%end%>
+               <%=link_to 'javascript:void(0);' do%><span><%=_('社交活动')%></span><%end%>
+              </div>
+              <!--tab end-->                  
+            </div>
+          </div>
+        </div>
+        <!--title 40 end-->
+        <!--event box begin-->
+        <div class="e_content c_border">
+          <!--1 event begin -->
+          <div class="tab_show">
+            <% Event.available.type_eq("summit_forum").order("events.id desc").limit(4).each{|event| %>
+          	<!--replay begin-->
+          	<div class="short_term_unit">
+            	<div class="e_pic">
+  							 <%=link_to ce_image(event,"image",:medium,{:size=>"60x60", :scaling=>false}), client_events_show_path(event) %>
+ 							</div>
+              <div class="short_term_unit_right">
+                <div class="i_title"><%=link_to truncate_u(event.title, :length=>30), client_event_path(event),:title=>event.title%></a></div>
+                <div class="a_time"><%=l event.start_time.to_date%> -- <%=l event.end_time.to_date%></div>
+            	</div>
+              <div class="clear">&nbsp;</div>                 
+            </div>
+          	<!--replay end-->  
+            <%}%>         
+          	<div class="clear">&nbsp;</div>     
+     			</div>
+          <!--1 event end-->
+          <!--2 event begin -->
+          <div class="tab_show">
+          	<% Event.available.type_eq("education_training").order("events.id desc").limit(4).each{|event| %>
+          	<!--replay begin-->
+          	<div class="short_term_unit">
+            	<div class="e_pic">
+  							 <%=link_to ce_image(event,"image",:medium,{:size=>"60x60", :scaling=>false}), client_events_show_path(event) %>
+ 							</div>
+              <div class="short_term_unit_right">
+                <div class="i_title"><%=link_to truncate_u(event.title, :length=>30), client_event_path(event),:title=>event.title%></a></div>
+                <div class="a_time"><%=l event.start_time.to_date%> -- <%=l event.end_time.to_date%></div>
+            	</div>
+              <div class="clear">&nbsp;</div>                 
+            </div>
+          	<!--replay end-->  
+            <%}%>                    
+          	<div class="clear">&nbsp;</div>     
+     			</div>
+          <!--2 event end-->
+          <!--3 event begin -->
+          <div class="tab_show">
+          	<% Event.available.type_eq("social_activities").order("events.id desc").limit(4).each{|event| %>
+          	<!--replay begin-->
+          	<div class="short_term_unit">
+            	<div class="e_pic">
+  							 <%=link_to ce_image(event,"image",:medium,{:size=>"60x60", :scaling=>false}), client_events_show_path(event) %>
+ 							</div>
+              <div class="short_term_unit_right">
+                <div class="i_title"><%=link_to truncate_u(event.title, :length=>30), client_event_path(event),:title=>event.title%></a></div>
+                <div class="a_time"><%=l event.start_time.to_date%> -- <%=l event.end_time.to_date%></div>
+            	</div>
+              <div class="clear">&nbsp;</div>                 
+            </div>
+          	<!--replay end-->  
+            <%}%>         
+          	<div class="clear">&nbsp;</div>     
+     			</div>
+          <!--3 event end-->
+                             
+          <div class="clear">&nbsp;</div>
+     		</div>
+     		<!--event box end-->
+        
+        <!--bottom 3 begin-->
+        <div class="bottom3">
+        	<span><em>&nbsp;</em></span>
+        </div>
+        <!--bottom 3 end-->        
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".event_tab").tabs(".tab_show");
+	});
+
+</script>
+

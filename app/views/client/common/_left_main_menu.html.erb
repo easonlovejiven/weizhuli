@@ -1,0 +1,29 @@
+<!--Menu begin-->
+<div class="left_menu">
+  <%=link_to _('我的公共主页'), user_path(@user), :class=>""%>
+  <%if current_user.roles.map(&:name).include?("industry_icon")%>
+    <%=link_to _('动态更新'), client_icon_updates_path, :class=>controller_name == "icon_updates" ? "current" : ""%>
+  <%else%>
+    <%=link_to _('动态更新'), client_activities_path, :class=>controller_name == "activities" ? "current" : ""%>
+  <%end%>
+
+<% 
+ 	# logic is : display invitations size ,once null , display exchange card size
+	if @user.receive_card_relations.blank?
+		path = exchanged_invites_client_user_business_cards_path
+		size = ""
+	else
+		path = receive_invites_client_user_business_cards_path
+		size = @user.receive_card_relations.size
+	end		
+%>		
+  <%=link_to  path, :class=>controller_name == "business_cards" ? "current" : ""  do %>
+	<em><%=_('我的名片中心')%></em> <% if !size.blank? %> <var style="display:block"><%=size%></var> <% end %>
+ <% end %>
+  <%=link_to _('我的会面邀请'), client_appointments_path, :class=>controller_name == "appointments" ? "current" : ""%>
+  <%=link_to _('我的活动中心'), client_user_events_path, :class=>controller_name == "my_events" ? "current" : ""%>
+  <%#=link_to _('我关注的公司 '), client_user_organizations_path, :class=>controller_name == "my_organizations" ? "current" : ""%>
+  <%=link_to _('我关注的行业'), client_user_industries_path, :class=>controller_name == "my_industries" ? "current" : ""%>  
+  <%=link_to _('我的订单'), client_orders_path, :class=>controller_name == "my_orders" ? "current" : ""%>
+</div>
+<!--Menu end-->

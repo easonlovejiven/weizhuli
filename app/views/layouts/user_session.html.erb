@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=stylesheet_link_tag "public","jquery-ui.css","index",:cache => "front-end-css"%>
+<!--[if IE 6]>
+<%=stylesheet_link_tag "public_ie6",:cache => "front-end-css-ie"%>
+<![endif]-->
+
+<%=yield :special_css%>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="keywords" content=""/>
+<meta name="Description" content=""/>
+<meta name="google-site-verification" content="tuQwpoj89b97RuLxNio7mwHgWK4PhB41U0XY_Mg2Xoo" />
+<%=render "common/init_js"%>
+<%=javascript_include_tag "jquery","jquery.tools.js","poshytip/jquery.poshytip.min.js","rails",'jquery.quicksand.js',"jquery-ui","jrails","application","frontend",:cache => "front-end-js"%>
+<%=yield :special_js%>
+
+</head>
+<body>
+<%=render "common/header"%>
+<!--main begin-->
+<div class="main">
+	<!--main_left begin-->
+	<div class="main_left round ">
+	    <%=yield%>
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--main_left end-->
+	<!--main_right begin-->
+	<div class="main_right">
+      <%=render @right_side || "common/right_side"%>
+    </div>
+    <!--main_right end-->
+    <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<%=render "common/bottom"%>
+<!--footer end-->
+<script type="text/javascript">
+//login tab
+$(".register ul li :input").tooltip({
+
+	// place tooltip on the right edge
+	position: "center right",
+
+	// a little tweaking of the position
+	offset: [-2, 10],
+
+	// use the built-in fadeIn/fadeOut effect
+	effect: "fade",
+
+	// custom opacity setting
+	opacity: 0.8
+
+});
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+</head>
+<body>
+<%=render "common/header"%>
+<!--main start-->
+<!--main begin-->
+<div class="main_200_760">
+    <!--left begin-->
+    <div class="list_left">
+        <%=render "/client/common/user_pane", :user=>current_user%>
+    </div>
+    <!--left end-->
+    <!--center begin-->
+    <div class="float_right">
+<%=yield%>
+    </div>
+    <!--center end-->
+</div>
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+</body>
+</html>
+

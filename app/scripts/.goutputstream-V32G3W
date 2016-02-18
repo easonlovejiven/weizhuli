@@ -1,0 +1,310 @@
+#根据用户uid查出互动英特尔中国微博的信息
+ #取出500 个UID，取出每个用户 转发 或者  英特尔中国 的微博列表 
+
+#数据要6列，UID, 昵称， 微博内容， 微博URL，微博发布时间，动作（转发或者评论）
+CSV.open("data/weibo_list20130910.csv","wb") do|csv|
+
+  csv << %w{uid 昵称 微薄内容 微薄url 微薄发布时间 转发 评论}
+path = File.join(Rails.root,"db/uid")
+  row  = []  
+  weibo_id = []
+  File.open(path,"r").each do|line|
+    uid  = line.strip
+     forwards = WeiboForward.where("uid = ? and forward_uid = ?",'2637370927',uid).first
+    comments = WeiboComment.where("uid = ? and comment_uid = ?",'2637370927',uid).first
+    unless forwards.blank? || 
+    weibo_id << forwards.weibo_id
+    end
+    unless comments.blank?
+    weibo_id << comments.weibo_id
+    end
+end
+    weibo_id.each do |weibo_id|
+         weibodetail = WeiboDetail.where("weibo_id = ?",weibo_id).first
+         c = MWeiboContent.find(weibo_id)#3513994403268596
+      
+         csv << [weibodetail.uid,"英特尔中国",c.text,c.url,weibodetail.post_at,weibodetail.reposts_count，weibodetail.comments_count]
+   end  
+  end
+end
+
+ 
+
+    CSV.open "data/weibo_list20130911.csv", "wb" do |csv|
+      csv << %w{UID 内容 时间 转发 评论 URL 来源 类型 原创}
+       path = File.join(Rails.root,"db/uid")
+  File.open(path,"r").each do|line|
+       uid  = line.strip
+        weibo_id = []
+        
+        forwards = WeiboForward.where("uid = ? and forward_uid = ?",'2637370927',uid).first
+        comments = WeiboComment.where("uid = ? and comment_uid = ?",'2637370927',uid).first
+        unless forwards.blank? || 
+        weibo_id << forwards.weibo_id
+        end
+        unless comments.blank?
+        weibo_id << comments.weibo_id
+        end
+         
+        record =  WeiboDetail.where("weibo_id = ?",weibo_id[0])
+        c = MWeiboContent.find(weibo_id[0])
+        next if c.nil?
+        srouce = ActionView::Base.full_sanitizer.sanitize(c.source)
+        
+
+        origin = 0
+
+        post_at = record.post_at.strftime("%Y-%m-%d %H:%M:%S")
+        csv << ["英特尔中国", c.text,post_at, record.reposts_count, record.comments_count, record.url, srouce,  origin]
+      end
+    end
+#根据 uid数组 查出 
+#* 用户基本信息
+#* 关注中国的时间
+#* 活跃度
+#* 与中国的总互动次数
+CSV.open("attention_weibo_fans_list20130910.csv","wb"){|csv|
+
+  csv << %w{uid name 地址 性别  听众 收听 微博数 创建时间 认证类型 转发率 平均转发 评论率 平均评论  注册类型  关注的时间 活跃度 互动总次数}
+path = File.join(Rails.root,"db/uid")
+  row = []
+  File.open(path,"r").each do|line|
+  by_uid = line.strip
+  intel = '2637370927'
+  weibo = WeiboAccount.find_by_uid(by_uid)
+  
+  attention_time = WeiboUserRelation.where("by_uid = ? and uid = ?",by_uid,intel)
+  
+  evaluates = WeiboUserEvaluate.find_by_uid(by_uid)
+  next if evaluates.blank?
+  forward = WeiboForward.where("uid = ? and forward_uid = ?",intel,by_uid).count
+  comment = WeiboComment.where("uid = ? and comment_uid = ?",intel,by_uid).count
+  time = attention_time[0].follow_time
+  unless evaluates.nil?
+  evaluate = evaluates.forward_average + evaluates.comment_average
+  end
+  interactive = forward[0] + comment[0]
+  row = weibo.to_row
+  row << time
+  row << evaluate
+  row << interactive
+  csv << row
+end
+}
+
+ 
+#根据uid 查出 转发 和评论用户信息 并标识是否为 uid 的粉丝 
+#uid = '2637370927'
+filename = "weibo_weibo_list_by__ok.csv"
+  CSV.open filename,"wb" do |csv|
+    csv << %w{uid 登录名 名字 状态  收听的人数 听众 location 创建时间 性别 经验 等级 是否实名认证 vip '' 类型 是否是因特尔中国粉丝}  
+#3620546325922080 WeiboForward.where("weibo_id= ?",'3620546325922080').distinct(by_uid)
+    WeiboDetail.where("uid = ?",2637370927).where("post_at between ? and ?",'2013-9-9','2013-9-10').each{|weibo|
+    forwards = WeiboForward.where("weibo_id= ?",weibo.weibo_id)
+    comments = WeiboComment.where("weibo_id= ?",weibo.weibo_id)
+    intel = '2637370927'
+    forwards.each{|forward|
+      uid = forward.forward_uid
+      a = WeiboAccount.find_by_uid(uid)
+      next if a.nil?
+      row = a.to_row
+      
+      rel = WeiboUserRelation.where(uid:intel,by_uid:uid).first
+      rel = rel ? "是": "不是"
+            
+      row << rel
+      row << weibo.url
+      row << weibo.post_at.strftime("%Y-%m-%d %H:%S")
+      row << weibo.weibo_id
+      row << "转发"
+      csv << row
+    }
+    comments.each{|comment|
+      uid = comment.comment_uid
+      a = WeiboAccount.find_by_uid(uid)
+      next if a.nil?
+      row = a.to_row
+      puts row
+      rel = WeiboUserRelation.where(uid:intel,by_uid:uid).first
+      rel = rel ? "是": "不是"
+      row << rel
+      row << weibo.url
+      row << weibo.post_at.strftime("%Y-%m-%d %H:%S")
+      row << weibo.weibo_id
+      row << "评论"
+      csv << row
+    }
+  }
+    
+  end
+#根据weibo_id 查出 转发用户信息
+def self.export_tqq_weibo_list_to_csv_by_weibo_id(weiboids,filename)
+  weiboids = ['275982008773151','224795131194429','323813014837900'] 
+  filename = "tqq_weibo_list_by_weibo_id_20130910_ok.csv"
+  CSV.open filename,"wb" do |csv|
+    csv << %w{openid name nick statuses following followers location created_at gender exp level realname vip verifyinfo weibo_id}
+    weiboids.each do|id|
+        openids = TqqForward.select('forward_openid').where("weibo_id = ?",id)
+        openids.each do|forward|
+        puts forward
+        openid = forward.forward_openid
+        puts openid
+        accounts = TqqAccount.find_by_openid(openid)
+        next if accounts.blank? 
+        row = accounts.to_row
+        row << "http://t.qq.com/p/t/#{id}"
+        csv << row 
+      end
+    end
+  end
+end
+#export weibo list to csv by uids for file ReportUtils.export_weibo_list_to_csv(uid,filename)
+  #ReportUtils.export_weibo_list_to_csv_by_uids_file("db/15Wuids")
+  def self.export_weibo_list_to_csv_by_uids_file(filepath,filename)
+    path = File.join(Rails.root, "db/15Wuids")
+    CSV.open filename, "wb" do |csv|
+
+    csv << %w{} 
+    File.open(path,"r").each do|line|
+      uid = line.strip
+          account = WeiboAccount.find_by_uid(uid)
+          next if account.blank?
+          row = account.to_row 
+          
+          u = MUser.find uid
+          unless u.nil?
+          tags = u.tags * ","
+
+          row << tags
+          end 
+
+          csv << row
+      end
+    end
+
+  end
+
+#export_tqq_account_snap_dailies 
+#
+def self.export_tqq_account_snap_dailies(names,filename,opts={})
+  openids = TqqUtils.names_to_openids(%w{英特尔中国 美丽说 易迅网 戴尔中国 ThinkPad小黑 联想 Snapdragon骁龙 三星电子 杜蕾斯})
+#["0B6A468C0642625453023BFB0D1B8570", "3BC62765113F50B1AE139C0C83AF6989", "8553E3309EDF8235F4CB846C6396DB35", "A6AD5631683AA595967D945FB78DB61C", "F83B98A70026D6F54DDC3325B0EEB8DC", "2B7C9EE9B6878DF1E1C4EC28ED7EEE15", "997B01BB7EA298442DC62C8912FF57AD", "43AFF8C3E6A0A98B653F56BE78535199", "334FF584F2A77237CDE67F58B1DA20CF"]
+  return if openids.nil?
+  time = 
+  CSV.open "linshi.csv","wb" do |csv|
+    csv <<%w{date 英特尔中国 美丽说 易迅网 戴尔中国 ThinkPad小黑 联想 Snapdragon骁龙 三星电子 杜蕾斯}
+     openids.each do |y|
+     counts = TqqAccountSnapDailie.find_by_openid(y.openid) 
+     end
+  end
+end
+ReportUtils.names_to_uids(%w{何小锋PE 梁振宇 找好玩周舟 查道存 黄逸杰golf 李智勇SZ 出版人周筠 NLP心灵治疗师 王斌SAP 钱皓-互联网分析师 PlanNER破天 人称T客 刘爱贵 马沛 魏千翔丶 B座12楼 杨晓锋 森品美学 吴军博士 思想聚焦 锺 鸿镇 邓亚峰-open 云课堂孙志岗 冯国斌 袁成路-deepin-互联网分析爱好者 高能资本陈石})
+
+
+何小锋PE 梁振宇 找好玩周舟 查道存 黄逸杰golf 李智勇SZ 出版人周筠 NLP心灵治疗师 王斌SAP 钱皓-互联网分析师 PlanNER破天 人称T客 刘爱贵 马沛
+魏千翔丶 B座12楼 杨晓锋 森品美学 吴军博士 思想聚焦 锺鸿镇 邓亚峰-open 云课堂孙志岗 冯国斌 袁成路-deepin-互联网分析爱好者 高能资本陈石
+徐爸爸的微博 grassbell 刘涛_IT图书出版人 sangwf vicwutaojun 享读王佳斌 性感玉米 何伊凡
+path = File.join(Rails.root,"db/name")
+    CSV.open "uid.csv", "wb" do |csv|
+
+    csv << %w{} 
+    File.open(path,"r").each do|line|
+      screen_name = line.strip
+          account = WeiboAccount.find_by_screen_name(screen_name)
+          next if account.blank?
+          row = account.to_row(:full)
+          
+          u = MUser.find screen_name
+          unless u.nil?
+          tags = u.tags * ","
+
+          row << tags
+          end 
+
+          csv << row
+      end
+    end
+
+
+
+
+  时间节点：8月1日00：00至8月26日23：59
+       提取内容：在腾讯微博中，与英特尔中国互动过的听众数量排行，需要去重，并且标注互动次数、听众的听众数量、听众发布微博数量、听众关注数量等数据。 
+  
+     CSV.open "tqq_hudong_20130911.csv", "wb" do |csv|
+      csv << %w{uid 登录名 名字 状态  收听的人数 听众 location 创建时间 性别 经验 等级 是否实名认证 vip '' 互动数 }
+       openids = []
+        
+        forwards = TqqForward.select('forward_openid').where("openid = ? AND forward_at >= ? AND forward_at<= ?","0B6A468C0642625453023BFB0D1B8570",'2013-08-01','2013-08-26')
+        forwards.each do |x|
+       openids << x.forward_openid
+       end
+        comments = TqqComment.select('comment_openid').where("openid = ? AND comment_at >= ? AND comment_at<= ?","0B6A468C0642625453023BFB0D1B8570",'2013-08-01','2013-08-26')
+        
+        
+       comments.each do |y|
+       openids << y.comment_openid
+       end
+        
+        
+        openids.uniq.each do |record|
+          a = TqqAccount.find_by_openid(record)
+          next if a.nil?
+          row = a.to_row
+          num = 0
+       openids.each do |z|
+       (num += 1) if record == z
+       end
+          row << num
+        puts row
+          csv << row 
+    
+       end 
+        
+     end
+      
+      
+
+
+#思路：
+[1,22,1,22,33,33,4,2,1,22].uniq.each do |record|
+           
+           
+          num = 0
+       [1,22,1,22,33,33,4,2,1,22].each do |z|
+       (num += 1) if record == z
+       
+       end
+          puts num
+           
+       end 
+        
+     end
+
+[1,22,1,22,33,33,4,2,1,22].each do |z|
+        num = 0
+       (num += 1) if 2 == z
+       puts num
+       end
+          
+        
+2
+3
+4
+
+3
+4
+5
+6].uniq
+
+openids.each{|openid|
+
+  a = TqqAccount.find_by_openid(openid)
+  hudongs = fowards+comments
+
+
+}
+
+
+
+# 

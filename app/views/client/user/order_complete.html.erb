@@ -1,0 +1,69 @@
+          <%= nested_form_for @order, :url => client_save_attendee_client_user_path(@order), :html=>{:onsubmit=>"return check_fields(this);"} do |o| %>
+          	<div class="w640 mg_t10">
+							<div class="people_ititle">
+								<% if flash[:notice].blank? %>
+								    <p><%=_('如果您已经是CE180会员')%>,<%=_('请')%><%= link_to _("点击登录"), login_path(:return=>attend_online_client_event_path(@event)),:class=>"fancybox" %><%=_('后报名,不需要重复填写信息')%></p>
+								    <p><%=_('如果您还不是CE180会员, 请直接填写参会人信息')%></p>
+								<% else %>
+									<%= link_to flash[:notice], login_path(:return=>attend_online_client_event_path(@event)), :class => "exist_account fancybox" %>
+								<% end %>
+							</div>
+							<%= o.fields_for :user do |u| %>
+								<%= u.fields_for :business_card do |b| %>
+									<%= b.fields_for :locales do |l| %>
+										<% if l.object.locale.to_s == I18n.locale.to_s %>
+											<% if l.object.locale.to_s == "zh_CN" %>
+												<div class="p_info">
+												 	<label><%=_("姓名")%><var>*</var></label>
+													<%=l.text_field :name, :class => "required" %>
+												</div>
+											<% elsif l.object.locale.to_s == "en" %>
+												<div class="p_info">
+													<label><%=_('名')%><var>*</var></label><%= l.text_field :first_name, :class => "required" %>
+												</div>
+												<div class="p_info">
+													<label><%=_('姓')%><var>*</var></label><%= l.text_field :last_name, :class => "required" %>
+												</div>
+											<% end %>
+											<%= l.hidden_field :locale %>
+
+												<div class="p_info">
+													<label><%=_('手机')%><var>*</var></label><%= l.text_field :mobile, :class => "required" %>
+												</div>
+												<div class="p_info">
+													<label><%=_('个人邮箱')%><var>*</var></label><%= l.text_field :email, :class => "required personal_email" %>
+												</div>
+												<div class="p_info gender_s">
+													<label><%=_('性别')%><var>*</var></label>
+													<%=b.radio_button :gender,1, :checked=>true%><%=b.label :gender,_("男"),:class=>'w_auto'%>
+													<%=b.radio_button :gender,0%><%=b.label :gender,_("女"),:class=>'w_auto'%>
+												</div>
+												<div class="p_info">
+													<label><%=_("公司名称")%><var>*</var></label><%= l.text_field :company, :class => "required" %>
+												</div>
+												<div class="p_info">
+													<label><%=_("职位")%><var>*</var></label><%= l.text_field :title, :class => "required" %>
+												</div>
+												<div class="p_info">
+													<label><%=_("公司地址")%></label><%= l.text_field :address, :class => "" %>
+												</div>
+
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>
+
+
+		        <div class="btn_120 mg_t10">
+							<%= o.submit _("提交")%> <var><%= _('*为必填项') %></var>
+		        </div>
+		        
+		        <div class="hint_msg mg_t10">
+							<%if current_user.nil?%>
+							<%= raw _('提交后功后, 我们会使用您的邮箱<span class="font_w colorf60">自动为您生成思易网帐户</span>, 并自动发送到您的邮箱中, 以便您下次登录查看自己的报名,付费等信息.')%>
+							<%end%>
+		        </div>
+					<%
+					  end #end of "if current_user"
+					%>
+

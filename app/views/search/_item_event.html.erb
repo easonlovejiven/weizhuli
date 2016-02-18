@@ -1,0 +1,30 @@
+
+        <div class="follow_list">
+        	<div class="e_pic">
+						<%=link_to  client_event_path(event) do%>
+						<%=ce_image(event, :image, :thumb, :size=>"60x60", :scaling=>true)%>
+						<%end%>
+          </div> 
+          <!--follow_485 begin-->           
+          <div class="follow_485">
+          	<!--center user_c begin-->
+            <div class="follow_c">
+            	<div class="i_title"><%=link_to event.title, client_event_path(event)%></div>
+              <div class="a_time"><var><%=l event.start_time.to_date%> -- <%=l event.end_time.to_date%></var><span><%= event.location.name if event.location%></span></div>
+              <div class="description">
+                <%=event.description%>
+              </div>
+            </div>
+            <!--center user_c end-->
+            <!--right bar 120 begin-->
+            <ol class="rightbar_120">
+            	<li><%=link_to _("看看去"), client_event_path(event), :class=>"ce_follow_event"%></li>
+            </ol>
+            <!--right bar 120 end-->
+            <div class="clear">&nbsp;</div>
+          </div>            
+          <!--follow_485 end-->
+         	<div class="clear">&nbsp;</div>
+        </div>
+
+

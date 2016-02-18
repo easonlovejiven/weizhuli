@@ -1,0 +1,87 @@
+   <div class="card_tab pad_left10">
+  	  <%=link_to _('全部'), client_appointments_path, :class=>params[:s].to_s == "" ? "current" : ""%>
+      <%=link_to _('已处理的邀请')+" ("+@user.sent_appointments.deal_done_appointment.size.to_s+")", client_appointments_path+"?s=done", :class=>params[:s].to_s == "done" ? "current" : ""%>
+      <%=link_to _('未处理的邀请')+" ("+@user.sent_appointments.deal_new_appointment.size.to_s+")", client_appointments_path+"?s=new", :class=>params[:s].to_s == "new" ? "current" : ""%>  
+   </div> 
+   <!--Sent invite begin-->
+      <div class="mg_t10">
+      	<div class="card_num" style="padding:0px 0px 0px 10px;"><em><%=@appointments.total_entries%></em><%=_("个邀请")%></div>
+      	<!--received invite list begin-->
+        <div class="invite_meeting mg_t10">
+
+        <% @appointments.each do |appointment| %>
+        	
+        	<!--invite_meeting unit begin-->	
+          <div class="invite_m_unit">
+          	<!--i begin-->
+            <div class="invite_m_layer">
+              <div class="invite_m_l">
+                <dl>
+                  <dt><%=user_avatar_tag(current_user,:thumb,:size=>"40x40", :scaling=>true)%></dt>
+                  <dd class="name"><%=current_user.displayable_name if current_user.displayable_name %></dd>
+                  <dd>
+      <%=current_user.business_card.company if current_user.business_card && current_user.business_card.company%>
+      </dd>
+      <dd><%=current_user.business_card.title if current_user.business_card && current_user.business_card.title%></dd>
+                </dl>
+                <div class="invite_button">
+                   <span><em><%=_("邀请")%></em></span>
+                </div>
+                 <dl>
+                  <dt class="t_image"><%=user_avatar_tag(appointment.receive_user,:thumb,:size=>"40x40", :scaling=>true)%></dt>
+                  <dd class="t_name"><%=appointment.receive_user.displayable_name if appointment.receive_user.displayable_name%></dd>
+                  <dd class="company_name">
+                  <%=appointment.receive_user.business_card.company if appointment.receive_user.business_card && appointment.receive_user.business_card.company%>
+                  </dd>
+                  <dd class="company_position">
+                  <%=appointment.receive_user.business_card.title if appointment.receive_user.business_card && appointment.receive_user.business_card.title%>
+                  </dd>
+                </dl>
+                <div class="clear">&nbsp;</div>              
+              </div>
+              <!--status begin-->
+               <%=render :partial=>"sent_appointment_status",:locals=>{:appointment=>appointment}%>
+              <!--status end-->
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--i end-->
+            <!--pop begin-->            
+            <div class="popup_layer">
+            	<div class="upward_a porleft_l5"><span>◆</span></div>
+              <div class="up_hide"><%=_("收起")%></div>
+              <div class="popup_layer_content">
+                <div class="popup_l_unit">
+                  <strong><%=_("时间")%>：</strong>
+                  <span><%= (appointment.time.blank?) ? l(appointment.created_at, :format=>:all_date) : l(appointment.time, :format=>:all_date) %></span>
+                </div>
+                <div class="popup_l_unit">
+                  <strong><%=_("地点")%>：</strong>
+                  <span><%=appointment.address if appointment.address%></span>
+                </div> 
+                <div class="popup_l_unit">
+                  <strong><%=_("会议详情")%>：</strong>
+                  <span><%=appointment.content if appointment.content%></span>
+                </div>                                               
+                <div class="popup_l_unit">
+                  <h4><%=_("对方的回复")%></h4>
+                  <p><%=appointment.reply_content if appointment.reply_content%></p>
+                </div>  
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div> 
+            <!--pop end-->            
+            <div class="clear">&nbsp;</div>
+          </div>
+        	<!--invite_meeting unit end--> 
+        	
+        	<% end %>
+					<div class="clear">&nbsp;</div> 
+        </div>
+        <!--received invite list end-->
+      <!--pagination begin-->
+        <%=will_paginate @appointments%>     
+      <!--pagination end-->          
+        <div class="clear">&nbsp;</div> 
+      </div>
+      <!--Sent invite end-->   
+

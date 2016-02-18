@@ -1,0 +1,2 @@
+module Pinganbeijing::ReportsHelper
+end

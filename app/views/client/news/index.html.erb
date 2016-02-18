@@ -1,0 +1,246 @@
+<div class="main_nlr">
+    <!--left begin-->
+    <div class="news_left float_left">
+    <% if @today_focus_news%>
+		<!--1 today focus begin-->
+        <div class="today_focus">
+        	<!--title public begin-->
+			      <div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('今日聚焦')%></strong>
+                	</div>
+                </div>
+            </div>
+            <!--title public end-->
+			<!--content begin-->
+			<div class="today_focus_c">
+				<div class="focus_img">
+					<%= link_to  ce_image(@today_focus_news, :image, :medium, :size=>"254x143", :scaling=>true), client_news_path(@today_focus_news) %>
+				</div>
+				<div class="focus_title"><%= link_to @today_focus_news.title, client_news_path(@today_focus_news) %></div>
+				<div class="focus_text"><%= strip_tags(@today_focus_news.content) %></div>
+				<div class="reply_Read">
+					<%= link_to _('阅读全文'), client_news_path(@today_focus_news) %>
+				</div>
+			</div>
+			<!--content end-->
+			
+        </div> 
+        <!--1 today focus end-->
+        <%end%>
+		<!--search begin-->
+		<div class="news_search rounded">
+		<%=form_for :search, :url=>search_path,:html=>{:method=>:get} do |form|%>
+		  <%=form.text_field :q%>
+		  <%=form.submit "", :class=>"news_sub"%>
+		<%end%>
+		</div>
+		<!--search end-->
+		<!--Influence news begin-->
+		<div class="mg_t">
+        	<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('影响力新闻')%></strong>
+                		<%= link_to _('更多'), {:controller => "client/news", :action => "list", :type => "shared"} %>
+                	</div>
+                </div>
+            </div>
+            <!--title public end-->
+			<div class="news_influence rounded2">
+			  <% @best_news.each_with_index do |news, index| %>
+      	<!--Cycle begin-->
+				<div class="influence_list">
+					<h3><%= link_to news.title, client_news_path(news) %></h3>
+				</div>
+        <!--Cycle end-->
+        <% end %>
+  	</div>
+		</div>
+		<!--Influence news end-->
+
+		<!--Member influence begin-->
+		<div class="mg_t">
+			<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('影响力会员')%></strong>
+                		<%=link_to _('更多'), client_users_path%>
+                	</div>
+                </div>
+            </div>            
+			<!--title public end-->
+			<div class="member_influence rounded2">
+			  <% @influential_users.each do |user| %>
+				<dl>
+					<dt>
+						<%= link_to image_tag(user.avatar_url, :size => "60x60"), user_path(user) %>
+					</dt>
+					<dd><%=_('姓名:')%><span><%= user.displayable_name%></span></dd>
+					<dd><%=_('公司职位:')%><span><%= user.business_card.title if user.business_card%></span></dd>
+					<dd><%= link_to _('看它的分享'), user_path(user)%>&gt;&gt;</dd>
+					<dd><%=_('粉丝数量') + ' ' + user.microblog_info.followers.to_s %></dd>
+				</dl>
+				<% end %>
+			</div>
+		</div>
+		<!--Member influence end-->        
+    </div>
+    <!--left end-->
+    <!--right begin-->
+    <div class="news_right float_right">
+		<!--today_news begin-->
+        <div class="today_news">
+			<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('今日新闻')%></strong>
+                	</div>
+                </div>
+            </div>  
+			<!--title public end-->
+            <!--scrool begin-->
+            <div class="news_scrool">
+							<div class="to_sc"> 
+								<!--thems begin-->
+								<div class="items"> 
+								<% @today_news.each do | news | %>	
+										<div class="slides_list">
+											<%= link_to ce_image(news,:image, :medium, :scaling=>true, :size => "435x260"), client_news_path(news), :class => 'slide' %>
+												<div class="slides_list_text">
+													<h4><%= link_to news.title, client_news_path(news) %></h4>
+													<p><%= truncate(strip_tags(news.content), :length => 180)%></p>
+												</div>
+										</div>
+							  <% end %>	
+								</div>
+								<!--thems end-->		
+							</div>
+							<!--
+                <div class="slides_bar">
+               	 	<div class="slides_left">&nbsp;</div>
+                    <div class="slides_dot">
+                          <a href="0" class="active"></a>
+                          <a href="1" class=""></a>
+                    </div>
+                	<div class="slides_right">&nbsp;</div>	
+                </div>							
+							-->
+            </div>
+            <!--scrool end-->						
+					<div class="clear">&nbsp;</div>	
+        </div>
+		<!--today_news end-->
+ <script>
+	$(document).ready(function(){
+		$(function() {
+			$(".industry_scrollable").scrollable();
+		});
+		$(".to_sc").scrollable({circular: true, mousewheel: true}).navigator().autoscroll({
+			interval: 3000		
+		});	
+	});		
+ </script>  		
+		
+		
+		
+        <!--news begin-->
+        <div class="news_box">
+			<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('新闻')%></strong>
+                        <div class="tab_niv">
+                        	<%= link_to ("<span>"+_('热门')+"</span>").html_safe, {:controller => "client/news", :action => "list", :type => "views"} %>
+                        	<%= link_to ("<span>"+_('最新')+"</span>").html_safe, {:controller => "client/news", :action => "list", :type => "id"} %>
+                		</div>
+                    </div>
+                </div>
+            </div>  
+			<!--title public end-->
+            <!--new list begin-->
+            <div class="n_list_box">
+              <% @hottest_news.each do |news| %>
+              	<!--list begin-->
+				        <div class="n_list">
+					        <h3><%=link_to news.title, client_news_path(news) %></h3>
+                  <div class="n_list_text">
+                        <%=link_to ce_image(news,"image",:medium,{:size=>"100x55", :scaling=>false}), client_news_path(news) %>
+                      <p><%= truncate_u(strip_tags(news.content), :length=>45) %></p>
+                 	</div>
+                  <div class="n_list_bar">
+                  	<%= news.views %> <%=_('点击')%>&nbsp;|
+                      <%=link_to _('分享'), share_path(news), :class=>"share_link"%>
+                  </div>
+			          </div>
+                <!--list end--> 
+              <% end %>
+
+                <!--more begin-->
+                <div class="find_more">
+                <%= link_to _('查看更多'), list_client_news_index_path(:search=>{:order_by=>[:commented, :desc]})%>
+                </div>
+                <!--more end-->                               
+            </div>
+            <!--new list end-->
+            <!--new list begin-->
+            <div class="n_list_box">
+              <% @latest_news.each do |news| %>
+              	<!--list begin-->
+				        <div class="n_list">
+					        <h3><%= link_to news.category.name + news.title, client_news_path(news) %></h3>
+                  <div class="n_list_text">
+                      <%=link_to ce_image(news,"image",:medium,{:size=>"100x55", :scaling=>false}), client_news_path(news) %>
+                      <p><%= truncate_u(strip_tags(news.content), :length=>45) %></p>
+                 	</div>
+                  <div class="n_list_bar">
+                  	<%= news.views %> <%=_('点击')%>&nbsp;|
+                      <%=link_to _('分享'), share_path(news), :class=>"share_link"%>
+                  </div>
+			          </div>
+                <!--list end--> 
+              <% end %>
+                <!--more begin-->
+                <div class="find_more">
+                <%= link_to _('查看更多'),  list_client_news_index_path(:search=>{:order_by=>[:created_at, :desc]}) %>
+                </div>
+                <!--more end-->                               
+            </div>
+            <!--new list end-->	
+        </div>
+        <!--news end-->
+        <!--Industry assort begin-->
+        <div class="industry_assort">
+			<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('行业分类')%></strong>
+                	</div>
+                </div>
+            </div>  
+			<!--title public end-->
+            <!--Industry assort list begin--> 
+			<ul>
+                <% @industries.each do |industry| %>
+                  <li><%=link_to _(industry.name),list_client_industry_news_index_path(industry.id) %></li>
+                <% end %>
+            </ul>            
+  			<!--Industry assort list begin--> 
+        </div>
+        <!--Industry assort end-->
+    </div>
+    <!--right end-->
+</div>
+<script type="text/javascript">
+$(function() {
+	$(".news_scrool").scrollable().navigator();
+	$(".to_sc").scrollable();
+}); 
+	
+</script>		

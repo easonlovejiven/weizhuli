@@ -1,0 +1,141 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<div style="width:650px;margin:0px auto; background-color:#fff;padding:0px 75px;font-size:12px;font-family:tahoma,Arial,sans-serif;">
+	<%=render :partial => "mail_header_en"%>
+  	<!--text 1 begin-->
+    <div style="width:610px;margin:0px;line-height:24px;background-color:#eee;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;">
+    	<div style="height:30px; line-height:18px;color:#333;font-size:14px;font-weight:bold;overflow:hidden;">Hello:</div>
+    	<% if !@user.blank? %>
+      <!--card view begin-->
+      <div style="width:610px;line-height:24px;margin:0px;padding:0px;">
+				<!--card begin-->
+        <div style="width:280px;float:left;border:1px solid #ff6600;padding:20px 15px 10px 15px;background-color:#fff;margin:0px;">
+            <div style="width:280px;height:50px; line-height:20px;">
+            	<div style="float:left;width:210px;height:50px;overflow:hidden;">
+                <span style="width:210px;height:25px;line-height:25px;overflow:hidden;display:block;font-size:18px;font-family:Arial;font-weight:bold;color:#333;"><%=@user.business_card.display_name if !@user.business_card.display_name.blank?%></span>
+                <em style="width:205px;height:20px;line-height:20px;overflow:hidden;font-size:12px;font-style:normal;color:#666;display:block;"><%=@user.business_card.title if !@user.business_card.title.blank?%></em>
+              </div>
+              <a style="float:right;"><%=user_avatar_tag(@user,:thumb, :size=>"40x40", :style=>"boder:0px;")%></a>
+            </div>
+        		<div style="height:5px;line-height:5px;">&nbsp;</div>
+            <div style="width:280px;">
+              <!--phone begin-->
+              <%if !@user.business_card.mobile.blank?%>
+              <div style="width:280px;line-height:20px;height:20px;overflow:hidden;">
+                <img src="http://www.ce180.com/images/phone_13.jpg" width="13" height="11" style="float:left;margin-top:5px;" alt=""/>
+                <span style="width:215px;float:left;color:#333;font-weight:bold;font-size:12px;line-height:20px;padding-left:5px;"><%=@user.business_card.mobile%></span>
+              </div>
+              <%end%>
+              <!--phone end-->
+              <!--Email begin-->
+              <%if !@user.business_card.email.blank?%>
+              <div style="width:280px;line-height:20px;height:20px;overflow:hidden;">
+                <img src="http://www.ce180.com/images/email_13.jpg" width="13" height="11" style="float:left;margin-top:5px;" alt=""/>
+                <span style="width:215px;float:left;color:#333;font-weight:bold;font-size:12px;line-height:20px;padding-left:5px;"><%=@user.business_card.email%></span>
+              </div>
+              <%end%>
+              <!--Email end-->
+              <!--industry begin-->
+              <%if !@user.business_card.industry_id.blank?%>
+              <div style="width:280px;line-height:20px;height:20px;overflow:hidden;">
+                <img src="http://www.ce180.com/images/industry_13.jpg" width="13" height="11" style="float:left;margin-top:5px;" alt=""/>
+                <span style="width:215px;float:left;color:#333;font-size:12px;line-height:20px;padding-left:5px;"><%=Industry.find(@user.business_card.industry_id).name%></span>
+              </div>
+              <%end%>
+              <!--industry end-->
+              <!--Company begin-->
+              <%if !@user.business_card.company.blank?%>
+              <div style="width:280px;line-height:20px;height:20px;overflow:hidden;">
+                <img src="http://www.ce180.com/images/company_13.jpg" width="13" height="11" style="float:left;margin-top:5px;" alt=""/>
+                <span style="width:215px;float:left;color:#333;font-size:12px;line-height:20px;padding-left:5px;"><%=@user.business_card.company%></span>
+              </div>
+              <%end%>
+              <!--Company end-->
+              <!--address begin-->
+              <%if !@user.business_card.address.blank?%>
+              <div style="width:280px;line-height:20px;height:20px;overflow:hidden;">
+                <img src="http://www.ce180.com/images/address_13.jpg" width="13" height="11" style="float:left;margin-top:5px;" alt=""/>
+                <span style="width:215px;float:left;color:#333;font-size:12px;line-height:20px;padding-left:5px;"><%=@user.business_card.address%></span>
+              </div>
+              <%end%>
+              <!--address end-->
+            </div>
+            <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+        </div>
+        <!--card end-->
+        <!--invite begin-->
+        <div style="width:270px;float:right;margin:0px;padding:0px;">
+        	<div style="width:270px;font-family:Microsoft YaHei;font-size:18px;line-height:25px;color:#ff6600;">We are very glad to invite you to this event:</div>
+          <div style="height:10px;line-height:10px;">&nbsp;</div>
+        	<div style="width:270px;font-family:Microsoft YaHei;font-size:20px;line-height:25px;overflow:hidden;color:#333;"><%=@event.title%></div>
+          <div style="height:10px;line-height:10px;">&nbsp;</div>
+        	<div style="width:270px;line-height:24px;color:#666;font-family:Arial;"><%= l(@event.start_time.to_date, :format=>:full_month) unless @event.start_time.blank? %></div>
+          <div style="width:270px;line-height:24px;color:#333;font-weight:bold;">Organizer:<%=@event.event_founders.first.name if !@event.event_founders.first.blank? && !@event.event_founders.first.name.blank?%></div>
+          <div style="width:270px;line-height:24px;color:#666;"><%=@event.venue if !@event.venue.blank?%><span style="color:#ff6600;line-height:24px;padding-left:10px;">[<%=@event.event_type.name if !@event.event_type.blank? && !@event.event_type.name.blank?%>]</span></div>
+          <div style="height:7px;line-height:7px;">&nbsp;</div>
+          <div style="width:270px;line-height:50px; text-align:right;">
+          	<% if @event.end_time<Time.now %>
+             <div class="recommend_button event_ended">
+				        <a href="<%= 'http://www.ce180.com/client/events/'+@event.id.to_s%>" style="background-color:#ff781e;color:#fff;height:30px;line-height:30px;float:left;padding:0px 10px;font-family:Microsoft YaHei;font-size:16px; text-decoration:none;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;border:1px #ff781e solid;">Content</a>
+				        <% if !@event.galleries.blank? || !@event.videos.blank? %>
+                	<a href="<%= 'http://www.ce180.com/client/events/'+@event.id.to_s+'/video_and_photos'%>" style="background-color:#ff781e;color:#fff;height:30px;line-height:30px;float:left;padding:0px 10px;font-family:Microsoft YaHei;font-size:16px;text-decoration:none;margin-left:5px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;border:1px #ff781e solid;">Video</a>
+                <% end %>
+				        <a href="<%= 'http://www.ce180.com/client/events/'+@event.id.to_s%>" style="background-color:#ff781e;color:#fff;height:30px;line-height:30px;float:left;padding:0px 10px;font-family:Microsoft YaHei;font-size:16px;text-decoration:none;margin-left:5px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;border:1px #ff781e solid;">Speakers</a>
+				      </div>
+			      <% else %>
+			       <div class="recommend_button">
+				        <a href="<%= 'http://www.ce180.com/client/events/'+@event.id.to_s+'/attend_online'%>" style="background-color:#ff781e;color:#fff;height:30px;line-height:30px;float:left;padding:0px 10px;font-family:Microsoft YaHei;font-size:16px; text-decoration:none;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;border:1px #ff781e solid;">Attend</a>
+            <a href="<%= 'http://www.ce180.com/client/events/'+@event.id.to_s%>" style="background-color:#ff781e;color:#fff;height:30px;line-height:30px;float:left;padding:0px 10px;font-family:Microsoft YaHei;font-size:16px; text-decoration:none;margin-left:5px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;border:1px #ff781e solid;">Details</a>
+				      </div>
+			      <% end %>
+          </div>
+        </div>
+        <!--invite end-->
+        <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+      </div>
+      <!--card view end-->
+      <% end %>
+      <div style="height:30px;line-height:30px;">&nbsp;</div>
+    	<div style="width:610px;">
+      	<%= ce_image(@event, :image_banner, :banner, {:size=>"610x185", :alt=>@event.title}) %>
+      </div>
+      <div style="height:10px;line-height:10px;">&nbsp;</div>
+      <!--content begin-->
+      <div style="width:610px; line-height:18px;color:#333; font-size:12px;">
+      <%= @event.detail.html_safe %>
+      </div>
+      <!--content end-->
+      <div style="height:10px;line-height:10px;">&nbsp;</div>
+      <!--speechmaker begin-->
+			<div style="width:610px;line-height:18px;color:#ff6600;font-size:12px;">Speakers:</div>
+      <div style="width:610px; line-height:16px;color:#333; font-size:12px;overflow:hidden;">
+   			<!--s begin-->
+        <% @speakers[0,10].each do |speaker| %>
+		          <% unless speaker.person.blank? %>
+                <div style="width:55px;height:80px;float:left;padding-top:10px;padding-left:5px;text-align:center;">
+				          	<div style="float:left;margin-left:7px;width:40px;height:40px;"><%= ce_image(speaker.person, :image, :medium, :size=>"40x40",:style=>"border:none;")%></div>
+				          	<div style="float:left;width:55px;max-height:36px;line-height:18px;color:#666; font-size:12px;overflow:hidden;"><%= speaker.person.name if !(speaker.person.blank?  && speaker.person.name.blank?) %></div>
+		            </div>
+		         <% end %>
+         <% end %>
+
+        <!--s end-->
+
+      </div>
+      <!--speechmaker end-->
+
+      <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+    </div>
+  	<!--text 1 end-->
+    <%=render :partial => "mail_bottom_en"%>
+  <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>
+

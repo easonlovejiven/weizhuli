@@ -1,0 +1,54 @@
+<div class="main_750_210">
+    <!--left begin-->
+    <div class="search_list_left">
+     
+     <% if @tag%>
+     <!--search list begin-->
+     <div class="search_Results">
+        <!--title public begin-->
+        <div class="title_s">
+          <strong><%=_('一共有')%><em> <%=@relations.count%> </em><%=_('个结果')%></strong>
+          <div class="search_niv">
+          </div>
+        </div>  
+        <!--title public end-->
+        
+				<!--tab 1 begin-->
+				<div class="search_list_box" style="display: block; ">
+        <%@relations.each{|relation|%>
+          <%= render "item_#{relation.content.class.to_s.underscore}", relation.content.class.to_s.underscore.to_sym => relation.content%>
+        <%}%>
+        </div>
+        <!--tab 1 end-->
+  
+        <!--begin-->
+        <%=will_paginate @relations%>
+        <!--end-->           
+                     
+                     
+        
+             
+      </div>
+      <!--search list end-->                 
+      <%else%>
+      <%=_("对不起，没有该标签")%>
+      <%end%>
+    </div>
+    <!--left end-->
+  
+    <!--right begin-->
+    <div class="list_right mg_t150 change_w">
+      <%=render "/client/common/recommended_events"%>
+      <%=render "/client/common/recommended_companies"%>
+    </div>
+    <!--right end-->
+</div>
+
+<script>
+
+
+  $("#search_form input:[type=radio]").change(function(){
+    $("#search_form").submit();
+  });
+
+</script>

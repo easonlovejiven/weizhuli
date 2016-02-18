@@ -1,0 +1,62 @@
+	<!--title begin-->
+      <div class="title32">
+      	<strong><%=user_salutation(@user)+_('关注的公司')%>&nbsp;&gt;</strong>
+      	<%= link_to _('返回%s的首页')%[user_salutation(@user)], user_path(@user)%>
+      </div>
+      <!--title end-->    
+      <!--follow list begin-->
+      <div class="mg_t10 follow_box">
+      	<!--tip begin-->
+        <div class="tips_40">
+        	<strong><%=_('共关注了')%><%=@companies.total_entries%><%=_(' 个公司')%></strong>
+        </div>
+        <!--tip end-->
+        <% @companies.each do |company|%>
+        <!--list begin-->
+        <div class="follow_list">
+          <div class="e_pic">
+            <%= link_to ce_image(company,:image,:thumb,:size=>"60x60"), client_organization_path(company) %>
+          </div> 
+          <!--follow_485 begin-->           
+          <div class="follow_485">
+            <!--center user_c begin-->
+            <div class="follow_c">
+              <div class="user_name"><%= link_to truncate_u(company.name, :length=>17), client_organization_path(company) %></div>
+              <div class="user_position"><span><%= company.address %></span></div>
+              <div class="bar_ffs">
+                 <%=link_to client_organizations_user_list_path(company) do%><%=_("粉丝")%><em><%=company.followed%></em><% end %>
+              </div> 
+              <div class="description">
+              	<strong><%=_('公司简介')%>：</strong>
+                <%= truncate_u(strip_tags(company.description), :length=>45) %>
+              </div>
+            </div>
+            <!--center user_c end-->
+            <!--right bar 120 begin-->
+            <ol class="rightbar_120">
+              <li>
+                 <%
+                    if current_user && current_user.organization_followed?(company)
+                 %>
+                   <span class="ce_followed_company"><%=_('已关注')%></span>  
+                 <%else%>
+                    <%= link_to _('关注'), client_organizations_follow_path(company),:class=>"ce_unfollowed_company" %>
+                 <%end%>
+              </li>
+            </ol>
+            <!--right bar 120 end-->
+            <div class="clear">&nbsp;</div>
+          </div>            
+          <!--follow_485 end-->
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--list end-->
+        <% end %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+	  <!--pagination begin-->
+	  <%= will_paginate @companies %>
+      <!--pagination begin-->    
+      <div class="clear">&nbsp;</div>
+

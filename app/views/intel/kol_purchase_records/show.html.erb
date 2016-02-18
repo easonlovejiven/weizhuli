@@ -1,0 +1,170 @@
+  <div class="info_name">
+    KOL采买记录
+  </div>
+
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+      <%=form_for @purchase, :url=>intel_kol_purchase_records_path do |form|%>
+
+    <table class='table table-bordered table-hover post-list'>
+      <tr>
+        <td width=30%><%=_('状态')%>: </td>
+        <td>
+        <%=@purchase.status_human%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL UID')%>: </td>
+        <td>
+        <%=@purchase.kol.uid%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 昵称')%>: </td>
+        <td>
+        <%=@purchase.kol.name%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 使用次数')%>: </td>
+        <td>
+        <%=KolPurchase.where(kol_id:@purchase.kol_id).count%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 备注')%>: </td>
+        <td>
+        <%=@purchase.kol.description%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 互动数量')%>: </td>
+        <td>
+        <%=@purchase.kol.interactions%>
+        </td>
+      </tr>
+      <%end%>
+
+      <%if @purchase.used?%>
+      <tr>
+        <td><%=_('使用帐号')%>: </td>
+        <td>
+        <%=@purchase.account%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用时间')%>: </td>
+        <td>
+        <%=@purchase.use_time && @purchase.use_time.to_date%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('转发微博地址')%>: </td>
+        <td>
+        <%=@purchase.forward_weibo%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('转发微博内容快照')%>: </td>
+        <td>
+        <%if @purchase.forward_weibo_image_id?
+          image = Image.find @purchase.forward_weibo_image_id
+          size, scatrng_ratio = image.get_scale_size_for_paperclip(:attachment,100,100)
+          %>
+          <%=link_to (image_tag(image.attachment.url(:thumb),size:size)), image.attachment.url,:target=>"_blank"%>
+        <%end%>
+        </td>
+
+      </tr>
+      <tr>
+        <td><%=_('二次转发数')%>: </td>
+        <td>
+        <%=@purchase.second_level_forwards%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('二次评论数')%>: </td>
+        <td>
+        <%=@purchase.second_level_comments%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('原微博转发数')%>: </td>
+        <td>
+        <%=@purchase.origin_weibo_forwards%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('原微博评论数')%>: </td>
+        <td>
+        <%=@purchase.origin_weibo_comments%>
+        </td>
+      </tr>
+      <%end%>
+
+
+
+      <tr>
+        <td><%=_('采买价格')%>: </td>
+        <td>
+        <%=@purchase.price%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('采买方')%>: </td>
+        <td>
+        <%=@purchase.buyer%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('合作类型')%>: </td>
+        <td>
+        <%=@purchase.cooperation_type%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('所属项目')%>: </td>
+        <td>
+        <%=@purchase.project%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('备注')%>: </td>
+        <td>
+        <%=@purchase.description%>
+        </td>
+      </tr>
+
+    </table>
+    <div class="form-buttom">
+      <%=link_to "编辑",edit_intel_kol_purchase_record_path(@purchase.id), :class=>"btn btn-primary"%>
+      <%=link_to "删除",intel_kol_purchase_record_path(@purchase.id), :class=>"btn btn-warning",:method=>:delete,:confirm=>"确定要删除吗?"%> 
+      <%=link_to "返回", intel_kol_purchase_records_path%>
+    </div>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+
+
+
+<%end%>

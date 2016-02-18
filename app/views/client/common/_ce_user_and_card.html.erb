@@ -1,0 +1,12 @@
+     <% business_card = user.business_card.reload %>
+     <!--special_unit begin-->
+            <div class="special_unit">
+				    	<dl class="special_d">
+              	<dt><%=link_to user_avatar_tag(user,:thumb,:size=>"35x35", :scaling=>true), user_path(user)%></dt>
+                <dd><%=business_card.display_name if business_card %></dd>
+                <dd><%=business_card.title if business_card %></dd>
+              </dl>
+					    <div class ="w_name_card"><%= render :partial => "/client/common/follow_user_card",:locals=>{:user=>user} %></div>
+					    <div class="clear">&nbsp;</div>
+            </div>
+      <!--special_unit end-->

@@ -1,0 +1,94 @@
+<div class="content">
+    <!--left begin-->
+    <div class="about_left fl pdLR10">
+			<div class="about_title">
+				<strong>CE180 BASIC HELP</strong>
+				<div class="clear">&nbsp;</div>
+			</div>
+			<a name="top">&nbsp;</a>
+      <!--1 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>1. Editing Personal Info<a name="edit_info">&nbsp;</a></h4>
+				<p><em>(1)</em>How to upload /change your account picture: go to <%=link_to upload_avatar_client_user_url,upload_avatar_client_user_path%>.  Click on the orange <var>Upload Picture</var> button. Click the <var>Browse</var> button on the pop-up page. Select a file to upload. After selecting the file, click the orange <var>Upload</var> button on the pop-up page. When the pop-up page disappears, remember to click the orange <var>Save</var> button at bottom.</p>
+        <p><em>(2)</em>How to edit your profile: go to <%=link_to client_profiles_url, client_profiles_path%>. Click on the orange <var>View All</var> link. When seeing your complete English/Chinese profile, you can click on those <var>Edits</var> or <var>Adds</var> to modify your personal profile. Please remember to click the orange <var>Save</var> button at bottom of every page when finish editing or adding.</p>
+        <p><em>(3)</em>How to change your account password: go to <%=link_to modify_password_client_user_url, modify_password_client_user_path%>. Enter your Original Password.  Enter your New Password. Confirm your New Password. Click the orange <var>Save</var> button.</p>
+      </div>
+      <!--1 end-->
+      <!--2 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>2. Finding &amp; Following People/Industries/Companies<a name="sfic">&nbsp;</a></h4>
+        <p><em>(1)</em>How to search and follow people: Click <var>People</var> at the very top of every page or go to <%=link_to  client_users_url, client_users_path%>. Select an industry or just select <var>all industries</var> in the search box for helping your searching.  Typing a name into the search box. Click the <var>Search</var> button. When search result shows, click <var>follow</var> to follow people you are interested.</p>
+        <p><em>(2)</em>How to search and follow industries: Click <var>Discover</var> at the very top of every page and select <var>Industries</var>, or go to <%=link_to client_industries_url, client_industries_path%>. Click the orange <var>Follow</var> button to follow the industries you are interested in.</p>
+        <p><em>(3)</em>How to search and follow companies: Click <var>Discover</var> at the very top of every page and select <var>Companies</var>, or go to <%=link_to  list_client_organizations_url, list_client_organizations_path%>.  Select an industry or just select <var>all industries</var> in the search box for helping your searching.  Enter keywords into the search box. Click the <var>Search</var> button. When search result shows, click the orange <var>Follow</var> button to follow the companies you are interested in.</p>
+      </div>
+      <!--2 end-->
+      <!--3 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>3. E-Name Cards &amp; Appointments<a name="card">&nbsp;</a></h4>
+        <p><em>(1)</em>How to edit your E-name card:  click on the <var>Edit My E-Name card</var> link below the line of icons at the top of your homepage, or go to <%=link_to my_en_card_client_user_business_cards_url, (I18n.locale==:en)?  my_en_card_client_user_business_cards_path : my_card_client_user_business_cards_path %>. Edit your E-name card info, then click the orange <var>Save</var> button at bottom.</p>
+        <p><em>(2)</em>How to exchange E-name cards: find the people you are interested in (please see the above <a href="#sfic">How to search and follow people</a> part), then click the orange <var>Exchange card</var> button. When the invitation for exchanging E-name card is sent, the orange <var>Exchange card</var> button will turn to <var>Sent</var>. When people you invited to exchange E-name card with you accept your invitation, the orange <var>Exchange card</var> button will turn to <var>Exchanged</var>.</p> 
+        <p><em>(3)</em>How to accept invitations for exchanging E-name card:  click on the <var>E-Name Card Invitations</var> link below the line of icons at the top of your homepage, or go to <%=link_to  receive_invites_client_user_business_cards_url,receive_invites_client_user_business_cards_path%>, you will see all the invitations for exchanging E-name card you have received. Click the <var>Exchange</var> button under the person you are interested in to accept his/her invitation.</p> 
+        <p><em>(4)</em>How to organize your E-name card folder: click the <var>My E-name Card Folder</var> icon at the top of your homepage, or go to <%= link_to exchanged_invites_client_user_business_cards_url, exchanged_invites_client_user_business_cards_path%> to access your E-name card folder. You can organize all the E-name cards you have received by putting them into different groups. To create groups, you need to click the little Cross button <%=image_tag 'add_c.jpg'%>. To edit those groups you created, you need to click the little wrench button <%=image_tag 'card_e.jpg'%>. To move cards into certain group you created or un-group them, you need to click on the <var>Move to</var> button at the bottom of every E-name card.  You can write notes in the <var>Notes</var> box, and you can also delete a card by clicking the <var>Delete</var> button at the bottom of every E-name card.</p>
+        <p><em>(5)</em>How to make an appointment: click the <var>My E-name Card Folder</var> icon at the top of your homepage, or go to <%= link_to exchanged_invites_client_user_business_cards_url, exchanged_invites_client_user_business_cards_path%> to access your E-name card folder. You can only make appointments with people you have already exchanged E-name cards with. To make an appointment, click the orange <var>Make appointment</var> button at bottom of every exchanged E-name card. Fill out the <var>Address, Meeting Time</var> and <var>Meeting Details</var> info for your appointments on the pop-up page. Click the orange <var>Send</var> button to send the invitation.</p> 
+        <p><em>(6)</em>How to accept, decline or ignore an appointment:  click on the <var>Appointments</var> link below the line of icons at the top of your homepage, or go to <%=link_to receive_appointment_client_appointments_url,receive_appointment_client_appointments_path%>. Click the <var>Appointments Received</var> link first, then click the <var>Unconfirmed Appointments</var> link. Click on the <var>View Details</var> button on the right of every unconfirmed appointment.  After viewing appointment details, choose <var>Accept</var>, <var>Decline</var> or <var>Ignore</var>.  Click the orange <var>Confirm</var> button on the right.</p> 
+      </div>
+      <!--3 end-->
+      <!--4 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>4. Events &amp; Event Orders<a name="event_order">&nbsp;</a></h4>
+        <p><em>(1)</em>How to search and follow an event: Click <var>Discover</var> at the very top of every page and select <var>Events</var>, or go to <%=link_to  square_client_events_url, square_client_events_path%>. Enter keywords into the search box. Click the <var>Search</var> button. When search result shows, click the name or the icon picture of the event you are interested. Click the small <var>Follow</var> button below the big orange <var>Attend</var> button on the right of the event page. </p>
+        <p><em>(2)</em>How to attend/order and pay for an event: to attend an event (you can only attend upcoming events), you can click the big orange <var>Attend</var> button mentioned above, or you can click the small orange <var>Attend</var> button next to event icon. Fill out all the required <var>Attendee Info</var> on the next page. Click <var>Add Another Attendee</var> link to add an another attendee if needed. Click the orange <var>Submit</var> button at bottom of the page. Confirm your event order at the next page by clicking the orange <var>Confirm</var> button. Select your payment method and then click the orange <var>Confirm</var> button at the bottom. Do not close the pop-up page before completing your payment on the newly opened bank page. When your payment is complete, click the orange <var>Payment Complete</var> button on the pop-up page.  You can also click the orange <var>Retry</var> button on the pop-up page if your payment fails. </p>
+        <p><em>(3)</em>How to cancel your event order: go to <%=link_to client_orders_url, client_orders_path%>. Click the orange <var>Cancel Order</var> link at bottom of every <var>Order Status</var> box.</p>  
+        <p><em>(4)</em>How to comment on an event: click on the name or the icon of the event you want to comment on. Type your comment into the box at the right bottom, then click the black <var>Comment</var> button.</p>
+      </div>
+      <!--4 end-->                  
+      <!--5 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>5. Updates<a name="trend">&nbsp;</a></h4>
+        <p><em>(1)</em>How to post your updates:  type your updates into the box below your picture at the left top of your homepage, then press the <var>Publish</var> button. You can also click the <var>Recent Updates</var> icon at the very top of your homepage, enter your updates into the box on the showing page and then click the black <var>Publish Update</var> button.</p> 
+        <p><em>(2)</em>How to comment on an update: click the <var>Recent Updates</var> icon at the very top of your homepage. Click the <var>Comments</var> link below the update you want to comment on. Type your comment into the box and click the orange <var>Comment</var> button at the bottom.</p>
+        <p><em>(3)</em>How to delete comments for your update:  click the <var>Comments</var> link below your update. Click the <var>Delete</var> link at the end of the comment you want to delete, and press the <var>Yes</var> button on the pop-up page.</p>
+        <p><em>(4)</em>How to share updates: click the <var>Share</var> link at the bottom of the update. You can share any user’s updates. Your sharing will appear as your update.</p>
+      </div>
+      <!--5 end-->        
+      <!--6 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>6. Messages<a name="messages">&nbsp;</a></h4>
+        <p><em>(1)</em>How to send a message: You can send messages to any users of ce180.com. To send a message, find the people you are interested in first (please see the above <a href="#sfic">How to search and follow people</a> part), then click the <var>Send Message</var> button. Enter your message into the <var>Content</var> box on the pop-up page, and click the orange <var>Send</var> button. You can also click on the <var>Messages</var> link below the line of icons at the top of your homepage, or go to <%=link_to client_private_messages_url,client_private_messages_path%>. Click the orange <var>Send Message</var> button at the top of the new page. Fill out the boxes and click the orange <var>Send</var> button. </p>
+        <p><em>(2)</em>How to reply or delete a message: click on the <var>Messages</var> link below the line of icons at the top of your homepage, or go to <%=link_to client_private_messages_url,client_private_messages_path%>.  To reply a message, click the <var>Reply</var> link at the bottom of the message. Type your reply into the box and then click the orange <var>Send</var> button. To delete a message, click the <var>Delete</var> link at the bottom of the message, and press <var>Yes</var> on the pop-up page. </p>
+      </div>
+      <!--6 end-->        
+      <!--7 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>7. News<a name="news">&nbsp;</a></h4>
+        <p><em>(1)</em>How to book news: once you follow an industry (please see the above <a href="#sfic">How to search and follow industries</a> part), you book its news. You can check the <var>My Industry News</var> part on the upper right of your homepage, or you can click the <var>My Industry News</var> icon at the very top of your homepage to view all the news you have booked. </p>
+        <p><em>(2)</em>How to save news into your favorites: click on news title to read the news you are interested in. Click the orange <var>Save</var> button at the bottom of the news page. You can access your favorites by this link: <%=link_to client_favorites_url, client_favorites_path%>. </p>
+        <p><em>(3)</em>How to share news: click on news title to read the news you are interested in. Click the orange <var>Share</var> button at the bottom of the news page. You can share any news you like, and the sharing will appear as your update. </p>
+      </div>
+      <!--7 end-->   
+      <!--8 begin-->
+      <div class="help_conment about_conment_en">
+      	<h4>8. Inviting Friends<a name="invite_friends">&nbsp;</a></h4>
+        <p>How to invite your friends to <a href="/">www.ce180.com</a>: click the orange <var>Invite Friends</var> button <%=image_tag("help_inviten.jpg",:alt => "CE CE180 Inviting Friends")%> on the left of your homepage. Enter your friends' emails (up to 5) to the box on the pop-up page (please use “;” to separate different emails), then press the orange <var>Send</var> button on the right. </p>
+      </div>
+      <!--8 end--> 
+      <div class="click_top"><a href="#top">Go Back To Top</a></div>     
+			<div class="clear">&nbsp;</div>
+    </div>
+    <!--left end-->
+    <!--right begin-->
+    <div class="about_right fr pdLR10 mgt10">
+    	<div class="about_tab">
+        <a href="#edit_info">Editing Personal Info</a>
+	    	<!--<a href="#sfic" style="height:auto;line-height:20px;">Finding &amp; Following People/Industries/Companies</a>-->
+        <!--<a href="#card" style="height:auto;line-height:20px;">E-Name Cards &amp; Appointments</a>-->
+	    	<a href="#event_order">Events &amp; Event Orders</a>
+        <!--<a href="#trend">Updates </a>-->
+	    	<a href="#messages">Messages</a>
+        <!--<a href="#news">News</a>-->
+	    	<a href="#invite_friends">Inviting Friends</a>                        
+			</div>  
+    </div>
+    <!--right end-->
+    <div class="clear">&nbsp;</div>    
+</div>

@@ -1,0 +1,207 @@
+  <div class="info_name">
+    内容运营
+  </div>
+
+
+  <ul class="nav nav-tabs">
+    <li class="<%= @mod == nil ? "active" : ""%>"><a href="/client/posts">直发微博</a></li>
+    <li class="<%= @mod == "forward" ? "active" : ""%>"><a href="/client/posts?mod=forward">转发微博</a></li>
+  </ul>
+
+  <%= form_for [:client,@post], :remote=>true,:format=>:json,:html=>{:id=>"new_post","data-mod"=>@post.mod} do |form|%>
+    <%=form.hidden_field :id%>
+
+
+
+    <%if @mod == nil%>
+      <!-- direct post -->
+      <div class='row-fluid post-form-container'>
+          <%=form.hidden_field  :image_id%>
+          <div class='content-box'>
+            <div class="row-fluid">
+              <div class="span10">
+                <%=form.text_area :content,:rows=>4%>
+              </div>
+              <div class="span2">
+                <%
+                ids = @post.image_id ? @post.image_id.split(",") : []
+                urls = @post.image_url
+                %>
+                <div class="image-thumb <%=urls.size > 1 ? "multi" :""%>">
+
+                  <%
+                    urls.each_with_index{|url,index|
+                  %>
+                    <%=image_tag url, "data-id"=>ids[index]%>
+                  <%
+                    }
+                  %>
+                </div>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class='left-words span4 pull-right text-right'>您还可以输入<i>140</i>个字</div>
+            </div>
+          </div>
+      </div>
+      <div class='row-fluid post-form-status-bar'>
+        <div class="send_chose span3">
+          <label><input type="radio" checked="check" name="time_type" value='now'>立即发布</label>
+          <label><input type="radio" name="time_type" value='timer'>定时发布</label>
+        </div>
+        <div class="span9" id="messages">
+        </div>
+      </div>
+
+
+    <%else%>
+      <%=form.hidden_field :mod%>
+
+      <!-- forward -->
+      <div class='row-fluid forward-form-container'>
+          <div class='content-box'>
+            <div class="row-fluid">
+              <div class="span4">
+                <%=form.text_field :forward_url, :placeholder=>"输入要转发的微博地址", :style=>"width:100%"%>
+                <%=form.text_area :content,:rows=>4, :placeholder=>"顺便说点什么", :style=>"width:100%"%>
+              </div>
+              <div class="span8">
+                <div id="forwarding_preview"></div>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div class='left-words span4 pull-right text-right'>您还可以输入<i>140</i>个字</div>
+            </div>
+          </div>
+      </div>
+      <div class='row-fluid post-form-status-bar'>
+        <div class="send_chose span3">
+          <label><input type="radio" checked="check" name="time_type" value='now'>立即发布</label>
+          <label><input type="radio" name="time_type" value='timer'>定时发布</label>
+        </div>
+        <div class="span9" id="messages">
+        </div>
+      </div>
+
+
+    <%end # no image upload for forwards%>
+
+
+
+
+    <div class="footer row-fluid weibo-widgts">
+      <a href="#" id="face" class="la1">表情</a>
+      <a href="#" id="topic" class="la5">话题</a>
+      <%if @mod==nil%>
+		<a id="image" class="la2 image-upload-panel_open">图片</a>
+
+
+        <div id="image-upload-panel" class="well">
+            <!--
+            <a href="#" class="image-upload-panel_close" style="float:right;padding:0 0.4em;">X</a>
+          -->
+            <div id="post-image-form-container">
+              <span class='upload-button'>
+                <span class="btn btn-success fileinput-button">
+                  <i class="icon-plus icon-white"></i>
+                  <span>选择图片...</span>
+                  <input id="fileupload" type="file" name="upload[attachment]" data-url="/uploads" multiple>
+                </span>
+              </span>
+              <div class="uploading-progress progress">
+                <div class="bar" style="width: 0px;"></div>
+              </div>
+            </div>
+        </div>
+
+
+        <div id="pop-block" class="pop-layer">
+			<a class='close-layer icon-remove'></a>
+			<div id="post-image-form-container">
+              <span class='upload-button'>
+                <span class="btn btn-success fileinput-button">
+                  <i class="icon-plus icon-white"></i>
+                  <span>选择图片...</span>
+                  <input id="fileupload" type="file" name="upload[attachment]" data-url="/uploads" multiple>
+                </span>
+              </span>
+            </div>
+			<div class="msg-tips">scz</div>
+		</div>
+
+      <div class='popbox' id='a-image-upload-popbox'>
+        <a class='open' href="#"></a>
+        <div class='box-container'>
+          <div class='box'>
+            <div class='arrow'></div>
+            <div class='arrow-border'></div>
+
+            <div id="post-image-form-container">
+              <span class='upload-button'>
+                <span class="btn btn-success fileinput-button">
+                  <i class="icon-plus icon-white"></i>
+                  <span>选择图片...</span>
+                  <input id="fileupload" type="file" name="upload[attachment]" data-url="/uploads" multiple>
+                </span>
+              </span>
+              <div class="uploading-progress progress">
+                <div class="bar" style="width: 0px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <%end # %>
+
+
+      <%if @uid == "2637370927"||@uid == "2637370247"%>
+        <label><%=form.select   :tag1,options_for_select(MIntelContent::DIMENSIONS[0][1]),{},:style=>"width:120px"%></label>
+        <label><%=form.select   :tag2,options_for_select(MIntelContent::DIMENSIONS[1][1]),{},:style=>"width:120px"%></label>
+        <label><%=form.select   :tag3,options_for_select(MIntelContent::DIMENSIONS[2][1]),{},:style=>"width:120px"%></label>
+        <label><%=form.select   :tag4,options_for_select(MIntelContent::DIMENSIONS[4][1]),{},:style=>"width:120px"%></label>
+        <label><%=form.select   :tag6,options_for_select(MIntelContent::DIMENSIONS[3][1]),{},:style=>"width:120px"%></label>
+      <%else%>
+        <%=form.select :category,[["微博类型",nil]] + current_user.post_categories.all.map(&:name)%>
+        <%if with_geo%>
+        <label>位置：<%=form.select   :geo,options_for_select(current_user.settings.post_geos||[]),:style=>"width:120px"%></label>
+        <%end%>
+      <%end%>
+
+      <%if !@post.new_record?%>
+        <input type="button" class="btn btn-large cancel-edit" value="取消"/>
+      <%end%>
+        <%=form.submit "提交", :class=>"btn btn-primary btn-large btn-block submit-post", "data-loading-text"=>"提交中..."%>
+
+    </div>
+
+    <div id="calendar-panel" class='row-fluid' style="display:none">
+      <div id="calendar" class="span4" data-default="<%=@post.post_at.to_date%>"></div>
+      <div class="span8 timechart">
+        <div class="timechart-title">智能时间</div>
+        <div id="time-line" style='height:190px;'></div>
+        <div id="time-selector" style='height:30px;'>
+          <%=form.hidden_field :post_at%>
+          <%=time_select :post_at_time,:time,:default=>@post.post_at%>
+          <!--
+          | 下一条自动增加 <input id='time_auto_increase'/> 分钟
+        -->
+        </div>
+      </div>
+    </div>
+  <%end%>
+
+<div class="row-fluid post-list-container">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#unpublished-list" data-toggle="tab">待发送</a></li>
+    <li><a href="#published-list" data-toggle="tab">已发送</a></li>
+  </ul>
+  
+  <div class="tab-content">
+    <div class="tab-pane active ajax-list-container" data-list-mod="<%=@mod%>" id="unpublished-list">正在加载1...</div>
+    <div class="tab-pane ajax-list-container" data-list-mod="<%=@mod%>" id="published-list">正在加载2...</div>
+  </div>
+
+</div>
+
+

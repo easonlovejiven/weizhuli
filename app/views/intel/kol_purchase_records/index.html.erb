@@ -1,0 +1,175 @@
+
+  <div class="info_name">
+    KOL采买记录
+  </div>
+
+  <div class="row-fluid search-box radius-3">
+    <div class='title'>
+      <strong>筛选条件</strong>
+    </div>
+    <div class="span12 conditions">
+      <%=form_for :search, :method=>"GET" do |form|%>
+
+      <%
+        @s = params[:search] || {}
+      %>
+        <table>
+          <tr>
+            <td>
+              <%=_("KOL")%>:
+            </td>
+            <td>
+              <%=form.text_field :kol_name_eq,:value=>@s[:kol_name_eq],:size=>10,:placeholder=>"KOL昵称"%>
+            </td>
+            <td>&nbsp;</td>
+            <td>
+              <%=_("使用时间")%>: 
+            </td>
+            <td>
+              <%=form.text_field :use_time_gt,:value=>@s[:use_time_gt],:size=>10,:placeholder=>"开始日期"%> - <%=form.text_field :use_time_lt,:value=>@s[:use_time_lt],:size=>10,:placeholder=>"结束日期"%> 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%=_("采买方")%>:
+            </td>
+            <td>
+              <%=form.text_field :buyer_eq,:value=>@s[:buyer_eq],:size=>10,:placeholder=>""%>
+            </td>
+            <td></td>
+            <td>
+              <%=_("二次转评")%>: 
+            </td>
+            <td>
+              <%=form.text_field :second_level_interactions_gt,:value=>@s[:second_level_interactions_gt],:size=>10,:placeholder=>"大于"%> - <%=form.text_field :second_level_interactions_lt,:value=>@s[:second_level_interactions_lt],:size=>10,:placeholder=>"小于"%>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%=_("使用帐号")%>:
+            </td>
+            <td>
+              <%=form.text_field :account_eq,:value=>@s[:account_eq],:size=>10,:placeholder=>"使用帐号"%>
+            </td>
+            <td></td>
+            <td>
+              <%=_("价格")%>: 
+            </td>
+            <td>
+              <%=form.text_field :price_gt,:value=>@s[:price_gt],:size=>10,:placeholder=>"小于"%> - <%=form.text_field :price_lt,:value=>@s[:price_lt],:size=>10,:placeholder=>"小于"%>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%=_("合作类型")%>:
+            </td>
+            <td>
+              <%=form.text_field :cooperation_type_eq,:value=>@s[:cooperation_type_eq],:size=>10,:placeholder=>""%>
+            </td>
+            <td></td>
+            <td>
+              <%=_("所属项目")%>:
+            </td>
+            <td>
+              <%=form.text_field :project_eq,:value=>@s[:project_eq],:size=>10,:placeholder=>""%>
+            </td>
+          </tr>
+        </table>
+
+        <div style='text-align:center'>
+          <%=form.submit _("搜索"),:class=>"btn btn-warning"%> <%=link_to "清除", intel_kol_purchase_records_path, :class=>""%>
+        </div>
+      <%end%>
+    </div>
+  </div>
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong>KOL采买列表</strong>
+      <!--
+      <div class="btn-right">
+        <button type="button" class="btn btn-default">添加备注</button>
+        <button type="button" class="btn btn-default">添加分组</button>
+      </div>
+    -->
+    </div>
+    <div class="list">
+      <table class="table table-bordered table-hover post-list">
+        <tr class="bg_color">
+          <th><%=_('KOL昵称')%></th>
+          <th><%=_('使用帐号')%></th>
+          <th><%=_('使用时间')%></th>
+          <th><%=_('转发微博内容')%></th>
+          <th><%=_('二次转评（原微博转评）')%></th>
+          <th><%=_('采买价格')%></th>
+          <th><%=_('合作类型')%></th>
+          <th><%=_('所属项目')%></th>
+          <th><%=_('状态')%></th>
+          <th nowrap><%=link_to "添加",new_intel_kol_purchase_record_path, :class=>"btn btn-primary"%></th>
+        </tr>
+        <%
+
+        counts = {}
+        @purchases.each{|purchase|
+          #counts[purchase.kol_id] ||= KolPurchase.where(kol_id:purchase.kol_id).count
+        %>
+        <tr>
+          <td><%=link_to purchase.kol.name, "http://weibo.com/#{purchase.kol.uid}", :target=>"_blank"%></td>
+          <td><%=purchase.account%></td>
+          <td><%=purchase.use_time%></td>
+          <td>
+            <%if purchase.forward_weibo_image_id?
+              image = Image.find purchase.forward_weibo_image_id
+              size, scaling_ratio = image.get_scale_size_for_paperclip(:attachment,100,100)
+              %>
+              <%=link_to (image_tag(image.attachment.url(:thumb),size:size)), image.attachment.url,:target=>"_blank"%>
+            <%end%>
+            <%=link_to _("查看"),purchase.forward_weibo,:target=>"_blank"%>
+          </td>
+          <td><%=[[purchase.second_level_forwards,purchase.second_level_comments].uniq*"/", [purchase.origin_weibo_forwards,purchase.origin_weibo_comments].uniq*"/"].uniq*" | "%>
+          </td>
+          <td><%=purchase.price%></td>
+          <td><%=purchase.cooperation_type%></td>
+          <td><%=purchase.project%></td>
+          <td><%=purchase.status_human%></td>
+          <td>
+            <%=link_to "查看",intel_kol_purchase_record_path(purchase.id), :class=>"icon-th-list"%> <br/>
+            <%if purchase.used?%>
+            <%=link_to "编辑",edit_intel_kol_purchase_record_path(purchase.id), :class=>"icon-pencil"%> <br/>
+            <%else%>
+            <%=link_to "使用",edit_intel_kol_purchase_record_path(purchase.id,:use=>true), :class=>"icon-play-circle"%> <br/>
+            <%end%>
+            <%=link_to "删除",intel_kol_purchase_record_path(purchase.id), :method=>:delete,:confirm=>"确定要删除吗?", :class=>"icon-remove"%>
+          </td>
+        </tr>
+        <%}%>
+        
+        <tr>
+          <td colspan=10>
+            共有 <%=@purchases.total_entries%> 条记录， 花费共计 <%=@total_price%> 元
+          </td>
+        </tr>
+        <tr>
+          <td colspan=10 class='text-right'>
+            <div class="span10 pull-right">
+              <%=will_paginate(@purchases)%>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+<%content_for :tail do%>
+
+<script type="text/javascript">
+$("#search_use_time_gt").datepicker({dateFormat: "yy-mm-dd"});
+$("#search_use_time_lt").datepicker({dateFormat: "yy-mm-dd"});
+</script>
+
+<%end%>

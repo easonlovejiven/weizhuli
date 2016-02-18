@@ -1,0 +1,134 @@
+<a id="new_lead_form_trigger" href="#new_lead_form" class="fancybox" style="display:none"></a>
+<div style="display:none">
+    <!--dialog begin-->
+    <div class="dialog" id="new_lead_form">
+    	<div class="title38 bc_botttom1">
+      	<strong><%=_("填写参会信息")%></strong>
+      </div>
+    	<div class="ex_change_pop">
+    	
+    	    <div class="attend_infor mgt10">
+    				<%=_("如果您是已注册用户, 请登录后再参加活动, 将无需再次填写信息.")%>
+						<%=link_to _("登录"), login_path(:return=>request.url), :class=>"fancybox radius3 bc btn28"%>
+    	    </div>
+
+
+          <%=form_for   [:client,Lead.new],:remote=>true, :html=>{:'data-type'=>'json'} do|form|%>
+
+          <!--form_unit begin-->
+          <div class="form_unit">
+            <div class="s_unit">
+              <%=form.label :email, (_('Email')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :email, :class=>"w225"%>
+            </div>
+            <div class="error_msg mgL110 radius2 email_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->
+          
+          <!--form_unit begin-->
+          <div class="form_unit">
+            <div class="s_unit">
+              <%=form.label :name, (_('Full Name')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :name, :class=>"w225"%>
+            </div>
+            <div class="error_msg mgL110 radius2 name_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->
+          
+          <!--form_unit begin-->
+          <div class="form_unit">
+            <div class="s_unit">
+              <%=form.label :mobile, (_('Mobile')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :mobile, :class=>"w225"%>
+            </div>
+            <div class="error_msg mgL110 radius2 mobile_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->
+          
+          <!--form_unit begin-->
+          <div class="form_unit">
+            <div class="s_unit">
+              <%=form.label :company, (_('Company')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :company, :class=>"w225"%>
+            </div>
+            <div class="error_msg mgL110 radius2 company_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->                                
+
+          <!--form_unit begin-->
+          <div class="form_unit">
+            <div class="s_unit">
+              <%=form.label :title, (_('Position')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :title, :class=>"w225"%>
+            </div>
+            <div class="error_msg mgL110 radius2 title_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->   
+                                               
+          <!--form_unit begin-->
+          <div class="form_unit img_code">
+            <div class="s_unit">
+              <%=form.label :verification_code, (_('Verification Code')+content_tag("var","*")).html_safe%>
+              <%=form.text_field :verification_code, :class=>"w110"%>
+              <img src="/proof_image" id="img_valid_code"/>
+            </div>
+            <div class="error_msg mgL110 radius2 verification_code_error" style=""></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end-->
+          <!--form_unit begin-->
+          <div class="mgL135 mgt10">
+          	<input type="submit" class="btn30 radius3 bc w95 a_center" value="<%=_("提交")%>" name=""/>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--form_unit end--> 
+          
+          <%end%>
+
+          <div class="clear">&nbsp;</div> 
+				</div>
+      	<div class="clear">&nbsp;</div>
+      </div>
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--dialog end-->
+</div>
+
+
+<script>
+  $("#new_lead").live("ajax:loading",  toggleLoading)
+        .live("ajax:complete", toggleLoading)
+        .live("ajax:before",function(){
+          $(".error_msg",this).text("");
+        })
+        .live("ajax:success", function(xhr, data, status) {
+          if(data.errors){
+          
+            $("#img_valid_code").attr("src", "/proof_image?"+(new Date()).getTime());
+          
+            for(var key in data.errors){
+              var msg = data.errors[key];
+              $("."+key+"_error", this).html('<div class="error">'+msg.join(",")+'</div>');
+            }
+          }else{
+            
+            lead_form_trigger_callback(data.object.lead);
+            
+            $.fancybox.close();
+            
+            
+          }
+    });
+    
+    $("#img_valid_code").live("click",function(){
+      $(this).attr("src", "/proof_image?"+(new Date()).getTime());
+    });
+
+</script>
+
+

@@ -1,0 +1,49 @@
+  <div class="info_name">
+    发送私信
+  </div>
+
+
+  <div class='row-fluid'>
+
+
+    <div class='span-12'>
+      <table class='table table-bordered'>
+        <tr>
+          <th width="5%">全选</th>
+          <th width="15%">对方UID</th>
+          <th width="">内容</th>
+          <th width="10%">状态</th>
+          <th width="15%"><%=link_to "<i class='icon-plus'></i> 添加".html_safe, new_client_weibo_message_path, :class=>"btn btn-primary"%></th>
+        </tr>
+        <%
+        if @weibo_messages.present?
+        @weibo_messages.each{|weibo_message|
+        %>
+        <tr>
+          <td><label><%=check_box_tag ""%></label></td>
+          <td><%=weibo_message.uid%></td>
+          <td><%=weibo_message.content%></td>
+          <td><%=weibo_message.human_status%></td>
+          <td></td>
+        </tr>
+        <%}%>
+        <tr>
+          <td colspan=5><%=link_to "<i class='icon-remove'></i> 删除".html_safe, "",class:"btn-small btn-danger"%></td>
+        </tr>
+
+
+        <%
+        else
+        %>
+        <tr>
+          <td colspan=5>没有内容</td>
+        </tr>
+        <%
+        end
+        %>
+
+      </table>
+    </div>
+
+
+  </div>

@@ -1,0 +1,122 @@
+<!--main begin-->
+<div class="main">  
+  
+  <!--find people square top begin-->
+	<div class="search_area mg_t10 border_top3 backg_color">
+    <%=render "users_search_form" %>  
+    <%=render "users_tags" %>
+    <div class="clear">&nbsp;</div>	
+  </div>
+  <!--find people square top end-->
+ 
+  <!--find people square content begin-->
+	<div class="event_outer border_top3">
+  	<!--left begin-->
+    <div class="left720">
+    	<!--event begin-->
+      <div class="">
+      	<!--tab title begin-->
+        <div class="e_square_t">
+        	<a href="<%=client_users_path%>"><%=_('用户广场')%></a>
+          <a href="#" class="current"><span><%=_('用户动态')%></span><em>&nbsp;</em></a>
+        </div>
+        <!--tab title end-->
+       
+         <!--tab trends begin-->
+      	<div class=" mg_t10">   
+      	  <%@activities.each do |activity| %>
+      	    <% if !activity.user.blank? && activity.user.status == 1 %>     	
+					    <%=render :partial=>"users_activity", :locals=>{:activity=>activity}%>
+				    <% end %>
+				  <% end %>
+				  <%=will_paginate @activities %>
+        	<div class="clear">&nbsp;</div>
+        </div>
+        <!--tab trends end-->
+	
+        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--event end-->
+      
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left end-->
+  
+  	<!--right begin-->
+      <%=render "users_right"%>
+    <!--right end-->  
+  	<div class="clear">&nbsp;</div>
+	</div>
+  <!--find people square content end-->    
+	<div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<script type="text/javascript">
+ $(function(){
+   
+   // $(".user_active_close_replies").live("click",function(){
+   //   user_active_hide_replies($(this));
+   //   return false;
+   // });
+
+   var user_active_hide_replies = function(obj){
+      var replies = obj.parents(".user_activity_name:first").find(".user_activity_replies:last");
+      var reply_list = replies.find(".activity_replies_list");
+      reply_list.html("");
+      replies.hide();
+    }
+ 
+   var user_active_show_replies = function(obj){
+      var replies = obj.parents(".user_activity_name:first").find(".user_activity_replies:last");
+      var reply_list = replies.find(".activity_replies_list");
+      replies.show();
+      reply_list.html("Loading...");
+      $.get(obj.attr("href"),{ from: "user_activity"},
+        function(data){
+          reply_list.html(data);
+        });
+    }
+
+    
+    $(".user-activity-replies-link").live("click",function(){
+      if($(this).parents(".user_activity_name:first").find(".user_activity_replies:last:visible").size()>0){
+        user_active_hide_replies($(this));
+        return false;
+      }else{
+        user_active_show_replies($(this));
+        return false;
+      }
+    });
+    
+  // for user activity comment post form
+  $("#user_post_activity_comment_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      $("textarea",this).val("");
+      // change comments number
+      var comment_link = $(this).parents(".user_activity_name").find("a.user-activity-replies-link");
+      var comments_number = parseInt(comment_link.attr("data-comments"))+1;
+      comment_link.find("var").text(comments_number);
+      comment_link.attr("data-comments", comments_number);
+      $(this).parents(".user_activity_replies").find(".activity_replies_list").html(data);
+      $.fancybox.close();
+      $("a.fancybox").fancybox();
+    });
+    
+    // FOR activity AJAX DELETE function
+  $(".remote_activity_destroy")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      $(this).parents(".user_activity_name:first").slideUp(function(){
+        $(this).remove();
+      });
+    })
+    .live("ajax:failure",function(xhr,data,status){
+      //TODO: do some thing here when post failure
+    });
+    
+  });
+ </script>

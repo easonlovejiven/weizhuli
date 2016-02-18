@@ -1,0 +1,27 @@
+<h1>支付方法</h1>
+	<table width="100%" height="100%">
+		<tr>
+			<td align="center" height="100%" >
+				<div style="width:300px;padding:30px; text-align:left">
+				<form action="/pay/select_pay_method/<%=@type%>">
+					<table width="90%" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#CCCCCC">
+						<tr>
+						  <td height="30" width="60" align="center" bgcolor="#FFFFFF"><input type="radio" name="method" value="alipay" id="pay_method_alipay"/></td>
+						  <td height="30" align="left" style="padding-left:10px" bgcolor="#FFFFFF"><label for="pay_method_alipay">支付宝</label></td>
+						</tr>
+						<tr>
+						  <td height="30" align="center" bgcolor="#FFFFFF"><input type="radio" name="method" value="wire" id="pay_method_wire"/></td>
+						  <td height="30" align="left" style="padding-left:10px" bgcolor="#FFFFFF"><label for="pay_method_wire">银行转帐</label></td>
+						</tr>
+						<tr>
+						  <td height="30" align="center" bgcolor="#FFFFFF" colspan="2" style="padding:8px"> <button type="submit">下一步</button></td>
+						</tr>
+					</table>
+						
+					</p>
+				</form></div>
+			</td>
+		</tr>
+	</table>
+	
+

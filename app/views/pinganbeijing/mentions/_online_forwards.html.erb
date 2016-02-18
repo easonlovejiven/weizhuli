@@ -1,0 +1,39 @@
+
+<!--
+<div>
+  认证类型：
+  <select id="forwards_user_type" data-weibo-id="<%=@weibo_id%>" data-interaction-type="forwards" style="width:20%">
+    <option value="">全部</option>
+    <option value="verified" <%="selected" if @user_type=="verified"%>>  认证账号</option>
+    <option value="media" <%="selected" if @user_type=="media"%>>  媒体</option>
+    <option value="site" <%="selected" if @user_type=="site"%>>  网站</option>
+  </select>
+  帐号组：
+  <select id="forwards_user_group" data-weibo-id="<%=@weibo_id%>" data-interaction-type="forwards" style="width:20%">
+    <option value="">全部</option>
+    <option value="company" <%="selected" if @user_group=="company"%>>  单位</option>
+    <option value="person" <%="selected" if @user_group=="person"%>>  个人</option>
+    <option value="internal" <%="selected" if @user_group=="internal"%>>  互动引导账号</option>
+  </select>
+
+</div>
+-->
+
+<table class="table">
+  <tr>
+    <th>内容</th>
+    <th>时间</th>
+  </tr>
+
+  <%
+  (@forwards.reposts || []).each{|forward|
+  %>
+  <tr>
+    <td><%=forward.text%></td>
+    <td><%=link_to l(Time.parse(forward.created_at)), "http://weibo.com/#{forward.user.id}/#{WeiboMidUtil.mid_to_str(forward.id.to_s)}", :target=>"_blank"%></td>
+  </tr>
+  <%}%>
+
+</table>
+
+<%=paginate @pager%>  共有<%=@total%>条记录

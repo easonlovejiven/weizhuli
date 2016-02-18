@@ -1,0 +1,39 @@
+class GeneralController < ApplicationController
+
+
+  layout 'frontend'
+
+  def contact
+  end
+  
+  
+  def about_us
+  end
+  
+  
+  def faq
+  end
+  
+  
+  
+  def feedback
+    
+  end
+  
+  def submit_feedback
+    
+  end
+
+
+
+
+  def proof_image
+    proof_image = ProofImage.new
+    session[:proof_image] ||= {}
+    # session[:proof_image][:image]= proof_image.image
+    session[:proof_image][:text]= proof_image.text
+    send_data session[:proof_image][:image], :type => 'image/jpeg', :disposition => 'inline'
+  end
+
+
+end

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+
+</head>
+
+
+<body>
+<%=render "common/header"%>
+<!--main start-->
+
+<div class="bg960_2">
+	<!--title begin-->
+	<div class="title32">
+    <%=yield :show_head%>
+  </div>
+	<!--title end-->
+  <!--detail begin-->
+    <%=yield :show_content%>
+  <!--detail end-->
+
+  <!--industry square 1 begin-->
+  <div class="w_960">
+  	<!--left670 begin-->
+    <div class="left670">
+      <!--industry active begin-->
+        <%=yield%>
+      <!--industry active end-->
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left670 end-->
+    <!--right360 begin-->
+  	<div class="right255">
+  	  <%=yield :industry_right%>
+
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--right360 end-->
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--industry square 1 end-->
+
+
+  <div class="clear">&nbsp;</div>
+</div>
+<%=render :partial=>"/client/business_cards/my_business_card" %>
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+<script type="text/javascript">
+  $(function(){
+    // create a convenient toggleLoading function
+    var toggleLoading = function() { $("#loading").toggle() };
+     $("#new_private_message_link").fancybox({
+        ajax : {
+          dataType : "html"
+        },
+        onComplete : function(){user_choice_autocomplete()}
+      })
+   });
+</script>
+</body>
+</html>
+

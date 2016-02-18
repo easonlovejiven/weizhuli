@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>邀请</title>
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<table width="700" cellpadding="0" cellspacing="0" border="0" align="center" style="color:#000;font-family:Arial;">
+	<tr style="background-color:#eee;">
+  	<td>
+    	<div style="height:10px;line-height:10px;">&nbsp;</div>&nbsp;&nbsp;
+      <a href="http://www.ce180.com/"><img src="http://www.ce180.com/images/ce180_logo.jpg" width="226" height="34" border="0" alt=""/></a>
+    	<div style="height:10px;line-height:10px;">&nbsp;</div>
+    </td>
+  </tr>
+	<tr>
+  	<td>
+    	<table  cellpadding="0" cellspacing="20" border="0" >
+        <tr>
+          <td style="font-size:14px;">
+            <% if !@user.blank? %>
+          	<div style="line-height:30px;">您的朋友<span style="color:#069;line-height:30px;"> <%= @user.displayable_name %> </span>
+          	<% elsif !@from.blank? %>
+          	<div style="line-height:30px;">您的朋友<span style="color:#069;line-height:30px;"> <%= @from %> </span>
+          	<% end %>
+          	给您推荐了活动:<a href="<%= client_event_url(@event) %>" style="color:#069; text-decoration:none;"><%= @event.title %></a></div>
+            <% if !@user.blank? %>
+          	<div style="line-height:30px;">Your friend<span style="color:#069;line-height:30px;"> <%= @user.displayable_name %> </span>
+          	<% elsif !@from.blank? %>
+          	<div style="line-height:30px;">Your friend<span style="color:#069;line-height:30px;"> <%= @from %> </span>
+          	<% end %>
+						recommend you a event:<a href="<%= client_event_url(@event) %>" style="color:#069; text-decoration:none;"><%= @event.title %></a></div>
+            <div style="height:10px;line-height:10px;">&nbsp;</div>
+          	<div style="font-size:14px;line-height:30px;">
+            	<a href="<%= client_event_url(@event) %>" style="display:inline-block;color:#fff;border:1px solid #c30;border-radius:3px;background-color:#f60;height:30px;text-decoration:none;">&nbsp; 查看 / View &nbsp;</a>
+            </div>
+            <div style="height:10px;line-height:10px;">&nbsp;</div>
+            <div style="font-size:14px;line-height:20px;">如有问题，<a href="http://www.ce180.com/general/contact_us" style="color:#069; line-height:20px; text-decoration:none;">请联系我们</a></div>
+
+            <div style="font-size:14px;line-height:20px;">Any questions, feel free to <a href="http://www.ce180.com/general/contact_us" style="color:#069; line-height:20px; text-decoration:none;">contact us</a></div>
+            <div style="font-size:14px;line-height:1.5;">&nbsp;</div>
+            <div style="font-size:14px;line-height:1.5;">Thanks,<br/>The CE180 Team</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div style="line-height:30px;height:30px;border-top:1px solid #333;background-color:#eee; font-size:12px;color:#999;">&nbsp;&nbsp;&copy;2012,CE180</div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+

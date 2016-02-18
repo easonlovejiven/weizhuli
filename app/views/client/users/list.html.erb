@@ -1,0 +1,77 @@
+<%
+  search = params[:search]||{}
+  search[:conditions] ||= {}
+  search[:with] ||= {}
+  search[:key] ||= {}
+%>
+<!--main begin-->
+<div class="main">
+  <!--big bg begin-->
+  <div class="event_outer border_top3">
+  	<!--left begin-->
+    <div class="left720">
+		  <!--list_search_area begin-->
+      <div class="search_results search_people_from back_eee w669">
+      	<%=render "users_list_search_form" %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--list_search_area end-->
+
+      	<!--search term begin-->
+      	<div class="sift_tips pdlr_20">
+      	  <% if !search[:with][:business_card_city_id_eq].blank? || !search[:with][:industry_id].blank? || !search[:key].blank?%>
+          	<strong><%= _('您搜索的条件是') %>:</strong>
+        	<% end %>
+        	<% unless search[:with][:business_card_city_id_eq].blank? %>
+            <var class="s_termbg"><%= _('城市') %></var>
+            <em><%= Location.find_by_id(search[:with][:business_card_city_id_eq]).name %></em>
+          <% end %>
+          <% unless search[:with][:industry_id].blank? %>
+            <var class="s_termbg"><%= _('行业') %></var>
+            <em><%= Industry.find_by_id(search[:with][:industry_id]).name %></em>
+          <% end %>
+          <% unless search[:key].blank? %>
+   					<var class="s_termbg"><%= _('关键字') %></var>
+            <em><%= search[:key] %></em>
+          <% end %>
+        </div>
+        <!--search term end-->
+        <!--sift begin-->
+        <div class="sift pdlr_20">
+        	<div class="sift_bar f_left w_430">
+					  <span><%= _('搜索到') %><var><%= @users.total_entries %></var><%= _('个人') %></span>
+          </div>
+        	<div class="paging f_right">
+        	<!--
+          	<span class="border disable">上一页</span>
+            <var><%= @users.current_page %>/<%= @users.total_pages %></var>
+            <a href="#" class="border next">下一页</a>
+          -->
+          </div>
+        </div>
+      	<!--sift end-->
+
+     	<!--interested individual begin-->
+     	<div class="w705">
+        <%@users.each do |user| %>
+          <%=render :partial=>"/client/common/new_event_user_list",:locals=>{:user=>user}%>
+        <%end%>
+        <%=will_paginate(@users)%>
+     		<div class="clear">&nbsp;</div>
+     	</div>
+     	<!--interested individual end-->
+
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left end-->
+  	<!--right begin-->
+    <%= render "users_right" %>
+    <!--right end-->
+
+  	<div class="clear">&nbsp;</div>
+  </div>
+  <!--big bg end-->
+  <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+

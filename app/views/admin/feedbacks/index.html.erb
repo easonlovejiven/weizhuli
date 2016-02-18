@@ -1,0 +1,76 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_feedbacks_path  %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> <%=_('Feedbacks')%></h2>
+    <!-- search form -->
+    <div id="search">
+      <%=form_for :search, nil, :html=>{:method=>"get"} do |form|%>
+        <%search  = (params[:search] ||= {})%>
+
+        <%=form.label :details_contains , _("内容")%> :
+        <%=form.text_field :details_contains ,:value=>search[:details_contains],:size=>15%>
+
+        <%=form.label :status_eq , _("状态")%> :
+        <%=form.select :status_eq,[['','']].concat(Const.feedback_status.map{|nc|[nc[0],nc[1]]}), {:selected=>search[:status_eq],:class => 'select'} %>
+
+        <%=form.label :comment_contains , _("处理方法")%> :
+        <%=form.text_field :comment_contains ,:value=>search[:comment_contains],:size=>15%>
+
+        <%=form.label :created_at_gt , _("创建时间")%> :
+        <%=form.text_field :created_at_gt ,:value=>search[:created_at_gt],:size=>10%> -
+        <%=form.text_field :created_at_lt ,:value=>search[:created_at_lt],:size=>10%>
+
+        <%=submit_tag "search"%>
+      <%end%>
+    </div>
+    <!-- end search -->
+    <div class="inner">
+      <table class="table">
+        <tr>
+          <th class="first"><%=_('ID')%></th>
+          <th><%=_('内容')%></th>
+          <th><%=_('状态')%></th>
+          <th><%=_('处理方法')%></th>
+          <th><%= t("web-app-theme.created_at", :default => "Created at")  %></th>
+          <th><%=_('来源')%></th>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% @feedbacks.each do |feedback| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td>
+            <%= feedback.id %>
+          </td>
+          <td><%=truncate(feedback.details,:length=>30,:omssion=>"...")%></td>
+          <td>
+            <%= feedback.status_text %>
+          </td>
+          <td>
+            <%= feedback.comment %>
+          </td>
+          <td>
+            <%= l feedback.created_at %>
+          </td>
+          <td>
+            <%= feedback.http_referer %>
+          </td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_feedback_path(feedback) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_feedback_path(feedback) %>
+          </td>
+        </tr>
+        <% end -%>
+      </table>
+			<%= will_paginate @feedbacks %>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

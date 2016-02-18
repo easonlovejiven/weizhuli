@@ -1,0 +1,124 @@
+<%
+    front_event = [
+      {
+          :title =>_('CE创业家培训系列'),
+          :key   => [141,119,429,213,7],
+          :tid   => 311
+      },
+
+      {
+          :title =>_('CE资本市场系列'),
+          :key   => [149,181,217,195,167],
+          :tid   => 323
+      },
+
+      {
+          :title =>_('CE市场营销系列'),
+          :key   => [143,359,199,201,203],
+          :tid   => 341
+      },
+
+      {
+          :title =>_('CE互联网 媒体 电信系列'),
+          :key   => [159,211],
+          :tid   => 331
+      },
+
+      {
+          :title =>_('CE商业法律系列'),
+          :key   => [153,149,361,109,31],
+          :tid   => 335
+      },
+
+      {
+          :title =>_('其它'),
+          :key   => [367,195,259,23],
+          :tid   => 0
+      },
+  ]
+
+%>
+
+<!--Calendar of Events begin-->
+<div class="wrapper">
+	<!--left begin-->
+	<div class="bleft">
+    	<% front_event.in_groups_of(2) do |group| %>
+      	<div class="calendar_events">
+          <% group.each do |e| %>
+          	<dl class="padding_right15">
+          	  <dt>
+            	  <strong><%=e[:title]%></strong>
+              </dt>
+              <% e[:key].each do |id|%>
+              <% event = Event.find(id) %>
+                <% if !event.status.blank? %>
+				          <dd>
+				            <span><%= l(event.start_time.to_date, :format=>:short_month) unless event.start_time.blank? %> <%=event.location_name.gsub("市","") if event.location_name %></span>
+				            <%=link_to client_event_path(event),:title=>event.title do%>
+				              <% if "en" == session[:locale] %>
+				                <%=truncate_u(event.title, :length => 40) unless event.title.blank? %>
+				              <% else %>
+				                <%=truncate_u(event.title, :length => 25) unless event.title.blank? %>
+				              <%end%>
+
+				              <% if event.end_time < Time.now %>
+				                <%if event.end_time.year.to_s == "2011" %>
+                           <em><%=event.end_time.year%></em>
+				                <%else%>
+				                <em></em>
+				                <%end%>
+          					  <% elsif event.recommended %>
+          					    <em class="e_hot">&nbsp;</em>
+          					  <%else%>
+          					    <em class="e_new">&nbsp;</em>
+          					  <%end%>
+				            <%end%>
+				          </dd>
+				        <% end %>
+				      <% end %>
+           </dl>
+        <% end %>
+        <div class="w_100">
+         <% group.reverse.each do |e| %>
+				  <div class="hmore padding_right15">
+				  <% if e[:tid] == 0 %>
+				    <%=link_to _("更多")+" >>",square_client_events_path%>
+				  <% else %>
+				    <%=link_to _("更多")+" >>",client_events_path(:search=>{:with_tag_id=>e[:tid]})%>
+				  <% end %>
+				  </div>
+				 <% end %>
+			  </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+     <% end %>
+   	<div class="clear">&nbsp;</div>
+  </div>
+  <!--left end-->
+	<!--right begin-->
+  <div class="bright">
+  	<div class="more_btn">
+			<%=link_to _("更多商业活动"),square_client_events_path%>
+		</div>
+    <div class="search">
+			<%=form_for :search,:url=>client_events_path , :html=>{:method=>"get"} do |form|%>
+				<% params[:search] ||= {} %>
+				<%= form.text_field :key_words,:placeholder=>_("输入活动关键字搜索"),:class=>'text'%>
+				<%= submit_tag _("搜索") ,:class=>"submit"%> 
+			<% end %> 
+    </div>
+  </div>
+	<!--right end-->
+  <div class="clear">&nbsp;</div>
+</div>
+<!--Calendar of Events end-->
+<script type="text/javascript">
+	$(".calendar_events dl.padding_right15").filter(function(index){
+		return index%2==1;
+		}).css({"padding-right": "0px"});
+	$(".w_100 div.padding_right15").filter(function(index){
+		return index%2==1;
+		}).css({"padding-right": "0px"});
+</script >
+

@@ -1,0 +1,13 @@
+      	<div class="title32">
+					<strong><%=_('我的信息')%>&nbsp;&gt;</strong>
+					<%=link_to _('返回我的首页'),client_root_path%>
+				</div>
+
+      	<!--tip begin-->
+        <div class="tab_nav">
+          <%=link_to _("上传头像") ,upload_avatar_client_user_path, :class=>(action_name=="upload_avatar") ?  "current" : ""%>
+        	<%=link_to _('简历信息'), client_profiles_path , :class=>(["user_profiles","user_profile_companies","user_profile_edus"].include?(controller_name) ?  "current" : "")%>
+          <%=link_to _('修改密码'), modify_password_client_user_path , :class=>(action_name=="modify_password") ?  "current" : ""%>
+        </div>
+        <!--tip end-->
+

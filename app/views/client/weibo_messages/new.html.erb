@@ -1,0 +1,22 @@
+  <div class="info_name">
+    发送私信
+  </div>
+
+  <div class='row-fluid'>
+    <form action='/client/weibo_messages' method="post">
+      <div class='span-12'>
+        <label>UIDS</label>
+        <textarea name='uids' placeholder="每行一个UID,只能给当前帐户的粉丝发送"></textarea>
+
+        <label>消息内容</label>
+        <input name='content' placeholder="例如: 您获赠的优惠码是1234"/>
+
+        <label>图片地址</label>
+        <input name='image_url'placeholder="例如: http://www.baidu.com/logo.jpg">
+
+        <input type='submit' class='btn btn-primary' value='提交'/>
+      </div>
+    </form>
+
+
+  </div>

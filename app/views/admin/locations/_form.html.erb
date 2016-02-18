@@ -1,0 +1,39 @@
+  <div class="group">
+    <%= f.label :parent_id, t("activerecord.attributes.location.parent_id", :default => "Location"), :class => :label %>
+    <%py = Pinyin.new%>
+    <%= f.select :parent_id, Location.includes(:locales).all.map{|loc| [loc.name+" [ "+py.to_pinyin(loc.name)+" ]",loc.id]},{ :include_blank => true }, {:class => 'select_field combobox'} %>
+    <span class="description">Ex: a simple text</span>
+  </div>
+  
+  <div class="group">
+    <%= f.fields_for :locales do |locale_form|%>
+    
+      <%= locale_form.label :locale,  _('请选择语言')%>
+      <%= locale_form.select :locale, [["中文","zh_CN"], ["English","en"]]%>
+
+		  <%= locale_form.label :name, t("activerecord.attributes.location.name", :default => "Name"), :class => :label %>
+		  <%= locale_form.text_field :name, :class => 'text_field' %>
+		  <span class="description">Ex: a simple text</span>
+		  <%= locale_form.error_message_on :name %>
+
+      <%=locale_form.link_to_remove "Remove this language"%>
+    <% end %>
+    <%=f.link_to_add "New Language", :locales%>
+  </div>
+
+  <div class="group">
+  </div>
+
+  <div class="group">
+    <%= f.label :status, t("activerecord.attributes.location.status", :default => "Status"), :class => :label %>
+    <%= f.select :status,[['available',1],['not available',0]],{}, {:class => 'text_field'} %>
+    <span class="description">Ex: a simple text</span>
+  </div>
+        
+<div class="group navform wat-cf">
+  <button class="button" type="submit">
+    <%= image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+  </button>  
+  <span class="text_button_padding"><%= t("web-app-theme.or", :default => "or") %></span>
+  <%= link_to _("Cancel"), admin_locations_path %> 
+</div>

@@ -1,0 +1,71 @@
+          <!--list begin-->
+          <div class="u_list">
+            <div class="u_avatar">
+              <%=link_to user_activities_path(activity.user) do%>
+                <%=user_avatar_tag(activity.user, :thumb,:size=>"40x40",:scaling=>true, :alt=>"")%>
+              <%end%>
+            </div> 
+            <div class="u_name">
+              <strong>
+              	<%=link_to activity.user.displayable_name+":", user_activities_path(activity.user) %>
+              	<span>
+              	<%=render "/client/activities/activity_content", :activity=>activity%>
+              	</span>
+              </strong>
+              
+              <%if activity.forwarding
+              forwarding = activity.forwarding
+              %>
+              <!--trends_return begin-->
+        			<div class="trends_return">
+              	<div class="wards_22 p_left10">◆</div>
+              	<strong><%=link_to forwarding.user.displayable_name, user_activities_path(forwarding.user)%></strong>
+              	<span>
+              	<%=render "/client/activities/activity_content", :activity=>forwarding%>
+              	</span>
+              </div>
+              <!--trends_return end-->
+              <%end%>           
+              <div class="bar_fcc">
+                <strong class="color9"><%= activity_time(activity.created_at.to_datetime)%></strong>
+
+                <h5 data-activity-id="<%=activity.id%>">
+                <%if activity.user_id == current_user.id%><%=link_to _('删除'), client_activity_path(activity), :method => "DELETE",:class=>"remote_activity_destroy",:'data-remote'=>true %> | <%end%><%=link_to raw(_('转发')+"(<var>#{activity.forwarded}</var>)"), new_client_activity_path(:forward=>activity), :"data-forwards"=>activity.forwarded,:class=>"fancybox"%> | <%=link_to (_('评论')+"(<var>#{activity.commented}</var>)").html_safe,client_activity_activity_comments_path(activity),:"data-comments"=>activity.commented, :class=>"activity-replies-link"%>
+                </h5>
+              </div>
+              
+               <!--trends_return begin-->
+        			<div class="trends_return activity_replies" style="display:none">
+              	<div class="wards_22 p_right10">◆</div>
+                <div class="title_colse">
+                	<em><%=_('评论')%></em>
+                	<a href="#" class="close_replies">x</a>
+                </div>
+                <div class="text_area send_botton82">
+                
+                    
+                    <%=form_for [:client,activity,ActivityComment.new(:activity=>activity)],:remote=>true, :"date-type"=>"json", :html=>{:'data-type'=>'html', :id=>"post_activity_comment_form"} do |form|%>
+                      <%=hidden_field_tag :from, @from%>
+                      <%=form.text_area :content, :rows=>5%>
+                      <%=form.error_message_on :content%>
+                      <%=form.hidden_field  :activity_id%>
+                      <%=form.submit _("评论")%>
+                    <%end%>
+                    
+                
+                </div>
+                
+                <div class="activity_replies_list">
+                </div>
+                             
+              </div>
+              <!--trends_return end-->             
+
+
+              
+              <div class="clear">&nbsp;</div>               
+            </div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--list end-->  
+

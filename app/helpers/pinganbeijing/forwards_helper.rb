@@ -1,0 +1,2 @@
+module Pinganbeijing::ForwardsHelper
+end

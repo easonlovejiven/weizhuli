@@ -1,0 +1,110 @@
+
+<%if @email.blank?%>
+  您无权查看此页面！
+<%elsif @intel_gift_apply%>
+
+
+    <div class="row-fluid">
+      <div class='span8 offset2'>
+        <h1>审核礼品使用申请</h1>
+
+      <table class='table table-bordered table-hover post-list'>
+        <tr>
+          <td width=30%>申请人：</td>
+          <td><%=@intel_gift_apply.applyer.login%></td>
+        </tr>
+        <tr>
+          <td><%=_('帐号')%>: </td>
+          <td>
+          <%=@intel_gift_apply.account%>
+          </td>
+        </tr>
+        <tr>
+          <td><%=_('活动')%>: </td>
+          <td>
+          <%=@intel_gift_apply.campaign%>
+          </td>
+        </tr>
+        <tr>
+          <td><%=_('使用时间')%>: </td>
+          <td>
+          <%=@intel_gift_apply.use_time%>
+          </td>
+        </tr>
+        <tr>
+          <td><%=_('费用')%>: </td>
+          <td>
+          <%=@intel_gift_apply.total_price%>
+          </td>
+        </tr>
+        <tr>
+          <td><%=_('使用礼品及数量')%>: </td>
+          <td>
+            <%@intel_gift_apply.items.each{|item|%>
+              <%=item.intel_gift.name%> <%=item.number%> (库存: <%=item.intel_gift.number%>)<br/>
+            <%}%>
+          </td>
+        </tr>
+        <tr>
+          <td><%=_('备注')%></td>
+          <td><%=@intel_gift_apply.apply_description%></td>
+        </tr>
+        <tr>
+          <td><%=_('状态')%></td>
+          <td><%=@intel_gift_apply.human_status%></td>
+        </tr>
+        <tr>
+          <td><%=_('审核备注')%></td>
+          <td><textarea id='approve_description' placeholder="通过或者拒绝的理由"></textarea></td>
+        </tr>
+
+        <%if flash[:success]%>
+        <tr>
+          <td class="alert alert-success">
+          审核操作成功!
+          </td>
+        </tr>
+        <%end%>
+        <tr>
+          <td colspan=2 style="text-align:center">
+            <%=form_for @intel_gift_apply, :url=>intel_gift_apply_approve_path(@intel_gift_apply.approve_code), :html=>{:style=>"display:inline"} do |form|%>
+              <%=hidden_field_tag :approver,@email%>
+              <%=hidden_field_tag :approve_description,"", :id=>"approve_description1"%>
+
+              <%=form.submit "通过",:confirm=>"确定 通过审核 吗", :class=>"btn btn-primary"%>
+            <%end%>
+
+            <%=form_for @intel_gift_apply, :url=>intel_gift_apply_approve_path(@intel_gift_apply.approve_code), :method=>:delete, :html=>{:style=>"display:inline"} do |form|%>
+              <%=hidden_field_tag :approver,@email%>
+              <%=hidden_field_tag :approve_description,"", :id=>"approve_description2"%>
+
+              <%=form.submit "拒绝",:confirm=>"确定 拒绝 此申请吗", :class=>"btn btn-warning"%>
+            <%end%>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    </div>
+
+<%else%>
+    <div>&nbsp;</div>
+    <div class="row-fluid">
+      <div class='span8 offset2'>
+      <div class='alert alert-warning'>您的链接已失效! </div>
+      </div>
+    </div>
+  
+<%end%>
+
+
+<%content_for :tail do%>
+<script type="text/javascript">
+$(function(){
+  $("#approve_description").change(function(){
+    $("#approve_description1").val(this.value);
+    $("#approve_description2").val(this.value);
+  })
+})
+</script>
+<%end%>

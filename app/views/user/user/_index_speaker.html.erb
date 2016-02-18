@@ -1,0 +1,105 @@
+  <!--title begin-->
+      <div class="title32">
+      	<strong>
+         <%=_("公共主页")%>&nbsp;&gt;
+        </strong>
+        <%= link_to _('返回我的首页'), client_root_path%>
+      </div>
+      <!--title end-->
+      <!--follow list begin-->
+      <div class="mg_t10 follow_box">      
+     		<!--visiting card box begin-->
+				<div class="v_card_box backg_color">
+          <%= render :partial => "/client/common/ce_card",:locals=>{:user=>@user} %>
+				<% if current_user && current_user != @user %>	
+        	<!--rightbar_120 begin-->	
+        <ol class="exchange_c140">
+				    <li><%=render :partial=>"common/card_exchange_status",:locals=>{:user=>@user}%></li>
+           <%
+            case Follow::follow_status(current_user, @user)
+            when Follow::STATUS_FOLLOW_EACH_OTHER
+           %>
+             <li class="follw"><span><em><%=_('已关注')%></em>&nbsp;|&nbsp;<%=link_to _('取消'),client_unfollow_path(@user)%></span></li>
+           <%
+             when Follow::STATUS_FOLLOWING
+           %>
+             <li class="follw"><span><em><%=_('已关注')%></em>&nbsp;|&nbsp;<%=link_to _('取消'),client_unfollow_path(@user)%></span></li>
+           <%
+               when Follow::STATUS_CAN_NOT_FOLLOW
+           %>
+           <% else %>
+              <li class="follw"><span><%=link_to _('关注'),client_follow_path(@user)%></span></li> 
+           <%end%>
+              <li class="private"><%=link_to(_('发送私信'), new_client_private_message_path(:private_message=>{:to_user_id=>@user.id,:to_user_name=>@user.displayable_name}),:class=>"msg fancybox") if current_user.id != @user.id%></li>
+        	</ol>
+          <!--rightbar_120 end-->
+          <% elsif !current_user %>
+          	<!--rightbar_120 begin-->	
+            <ol class="exchange_c140">
+				      <li>
+				      <%=render :partial=>"common/card_exchange_status",:locals=>{:user=>@user}%>
+				      </li>
+              <li class="follw"><span><%=link_to _('关注'),login_path(:return => request.url), :class=>"fancybox"%></span></li> 
+              <li class="private"><%=link_to(_('发送私信'), login_path(:return => request.url), :class=>"fancybox")%></li>
+        	  </ol>
+						 <!--rightbar_120 end-->
+	        <% end %>	
+        </div>
+        <!--visiting card box  end-->
+        
+        
+        <!--u_intro begin-->
+       <%if @user.profile && !@user.profile.description.blank? || !@user.profile.achievement.blank?%>
+        <div class="u_intro mg_t10">
+          <%if !@user.profile.description.blank?%>
+          	<h5><%=_('简介')%>:</h5>
+            <div class="intro_content">
+              <%=simple_format(@user.profile.description) %>
+            </div>
+          <%end%>
+        
+        	<div class="clear">&nbsp;</div>  
+        </div>
+        <%end%>
+        <!--u_intro  end--> 
+      	<div class="clear">&nbsp;</div> 
+      </div>
+      <!--follow list end-->
+
+      <!--Friends active begin-->
+      <div class="mg_t10">
+          <!--title 40 begin-->
+          <div class="title40">
+            <div class="title40_left">
+              <div class="title40_right">
+                <strong><%=_('商业动态')%></strong>
+                <%= link_to _('更多'),user_activities_path(@user)%>
+              </div>
+            </div>
+          </div>
+          <!--title 40 end-->
+          <!--content begin-->
+          <div class="u_content c_border">
+						<ul class="t_list">
+						 <% @icon_updates.each do |icon|%>
+						 <li>
+						   <%= link_to client_icon_update_path(icon) do%>
+						      <span><%=icon.title%></span>
+						      <var><%=(icon.date.nil?) ? icon.created_at.to_date : icon.date.to_date%></var>
+						   <%end%>
+						 </li>
+						 <% end %>
+            </ul>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--content end-->
+          <!--bottom 3 begin-->
+          <div class="bottom3">
+            <span><em>&nbsp;</em></span>
+          </div>
+          <!--bottom 3 end-->
+          <div class="clear">&nbsp;</div>
+      </div>
+      <!--Friends active end-->
+      
+

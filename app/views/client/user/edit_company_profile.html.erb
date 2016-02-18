@@ -1,0 +1,192 @@
+<%content_for(:special_js) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+
+  </script>
+
+<%end%>
+
+
+
+
+
+
+
+
+			<!--title begin-->
+      <div class="title32">
+        <%= render "edit_header" %>
+        <%= render "list"%>
+        <!--position box begin-->
+     		<div class="change_info">
+        	
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	    
+        	  </div>
+         	  <%=nested_form_for @user,:url=>client_user_path, :remote=>true, :html=>{:id=>"company_edit_form",:"data-type"=>:json} do |form|%>
+         		  <div class="edit_button">
+								<%if @user.profiles.size==1
+										if @user.profile.locale=="en"
+								%>
+										<button class="add_profile_language_btn btop_compay1" data-language='zh_CN' data-profile-type='company'><%=_('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_compay2" style="display:none"><%=_('删除中文PROFILE')%></button>
+								<%
+										end
+										if @user.profile.locale=="zh_CN"
+								%>
+										<button class="add_profile_language_btn btop_compay1" data-language='en' data-profile-type='company'><%=_('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_compay2" style="display:none"><%=_('删除English PROFILE')%></button>
+								<%  
+										end
+									end
+								%>
+						  </div>	
+            <%=form.fields_for :profiles do |profile_form|%>
+            <div class="profile_fields">
+            <div class="language"><span><%=Const::value(:languages, profile_form.object.locale)%></span></div>
+            <%=profile_form.hidden_field :created_at%>
+            <%=profile_form.fields_for :companies do |profile_company_form|%>
+          	<div class="edit_f">
+							<label><%=_('公司名称')%></label>
+							<%=profile_company_form.text_field :company_name%>
+							<span></span>
+						</div>
+            <div class="edit_f">
+            	<label><%=_('所属行业')%></label>
+            	<%=profile_company_form.select :industry_id,  ["请选择"]+Industry.all.map{|i|[i.name,i.id]}, {},:class=>"w_202"%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('详细地址')%></label>
+              <%=profile_company_form.text_field :address%>
+            </div>
+            <div class="edit_f">
+
+            	<label><%=_('职位')%></label>
+              <%=profile_company_form.text_field :position%>
+            </div>
+            <div class="edit_f text_area100">
+            	<label><%=_('职位描述')%></label>
+            	<%=profile_company_form.text_area :description%>
+            </div>
+            <%end%>
+            <%=profile_form.link_to_add "", :companies, :class=>"add_more_company_btn"%>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+
+            </div>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+            <div class="edit_b">
+            <input value="<%=_('保存')%>" type="submit"/>
+            <span class="notice"></span>
+            </div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--position box end-->
+        
+                                        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+  
+      <div class="clear">&nbsp;</div>
+    
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+	});
+	
+	
+
+  // for activity comment post form
+  $("#basic_info_edit_form, #edu_edit_form, #company_edit_form, #password_edit_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.errors){
+        for(var key in data.errors){
+          var msg = data.errors[key];
+          $("."+key+"_error", this).text(msg.join(","));
+        }
+      }else{
+        $(".notice",this).addClass("success").text("<%=_("更新成功")%>");
+      }
+
+    });
+  
+	
+	//
+	$(".add_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	    // add profile form
+  	  form.find(".add_more_profiles_btn").click();
+	    var type = $(this).attr("data-profile-type");
+	    switch(type){
+	      case  "profile":{
+	        break;
+	      }
+	      case  "edu":{
+	        form.find(".add_more_edu_btn:last").click();
+	        break;
+	      }
+	      case  "company":{
+	        form.find(".add_more_company_btn:last").click();
+	        break;
+	      }
+	      case  "addition":{
+	        form.find(".add_nested_fields:last").click();
+	        break;
+	      }
+	    }
+	    
+	    $("form div[data-locale]:last").attr("data-locale","<%=another_locale(@user.profiles.first.locale)%>");
+      form.find(".profile_fields:last .language>span").text("<%=Const::value(:languages, another_locale(@user.profiles.first.locale).to_s)%>");
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").show();
+	    form.find(".profile_fields:last input[name*=destroy]").val("0");
+	  }
+	  
+    form.find(".profile_fields:last legend").text("English");
+	  // hide ADD  button, show remove button
+	  $(this).hide();
+	  form.find(".remove_profile_language_btn").show();
+	  
+	  
+	  return false;
+	});
+	
+	// 
+	$(".remove_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").hide();
+	    form.find(".profile_fields:last input[name*=destroy]").val("1");
+	  }
+	  
+	  // hide REMOVE  button, show ADD button
+	  $(this).hide();
+	  form.find(".add_profile_language_btn").show();
+	  
+	  return false;
+	});
+	
+	
+	
+	
+	
+	
+</script>
+

@@ -1,0 +1,190 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title></title>
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<div style="width:700px;margin:0px auto;font-size:12px;font-family:Arial,sans-serif;background-color:#fff;">
+	<div style="width:700px;margin:0px;padding:0px;">
+  	<table width="700" cellpadding="0" cellspacing="0" border="0" align="center">
+    	<!--banner begin-->
+      <tr>
+      	<td>
+        	<div style="background-color:#333;">
+						<div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+          	<div style="line-height:39px;height:39px;">&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://www.ce180.com/images/ce180_cnbeta.jpg" width="232" height="39" border="0" alt=""/></div>
+						<div style="height:10px;line-height:10px;font-size:0px;">&nbsp;</div>
+        	</div>						
+        </td>
+      </tr>
+    	<!--banner end-->
+      
+      <!--content begin-->
+      <tr>
+      	<td>
+          <table style="width:700px;" cellpadding="0" cellspacing="10" border="0" align="left">
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+              	<div style="line-height:20px;color:#191919;font-weight:bold;"><%=@displayable_name%>,</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+								<div style="line-height:20px;color:#191919;">感谢您在思易网（<span style="color:#f60;line-height:20px;">www.ce180.com</span>）注册“<span style="font-weight:bold;color:#191919;line-height:20px;"><%=@event.title%></span>”。关于此次活动，如果您有问题，可以联系活动主办方，联系方式、您的付款确认函及活动详情已在下方。</div>                         
+              </td>
+            </tr>
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+								<div style="line-height:20px;color:#191919;">感谢您访问思易网。我们衷心地希望您能愉悦地享受“<span style="font-weight:bold;color:#191919;line-height:20px;"><%=@event.title%></span>”，并欢迎您再次访问思易网，参加其它商业活动及教育培训。</div>                  
+                       
+              </td>
+            </tr>
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+              	<div style="line-height:20px;color:#191919;">祝好</div>       
+              </td>
+            </tr>
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:30px;font-family:Arial">
+              	<div style="line-height:30px;color:#191919;">思易网团队</div>       
+              </td>
+            </tr>              
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:30px;font-family:Arial">
+              	<div style="border-top:2px solid #191919;background-color:#ccc;line-height:30px;">
+                	<div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                	<div style="font-size:14px;line-height:20px;font-size:14px;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;会议简介</div>
+                  <div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                </div>       
+              </td>
+            </tr>                        
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+              	<table cellpadding="0" cellspacing="10" border="0">
+                <tr>
+                  <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial;">
+                    <div style="line-height:24px;color:#f60;font-size:16px;font-weight:bold;"><%=@event.title%></div>
+                    <div style="line-height:20px;color:#191919;font-size:12px;"><%=@event.description%></div>
+                    <div style="line-height:5px;height:5px;">&nbsp;</div>
+                    <div style="line-height:20px;color:#191919;font-size:14px;font-style:Italic;">了解活动更新情况，请访问“<a href="<%=client_event_url(@event)%>" style="color:#069;font-size:14px;font-style:Italic;"><%=client_event_url(@event)%></a>” </div>    
+                  </td>
+                </tr>
+                </table>      
+              </td>
+            </tr>
+                    
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:30px;font-family:Arial">
+              	<div style="border-top:2px solid #191919;background-color:#ccc;line-height:30px;">
+                	<div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                	<div style="font-size:14px;line-height:20px;font-size:14px;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;主办方联系方式</div>
+                  <div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                </div>       
+              </td>
+            </tr>                        
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial">
+              	<table cellpadding="0" cellspacing="10" border="0">
+                <tr>
+                  <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial;">
+                    <div style="line-height:18px;font-size:14px;">
+										<%= @event.contact.html_safe %>
+										</div>
+                  </td>
+                </tr>
+                </table>      
+              </td>
+            </tr>             
+                        
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:30px;font-family:Arial">
+              	<div style="border-top:2px solid #191919;background-color:#ccc;line-height:30px;">
+                	<div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                	<div style="font-size:14px;line-height:20px;font-size:14px;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;付款确认函<span style="line-height:20px;font-size:14px;font-weight:normal;color:#191919;">(请打印出来，并带到会场)</s</div>
+                  <div style="height:5px;line-height:5px;font-size:0px;">&nbsp;</div>
+                </div>       
+              </td>						
+            </tr>
+                                    
+            <tr>
+              <td style="color:#191919;font-size:14px;line-height:20px;font-family:Arial;padding-left:15px;">
+              	<div style="font-size:14px;">
+              	<table width="650" cellpadding="0" cellspacing="0" style="border-top:1px solid #ccc;border-left:1px solid #ccc;">
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;姓名</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=@displayable_name%></td>
+                  </tr>
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;公司</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=@company%></td>
+                  </tr>
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;Email</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><a href="<%=@email%>" style="color:#069;"><%=@email%></a></td>
+                  </tr>
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;订单日期</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=l @order.created_at%></td>
+                  </tr>
+                  
+                  <%@order.items.each{|item|
+                    event = item.event
+                  %>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;活动时间</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=l event.start_time%> - <%=event.end_time.to_date == event.start_time.to_date ? l(event.end_time, :format=>:time_short)  : l(event.end_time) %></td>
+                    </tr>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;主办方</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=event.event_founders.map(&:name).join(' /')%> </td>
+                    </tr>
+                    <% if event.location%>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;地点</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=event.location.name%></td>
+                    </tr>
+                    <% end %>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;详细地址</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=event.locales.map(&:venue)*" / "%></td>
+                    </tr>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;单价</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><span style="color:#ff0000;font-family:Arial;font-weight:bold;line-height:18px;"><%="%.2f" % [item.event_price.early_bird]%></span> <%=item.event_price.currency_symbol%></td>
+                    </tr>
+                    <tr>
+                      <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;数量</th>
+                      <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=item.number%></td>
+                    </tr>
+                  <%}%>
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;总价</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><span style="color:#ff0000;font-family:Arial;font-weight:bold;line-height:18px;"><%="%.2f" % [@order.amount]%></span> <%=@order.currency_symbol%></td>
+                  </tr>
+                  
+                  <tr>
+                    <th style="width:165px;line-height:30px;color:#333;border-right:1px solid #ccc;border-bottom:1px solid #ccc;font-size:14px;font-weight:normal;text-align:left;background:#eee;">&nbsp;&nbsp;&nbsp;&nbsp;发票抬头</th>
+                    <td style="padding:0px 10px;line-height:18px;font-size:14px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;color:#333; background-color:#fff;"><%=@order.invoice? ? @order.invoice_title : "No Invoice"%></td>
+                  </tr>
+              	</table>
+       					</div>
+                <div style="height:30px;line-height:30px;font-size:14px;">注：如不慎删除此封邮件，请登录思易网(www.ce180.com)“我的活动订单”。
+</div>
+              </td>
+            </tr>  
+            <tr>
+              <td style="font-size:14px;line-height:20px;height:60px;">&nbsp;</td>
+            </tr>                                       
+					</table>
+				</td>	
+      </tr>               
+    	<!--footer end-->               
+    </table>
+  	<div style="clear:both;height:1px; font-size:0px; line-height:0px;">&nbsp;</div>
+  </div>
+  <div style="clear:both;height:1px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>

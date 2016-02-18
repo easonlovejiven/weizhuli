@@ -1,0 +1,95 @@
+<div class="content">
+    <!--left begin-->
+    <div class="about_left fl pdLR10">
+			<div class="about_title">
+				<strong><%=_('CE180 帮助')%></strong>
+				<div class="clear">&nbsp;</div>
+			</div>
+			<a name="top">&nbsp;</a>
+      <div class="clear">&nbsp;</div>
+			<!--1 begin-->
+      <div class="help_conment">
+      	<h4>1. 编辑个人信息<a name="edit_info">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何上传/修改头像：点击链接<%=link_to upload_avatar_client_user_url,upload_avatar_client_user_path%>，进入我的信息——上传头像页面。点击橙色的<var>上传图片</var>按钮，再点击弹出框上的<var>Browse（浏览）</var>按钮。选择要上传的文件，点击橙色的<var>上传</var>按钮。弹出框关闭后，对上传图片进行裁切，最后点击橙色的<var>保存</var>按钮。</p>
+      	<p><em>(2)</em>如何编辑个人简历：点击链接<%=link_to client_profiles_url, client_profiles_path%>，进入我的信息——简历信息页面。 点击橙色的<var>查看</var>链接，看到自己的中/英文简历后，再点击页面上的<var>编辑</var>和<var>添加</var>来对自己的简历进行修改。修改完成后点击修改页面底部橙色的<var>保存</var>按钮。</p>
+        <p><em>(3)</em>如何修改账户密码：点击链接<%=link_to modify_password_client_user_url, modify_password_client_user_path%>，进入我的信息——修改密码页面。输入原密码，输入新密码，再确认新密码。最后点击橙色的<var>保存</var>按钮。</p>
+      </div>
+      <!--1 end-->
+      <!--2 begin-->
+      <div class="help_conment">
+      	<h4>2. 搜索与关注人物/行业/公司<a name="sfic">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何搜索并关注人物：点击页面顶部的<var>找人</var>，或直接点击链接<%=link_to  client_users_url, client_users_path%>，进入用户广场页面。在搜索框中输入人名或人名关键字（在左边的下拉框中选择行业可优化搜索结果），点击<var>搜索</var>按钮。 搜索结果出现后，找到所感兴趣的人物，点击右侧的<var>关注</var>按钮。</p>
+      	<p><em>(2)</em>如何搜索并关注行业：点击页面顶部的<var>发现</var>，选择<var>行业</var>，或直接点击链接<%=link_to client_industries_url, client_industries_path%>，进入行业广场页面。点击橙色的<var>关注</var>按钮关注所感兴趣的行业。</p>
+        <p><em>(3)</em>如何搜索并关注公司：点击页面顶部的<var>发现</var>，选择<var>公司</var>，或直接点击链接<%=link_to  list_client_organizations_url, list_client_organizations_path%>，进入公司列表页面。在搜索框中输入关键词（在左边的下拉框中选择行业可优化搜索结果），点击<var>搜索</var>按钮。搜索结果出现后，找到所感兴趣的人物公司，点击右侧橙色的<var>关注</var>按钮。</p>
+      </div>
+      <!--2 end-->
+      <!--3 begin-->
+      <div class="help_conment">
+      	<h4>3. 名片与会面邀请<a name="card">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何编辑名片：点击首页上的<var>编辑我的名片</var>链接，或直接点击链接<%=link_to my_card_client_user_business_cards_url, (I18n.locale==:en)?  my_en_card_client_user_business_cards_path : my_card_client_user_business_cards_path %>，进入名片编辑页面。编辑名片信息后，点击橙色的<var>提交</var>按钮。</p>
+      	<p><em>(2)</em>如何交换名片：找到您所希望交换名片的用户（请参考上文的<a href="#card">如何搜索并关注人物</a>部分），点击橙色的<var>交换名片</var>按钮。当交换名片的请求成功发出后，橙色按钮会变为<var>已发送</var>。当对方接受请求并与您交换名片后，橙色按钮会变成<var>已交换</var>。</p>
+        <p><em>(3)</em>如果接受交换名片请求：点击首页上的<var>交换明片请求</var>链接，或直接点击点击链接<%=link_to  receive_invites_client_user_business_cards_url,receive_invites_client_user_business_cards_path%>, 进入我的名片中心。在我的名片中心，您可以看到所有想要与您交换名片的请求。点击<var>交换名片</var>按钮，接受你所感兴趣的交换名片请求。</p>
+        <p><em>(4)</em>如何管理名片夹：点击主页最上方<var>我的名片夹</var>导航图标，或直接点击<%= link_to exchanged_invites_client_user_business_cards_url, exchanged_invites_client_user_business_cards_path%>，进入您的名片夹。您可以对收到的名片进行分组。点击页面右上方的<var>十字按钮</var><%=image_tag 'add_c.jpg'%>创建分组；点击旁边的<var>工具按钮</var><%=image_tag("card_e.jpg",:alt =>"思易 180 创建分组管理电子名片")%>可管理分组。点击名片下方的<var>分组到</var>按钮可将名片分到您所创建的某特定组；您也可以在点击<var>分组到</var>按钮后选择<var>未分组</var>将该名片脱离原分组。您还可以在名片下面的<var>备注栏</var>里做笔记。如果需要删除某名片的话，只需点击其下方的<var>删除</var>按钮。</p>
+        <p><em>(5)</em>如何发送会面邀请：点击主页最上方<var>我的名片夹</var>导航图标，或直接点击<%= link_to exchanged_invites_client_user_business_cards_url, exchanged_invites_client_user_business_cards_path%>，进入您名片夹中的“已交换的名片”部分。目前，您仅能向那些和您交换过名片的人发送会面邀请。点击名片底部橙色的<var>邀请见面</var>按钮，在弹出框上填好有关见面的<var>地点，时间</var>和<var>详细内容</var>，最后点击橙色的<var>发送</var>按钮。</p>
+        <p><em>(6)</em>如何处理（接受，拒绝或忽略）会面邀请：点击主页上的<var>会面邀请</var>链接， 或直接点击<%=link_to receive_appointment_client_appointments_url,receive_appointment_client_appointments_path%>，进入我的会面邀请页面后，先点击<var>收到的邀请</var>链接，再点击<var>未处理的邀请</var>链接。在看到未处理的邀请后，点击各个邀请右侧的<var>查看详情</var>按钮，查看详情后选择<var>接受，拒绝</var>或<var>忽略</var>；最后点击橙色的<var>确定</var>按钮完成对一个会面邀请的处理。</p>
+      </div>
+      <!--3 end-->
+      <!--4 begin-->
+      <div class="help_conment">
+      	<h4>4. 活动与活动订单<a name="event_order">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何搜索并关注活动：点击页面顶部的<var>发现</var>，选择<var>活动</var>；或直接点击<%=link_to  square_client_events_url, square_client_events_path%>，进入活动广场。在搜索框中输入关键词，点击<var>搜索</var>按钮。搜索结果出现后，点击您所感兴趣的活动的名称或图标，进入单个活动的具体页面。点击右上方橙色<var>去参加</var>按钮下方的<var>关注</var>按钮，成功关注该活动。</p>
+        <p><em>(2)</em>如何参加活动 并线上支付活动费用：点击上文所提到的橙色<var>去参加</var>按钮参加您所感兴趣的活动；您也可以在活动广场页面直接点击某活动图标右下方的橙色<var>参加</var>按钮来参加您所感兴趣的活动（注意：您只能参加那些“正在或将来进行”的活动）。在进入新的页面后，填写好必填的<var>参会人信息</var>。如有多人参加，请点击<var>+添加其他人</var>的链接。填好参会人信息后点击页面底部的橙色<var>提交</var>按钮。进入订单信息确认页后，请在确定您的订单细节之后点击橙色的<var>确认订单</var>按钮，进入选择支付方式的页面。选择您的支付方式，并点击底部橙色的<var>确认支付</var>按钮。请您在新打开的网上银行页面完成付款，付款完成前不要关闭弹出框，并在完成付款后选择点击弹出框上的<var>已完成支付</var>或<var>重新支付</var>按钮。</p>
+        <p><em>(3)</em>如何取消您的活动订单：点击链接<%=link_to client_orders_url, client_orders_path%>，进入我的订单页面，在点击订单状态栏中橙色的<var>取消订单</var>链接。</p>
+        <p><em>(4)</em>如何对活动发表评论：点击您所感兴趣的活动的名称或图标，进入单个活动的具体页面。在右下角的评论框中输入您的评论，最后点击评论框底部的<var>评论</var>按钮。</p>
+      </div>
+      <!--4 end-->                  
+      <!--5 begin-->
+      <div class="help_conment">
+      	<h4>5. 动态<a name="trend">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何发表个人动态：在主页左上方——您头像下方的<var>“聊些我的动态”</var>框中键入您的动态，再点击随内容出现的<var>发布</var>按钮。您也可以直接点击主页正上方的<var>商业伙伴动态</var>导航图标，进入动态更新页面。在<var>“发布我的最新动态……”</var>框中输入您的动态，最后点击右边深色的<var>发布动态</var>按钮。</p>
+        <p><em>(2)</em>如何对动态发表评论：点击主页正上方的<var>商业伙伴动态</var>导航图标，进入动态更新页面。点击想要评论的动态下方的<var>评论</var>链接，在评论框中键入您的评论，最后点击橙色的<var>评论</var>按钮。</p>
+        <p><em>(3)</em>如何删除动态评论：点击动态下方的<var>评论</var>链接，在所有评论出现后，点击您所想要删除的评论旁边的<var>删除</var>链接，并在弹出框中点<var>是</var>。</p>
+        <p><em>(4)</em>如何分享动态：点击动态下方的<var>分享</var>链接。您可以分享所有用户的动态，您的分享将作为您的动态出现。</p>
+      </div>
+      <!--5 end-->        
+      <!--6 begin-->
+      <div class="help_conment">
+      	<h4>6. 私信<a name="messages">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何发送私信：您可以向任意用户发送私信。找到您所需要以私信联系的用户（<a href="#sfic">可参考上文如何搜索并关注用户</a>部分），点击<var>发私信</var>链接。在弹出框的内容栏中输入私信内容，最后点击橙色的<var>发送</var>按钮。您也可以直接点击主页右上方的<var>私信</var>链接，或者直接点击<%=link_to client_private_messages_url,client_private_messages_path%>，进入我的私信页面。点击橙色的<var>发私信</var>按钮，在弹出框中填好收信人和私信内容，最后点击橙色的<var>发送</var>按钮。</p>
+        <p><em>(2)</em>如何回复或删除私信：点击主页右上方的<var>私信</var>链接，或者直接点击<%=link_to client_private_messages_url,client_private_messages_path%>，进入我的私信页面。点击私信下方的<var>回复</var>链接，在<var>“发送私信……”</var>的框中键入回复内容，最后点击橙色的<var>发送</var>按钮。如果需要删除私信的话，只需点击想要删除的私信底部的<var>删除</var>链接，并在弹出框上点<var>是</var>。</p>
+      </div>
+      <!--6 end-->        
+      <!--7 begin-->
+      <div class="help_conment">
+      	<h4>7. 新闻<a name="news">&nbsp;</a></h4>
+      	<p><em>(1)</em>如何定制并查阅新闻：一旦您关注了某个行业（请参考上文的<a href="#sfic">如何搜索并关注行业</a>部分），CE180（思易网）就自动帮助您订阅了此行业的相关新闻。您可以在主页右上方<var>“我的行业新闻”</var>部分查看所订阅的新闻；也可以点击主页最上方的<var>我的行业新闻</var>导航图标，查看您所订阅的所有行业新闻。</p>
+       	<p><em>(2)</em>如何收藏新闻到您的收藏夹：点击新闻标题阅读您所感兴趣的新闻。如想收藏的话，点击新闻页底部的<var>收藏</var>按钮。您可以点击以下链接进入您的收藏夹查看收藏情况：<%=link_to client_favorites_url, client_favorites_path%>. </p>
+        <p><em>(3)</em>如何分享新闻：点击新闻标题阅读您所感兴趣的新闻。如想分享的话，点击新闻页底部的<var>分享</var>按钮。您可以分享任何您所感兴趣的新闻，您的新闻分享将作为您的动态出现。</p>
+      </div>
+      <!--7 end-->   
+      <!--8 begin-->
+      <div class="help_conment">
+      	<h4>8. 邀请商业伙伴<a name="invite_friends">&nbsp;</a></h4>
+      	<p>如何邀请您的朋友与商业伙伴加入<a href="/">www.ce180.com</a>: 点击主页左下方的橙色按钮<%=image_tag("help_invitcn.jpg",:alt => "思易 思易网 ce180 邀请商业伙伴")%>。在弹出框的输入栏中键入您朋友的邮箱地址（最多可邀请5人；多个邮箱地址请用“；”分隔），最后点击橙色的<var>发送邀请</var>按钮。您的朋友将收到来自CE180（思易网）的邀请邮件。</p>
+      </div>
+      <!--8 end--> 
+      <div class="click_top"><a href="#top">回到顶部</a></div>     
+			<div class="clear">&nbsp;</div>
+    </div>
+    <!--left end-->
+    <!--right begin-->
+    <div class="about_right fr pdLR10 mgt10">
+    	<div class="about_tab">
+        <a href="#edit_info">编辑个人信息</a>
+	    	<!--<a href="#sfic">搜索与关注人物/行业/公司</a>-->
+        <!--<a href="#card">名片与会面邀请</a>-->
+	    	<a href="#event_order">活动与活动订单</a>
+        <!--<a href="#trend">动态</a>-->
+	    	<a href="#messages">私信</a>
+        <!--<a href="#news">新闻</a>-->
+	    	<a href="#invite_friends">邀请商业伙伴</a>                        
+			</div>  
+    </div>
+    <!--right end-->
+    <div class="clear">&nbsp;</div>    
+</div>

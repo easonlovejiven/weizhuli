@@ -1,0 +1,81 @@
+    <% business_card = user.business_card.reload %>
+    <!--card begin-->
+      <div class="w345">
+      	<div class="triangle_up17"><var>&nbsp;</var></div>
+      	<div class="name_card w345">
+       		<dl>
+          	<dt>
+            	  <%if user.is_industry_icon? %>
+              	    <strong class="c_leader"><%=business_card.display_name%> <%=image_tag "c_leader.gif" ,:title=>_("行业领袖")%></strong>
+                <%else%>
+                   <strong><%=business_card.display_name%></strong>
+                <%end%>
+            	
+            	 <% if !business_card.title.blank? %>
+                 <var><%=business_card.title%></var>
+               <% end %>
+            </dt>
+					 <% if !business_card.company.blank? %>
+          	 <dd class="company_icon"><%=business_card.company%></dd>
+					 <% end %>
+					<%
+	          country_name = business_card && business_card.country ? business_card.country.name : ''
+	          province_name = business_card && business_card.province ? business_card.province.name : ''
+	          city_name = business_card && business_card.city ? business_card.city.name : ''
+	         %>
+					 <dd class="address_icon">
+	           <% if locale.to_s == 'zh_CN'%>
+	             <%=country_name%>
+	             <%=province_name%>
+	             <%=business_card.province.is_a?(City) ? "" : city_name %>
+	             <%=business_card.address.sub(country_name,"").sub(province_name,"").sub(city_name,"").sub("市","") if business_card.address %>
+	         <%else%>
+	             <%=business_card.address.sub(country_name,"").sub(province_name,"").sub(city_name+',',"").sub(city_name,"").sub(country_name.downcase,"").sub(province_name.downcase,"").sub(city_name.downcase,"") if business_card.address %>
+	             <%=province_name%>
+	             <%=country_name%>
+	         <%end%>
+					 </dd>
+          </dl>
+          <% user_avatar = user_avatar_tag(user,:thumb,:size=>"40x40",:scaling=>true) %>
+          <div class="card_bar">
+          <%if !current_user.blank? && current_user.id != user.id%>
+          	 <%=render :partial=>"common/card_exchange_status",:locals=>{:user=>user}%>
+             <%=link_to new_client_private_message_path(:private_message=>{:to_user_id=>user.id,:to_user_name=>user.displayable_name}),:class=>"msg fancybox" do%>
+             <%=_('发私信')%>
+             <%end%>
+            <%end%>
+          	
+          	 <%
+            
+            if !current_user.blank?
+            
+                case Follow::follow_status(current_user, user)
+                when Follow::STATUS_FOLLOW_EACH_OTHER
+            %>
+               <%=link_to _("取消关注"),client_unfollow_path(user) %>
+            <%
+              when Follow::STATUS_FOLLOWING
+            %>
+               <%=link_to _("取消关注"),client_unfollow_path(user) %>
+               
+            <%
+               when Follow::STATUS_CAN_NOT_FOLLOW
+            %>
+            <% else %>
+               <%=link_to client_follow_path(user),:class=>"ce_follow_user",:data_unfollow_url=>client_unfollow_path(user),:data_follow_url=>client_follow_path(user) do %>
+              	<%=image_tag("add_8.jpg")%><%=_("关注")%>
+            	<%end%>
+            <%
+              end #end case
+            
+            else
+            %>
+            
+            <%
+            end # end if 
+            
+            %>
+          </div> 
+        </div>
+      </div>
+      <!--card end-->

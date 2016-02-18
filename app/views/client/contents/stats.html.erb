@@ -1,0 +1,198 @@
+  <div class="info_name">
+    <%
+      @title = "内容库统计"
+    %>
+    <%=@title%>
+  </div>
+
+
+
+  <ul class="nav nav-tabs">
+    <li class="<%= @mod == nil ? "active" : ""%>"><a href="/client/contents">内容列表</a></li>
+    <li class="<%= @mod == "stats" ? "active" : ""%>"><a href="/client/contents?mod=stats">统计</a></li>
+  </ul>
+
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong><%=@title%>列表</strong>
+      <div class="btn-right">
+        <div class="btn-group">
+          <%=link_to("<", client_contents_path(mod:"stats",point:@prev_quarter), class:"btn")%>
+          <a href="#" class="btn">  <%=@year%>年第 <%=@quarter%> 季度 </a>
+          <%=link_to(">", client_contents_path(mod:"stats",point:@next_quarter), class:"btn") if @next_quarter%>
+        </div>
+        
+      </div>
+    </div>
+    <div class="list">
+      <table class="table table-bordered table-hover post-list">
+        <tr>
+          <th> 类别 </th>
+          <%@months.each{|d|%>
+          <th><%=d.strftime("%Y %m")%></th>
+          <%}%>
+          <th>KPI</th>
+          <th>完成度</th>
+        </tr>
+        <%
+
+        kpis = {
+          "Objective"=> {
+            "Awareness"=>700*0.45,
+            "Education"=>700*0.3,
+            "Demand Gen"=>700*0.25,
+          },
+
+          "Message"=>{
+            "Tablets"=>700*0.4,
+            "2in1+DT"=>700*0.4,
+            "Branding"=>700*0.1,
+            "Wearable"=>700*0.05,
+            "Others"=>700*0.05
+          },
+
+          "TA (Group)"=>{
+            "Savvy adopter"=>700*0.35,
+            "Trendy mobile"=>700*0.35,
+            "Mobile achiever"=>700*0.3,
+          },
+
+          "Format"=>{
+            "Infographic/pic"=>590,
+            "Gif/video/audio"=>35,
+            "Quiz/survey"=>40,
+            "game"=>35,
+          },
+
+          "Resource"=>{
+            "HQ"=>nil,
+            "Original"=>nil,
+            "Other GEO"=>nil,
+            "PRC digital"=>nil,
+            "Organization"=>nil,
+            "KOL"=>nil,
+          },
+
+          "Topics"=>{
+            "Tech innovation"=>nil,
+            "Entertainment"=>nil,
+            "Social hot topics"=>nil,
+            "Gaming"=>nil,
+            "Intel news"=>nil,
+            "Sports"=>nil,
+          }
+        }
+        %>
+
+
+
+
+        <%
+        MIntelContent::DIMENSIONS.each{|dimension, categories|
+
+        col = MIntelContent::DIMENSION_COLUMNS[dimension]
+        stats = Hash[@contents.group_by{|a| a[col].blank? ? nil : a[col]}.map {|k,v|
+          month_stats = Hash[v.group_by{|a| a.post_at.strftime("%Y %m")}.map{|month,items|
+            [month,items.size]
+          }]
+          [k, month_stats]
+        }]
+
+        kpi = kpis[dimension]
+        total_kpi = kpi.sum{|k,v| v || 0}
+        %>
+
+        <tr>
+          <td colspan=6 class="category-title" style="background-color:#eee"><%=dimension%></td>
+        </tr>
+
+        <%categories.each{|category|
+
+          month_stats = stats[category] || {}
+        %>
+
+        <tr>
+          <td><%=category%></td>
+          <%
+          finished = 0
+          @months.each{|d|
+            month = d.strftime("%Y %m")
+            finished += (month_stats[month]||0)
+          %>
+          <td><%=month_stats[month]%></td>
+          <%
+          }
+
+
+          %>
+          <td><%=kpi[category].to_i%></td>
+          <td class="finished"><%=finished%> 
+            <% if kpi[category] && kpi[category] > 0%>
+            (<%=(finished*100/kpi[category]).to_i%>%)
+            <%end%>
+          </td>
+        </tr>
+
+        <%}%>
+
+        <!--
+        <tr>
+          <td>(无类别)</td>
+          <%
+          finished = 0
+          month_stats = stats[nil] || {}
+          @months.each{|d|
+            month = d.strftime("%Y %m")
+            finished += (month_stats[month]||0)
+          %>
+          <td><%=month_stats[month]%></td>
+          <%
+          }
+          %>
+
+          <td></td>
+          <td></td>
+        </tr>
+      -->
+
+
+        <tr>
+          <td>合计：</td>
+          <%@months.each{|d|%>
+          <th><%=stats.sum{|k,v| v[d.strftime("%Y %m")] || 0}%></th>
+          <%}%>
+          <td><%=total_kpi.to_i%></td>
+          <td>
+            <%=@contents.size%> 
+            <%if total_kpi > 0%>
+              (<%=(@contents.size * 100 / total_kpi).to_i%>%)
+            <%end%>
+          </td>
+        </tr>
+
+
+        <%
+        }
+        %>
+
+
+        
+      </table>
+    </div>
+  </div>
+
+
+
+<%content_for :tail do%>
+
+<script type="text/javascript">
+$(function(){
+})
+
+
+</script>
+
+
+
+<%end%>

@@ -1,0 +1,44 @@
+<!--header begin-->
+<div class="header_outer">
+  <div class="header">
+    <div class="logo fl">
+      <a href="<%=root_path%>">&nbsp;</a>
+      <span class="<%=I18n.locale%>_beta">&nbsp;</span>
+    </div>
+    <div class="status_bar fr w540">
+			<div class="language w540">
+			<% if current_user %>
+			  <%=_("您好")%>,
+			  <%=current_user.displayable_name if !current_user.displayable_name.blank? %>
+			  <a href="<%=logout_path%>" class=''><%=_('退出')%></a>
+			<% end %>
+				<%=link_to '中文', language_path("zh_CN"),:class=>(I18n.locale==:zh_CN ? "focus " : " " )%>|
+				<%=link_to "English", language_path("en"),:class=>(I18n.locale==:en ? "focus " : " " )%>
+			</div>
+			<div class="header_unit w540">
+				<div class="buy_now fr">
+					<% near_event = Event.upcoming.available.order("start_time").first %>
+					<%if @buying_event%>
+					  <%= link_to " ", pay_client_event_path(@buying_event),:title=>_("Buy Now!"), :id=>"__header_buy_now", :class=>"buy_now_#{I18n.locale}"%>
+					<%else%>
+					  <%= link_to " ", "#buy_now_pane",:title=>_("Buy Now!"), :id=>"header_buy_now", :class=>"buy_now_#{I18n.locale}"%>
+					<%end%>
+				</div>
+				<div class="login_register pdt10 fr">
+					<% if current_user.blank? %>
+							<a href="<%=login_path(:return => request.url)%>" class='radius3 bc'><%=_('登录')%></a>
+							<a href="<%=signin_path%>" class='radius3 bc'><var>&nbsp;</var><%=_('注册')%></a>
+					<% end %>
+					<div class="clear">&nbsp;</div>
+				</div>
+
+				<div class="clear">&nbsp;</div>
+			</div>
+			<div class="clear">&nbsp;</div>
+		</div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+<!--header end-->
+

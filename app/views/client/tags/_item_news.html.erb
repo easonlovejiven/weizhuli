@@ -1,0 +1,23 @@
+					<!--list begin-->
+					<div class="search_list">
+						<h5>
+						<%=link_to  client_news_path(news) do%>
+						<img src="images/news_pic01.jpg" width="75" height="75" alt="">
+						<%end%>
+						</h5>
+						<div class="search_text">
+							<div class="search_title">
+								<h3><%=link_to news.title, client_news_path(news)%></h3>
+								<div class="search_bar">
+								<%=link_to client_news_path(news) do %>
+								<em><%=news.shared%></em><%=_("人关注")%>
+								<%end%>
+								</div>
+							</div>
+							<h4><%=_('新闻')%></h4>
+							<p><%=truncate(strip_tags(news.content),:length=>30)%></p>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<!--list end-->
+

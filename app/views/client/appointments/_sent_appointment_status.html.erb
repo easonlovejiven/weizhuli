@@ -1,0 +1,31 @@
+<div class="invite_m_status">
+               <span class="appointment_detail"><em><%=_("查看详情")%></em></span>
+                <%
+                  case Appointment::sent_appointment_status(appointment.status)
+                  when Appointment::NO_SENT_STATUS
+                %>
+                  <span><%=_("未发送")%></span>
+                <%
+                   when Appointment::HAS_SENT_STATUS
+                %>
+                  <% if action_name == "receive_appointment"%>
+                    <span><%=_("已收到")%></span>
+                  <%else%>
+                    <span><%=_("已发送")%></span>
+                  <%end%>
+                <%
+                   when Appointment::HAS_CONFIRM_STATUS
+                %>
+                 <span><%=_("已确认")%></span>
+                  <%
+                   when Appointment::HAS_REJECT_SATUS
+                %>
+                 <span><%=_("已拒绝")%></span>
+                <% 
+                   when Appointment::HAS_IGNORE_STATUS
+                %>
+                  <span><%=_("已忽略")%></span>
+               <%end %>
+               
+                <strong><%=appointment.created_at.to_date if appointment.created_at%></strong>
+              </div>

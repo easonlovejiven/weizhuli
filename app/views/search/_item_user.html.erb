@@ -1,0 +1,60 @@
+
+        <div class="follow_list">
+          <div class="user_ava60">
+						<%=link_to user_path(user) do%>
+						<%=user_avatar_tag(user, :thumb, :size=>"60x60", :scaling=>true)%>
+						<%end%>
+          </div> 
+          <!--follow_485 begin-->           
+          <div class="follow_485">
+            <!--center user_c begin-->
+            <div class="follow_c">
+              <div class="user_name"><%=link_to user.displayable_name, user_path(user)%></div>
+              <%if user.business_card%>
+              <div class="user_position"><span><%=user.business_card.title%></span><span><%=user.business_card.industry_name if user.business_card%></span><span><%=user.business_card.company if user.business_card%></span></div>
+              <%end%>
+              <div class="bar_ffs">
+                <%=link_to user_followings_path(user) do %>关注<em><%=user.microblog_info.followings%></em><%end%>&nbsp;|&nbsp;
+                <%=link_to user_followers_path(user) do %>粉丝<em><%=user.microblog_info.followers%></em><%end%> &nbsp;|&nbsp;
+                <%=link_to user_activities_path(user) do %>分享<em><%=user.microblog_info.blogs%></em><%end%>
+              </div> 
+              <%
+                activity = user.activities.last
+                if activity && activity.created_at
+              %>
+                <div class="description">
+                 <%=render :partial => "/client/activities/activity_content", :locals => {:activity=>activity} %>
+                </div>
+                <div class="bar_fcc"><strong><%= activity_time(user.activities.last.created_at.to_datetime)%></strong></div>
+                <%end%>
+            </div>
+            <!--center user_c end-->
+            <!--right bar 120 begin-->
+            <ol class="rightbar_120">   
+		<li><%=render :partial=>"common/card_exchange_status",:locals=>{:user=>user}%></li>
+
+	      <li><%=link_to(_('发私信'), new_client_private_message_path(:private_message=>{:to_user_id=>user.id,:to_user_name=>user.displayable_name}),:class=>"msg fancybox") if current_user.id != user.id%></li>
+              <li>
+		    <%
+			case Follow::follow_status(current_user, user)
+			when Follow::STATUS_FOLLOW_EACH_OTHER
+		    %>
+			<span class="ce_followed_user"><%=_('已关注')%></span>
+		    <%
+		      when Follow::STATUS_FOLLOWING
+		    %>
+		       <span class="ce_followed_user"><%=_('已关注')%></span>
+		     <%
+          when Follow::STATUS_CAN_NOT_FOLLOW
+          %>
+        <% else %>
+			    <%=link_to _('关注'),client_follow_path(user),{:class=>"ce_follow_user",:data_follow_url=>client_follow_path(user),:data_unfollow_url=>client_unfollow_path(user),:data_from_dashboard=>"yes"}%>
+		    <%end%>	      
+	      </li>
+            </ol>
+            <!--right bar 120 end-->
+            <div class="clear">&nbsp;</div>
+          </div>            
+          <!--follow_485 end-->
+          <div class="clear">&nbsp;</div>
+        </div>

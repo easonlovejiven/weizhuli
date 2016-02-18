@@ -1,0 +1,42 @@
+      <% business_card = user.business_card.reload %>
+        <!--v_card begin-->
+              <div class="v_card">
+              	<div class="name_title">
+                	<div class="b_bg3">
+                	  <%=user_avatar_tag(user,:thumb)%>
+                	  <%if user.is_industry_icon? %>
+                  	    <strong class="c_leader"><%=business_card.display_name%><%=image_tag "c_leader.gif" ,:title=>_("行业领袖")%></strong>
+                    <%else%>
+                       <strong><%=business_card.display_name%></strong>
+                    <%end%>
+                    <% if !business_card.title.blank? %>
+                        <em><%=business_card.title%></em>
+                    <%end%>
+                  </div>
+                </div>          
+                <!--v_card center begin-->
+                <ul class="v_content"> 
+				         <% if !business_card.company.blank? %>
+							      <li class="company_icon"><%=business_card.company %></li>
+							    <% end %>
+                   <%
+	                  country_name = business_card && business_card.country ? business_card.country.name : ''
+	                  province_name = business_card && business_card.province ? business_card.province.name : ''
+	                  city_name = business_card && business_card.city ? business_card.city.name : ''
+	                 %>
+					          <li class="address_icon">
+	                   <% if locale.to_s == 'zh_CN'%>
+	                   <%=country_name%>
+	                   <%=province_name%>
+	                   <%=business_card.province.is_a?(City) ? "" : city_name %>
+	                   <%=business_card.address.sub(country_name,"").sub(province_name,"").sub(city_name,"").sub("市","") if business_card.address %>
+	               <%else%>
+	                   <%=business_card.address.sub(country_name,"").sub(province_name,"").sub(city_name+',',"").sub(city_name,"").sub(country_name.downcase,"").sub(province_name.downcase,"").sub(city_name.downcase,"") if business_card.address %>
+	                   <%=province_name%>
+	                   <%=country_name%>
+	               <%end%>
+	                   </li> 
+                 </ul>  
+                <!--v_card center end-->
+              </div>	
+              <!--v_card end-->

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>选择照片</title>
+<meta content="选择照片" name="Keywords">
+<meta content="选择照片" name="Description">
+<%=stylesheet_link_tag "basic"%>
+
+  <%=javascript_include_tag "jquery-1.7.2.min.js"%>
+  <%#= javascript_include_tag 'swfobject',"uploadify/jquery.uploadify.v2.1.0.min" %>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+  var after_upload = null;
+    $(function(){
+      /*
+      $("#uploader").uploadify($.extend(website.uploadify_global_config,{
+        onOpen : function(){
+          
+        },
+        onComplete: function(event,queueId,fileObj,response,data){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").enable();
+          
+          try{
+            if(after_upload!=null) after_upload($.parseJSON(response));
+          }catch(e){}
+          window.close();
+
+        },
+        onError : function(event,queueId,fileObj,errorObj){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+
+          $("#new_image_upload_form button[name=submit]").enable();
+        },
+        
+        onProgress : function(event,queueId,fileObj,response,data){
+
+          console.log("========== starting upload ===========");
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").disable();
+
+        
+        },
+        onAllComplete : function(){
+        
+        }
+      }));
+
+      $("#new_image_upload_form button").click(function(){
+
+        var alt = $("#new_image_upload_form input[name=alt]").val();
+        var desc = $("#new_image_upload_form textarea[name=description]").val();
+        post_data = {
+
+          alt : alt,
+          desc : desc
+        }
+        $('#uploader').uploadifySettings('scriptData', post_data)
+
+        $('#uploader').uploadifyUpload();
+      });
+      */
+
+
+      $("#new_upload").submit(function(){
+      
+        // validation
+        if($("#upload_attachment").val().toLowerCase().match(/jpeg|jpg|gif|png$/)){
+          
+        }else{
+          alert("文件格式不正确");
+          return false;
+        }
+      
+        // show loading
+        $("#loading_mask").show();
+        
+        
+      });
+
+    });
+
+
+
+  </script>
+
+
+
+
+</head>
+<body>
+<!--begin-->
+<div class="upload_Claim">
+		<div class="prompt">
+    	<strong>上传图片要求：</strong>
+      <p>图片尺寸在800*1600像素以上(文件大小约1M以上)，</p>
+			<p>单张容量不要超过10M</p>
+    </div>
+    <%form_for @upload,:html => { :multipart => true }  do |f| -%>
+    <%=f.hidden_field :tmp_content_type%>
+    <%=f.hidden_field :type, :value=>"Image"%>
+    <%=hidden_field_tag :callback,params[:callback]%>
+    <div class="uploadbtn">
+    	<%=f.file_field :attachment%>
+      <div class="clear mgT10">&nbsp;</div>
+      <input type="submit" class="submit" name="" value="确 定"/>
+    </div>
+    <%end -%>
+</div>
+<div id='loading_mask'>
+  正在上传, 根据您上传文件大小以及网速, 可能需要几十秒或者几分钟, 请您耐心等待...<br/>
+  <%=image_tag "loading.gif"%>
+</div>
+<!--end-->
+</body>
+</html>
+
+

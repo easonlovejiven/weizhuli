@@ -1,0 +1,65 @@
+			<!--title begin-->
+      <div class="title32">
+      	<strong><%=user_salutation(@user)+_('的活动中心')%>&nbsp;&gt;</strong>
+      	<%= link_to _('返回%s的首页')%[user_salutation(@user)], user_path(@user)%>
+      </div>
+      <!--title end-->    
+      <!--follow list begin-->
+      <div class="mg_t10 follow_box">
+      	<!--tip begin-->
+      	<%
+      	  if @user.is_industry_icon? 
+      	     @user_size = @industry_icon_attend_event_ids.size.to_s 
+      	  else
+      	     @user_size = @events.size.to_s
+      	  end
+      	%>
+        <div class="tab_nav tab">
+        	<%= link_to ("<span>"+_('参加 ')+" "+"("+@user_size+")"+"</span>").html_safe, {:controller => "user/events", :action => "index", :type => "join"},:class=>"current" %>
+        	
+          <%= link_to ("<span>"+_('关注  ')+" "+"("+@event_follows.count.to_s+")"+"</span>").html_safe, {:controller => "user/events", :action => "index", :type => "focus"} %>
+        </div>
+        <!--tip end-->
+        <!--event list box begin-->
+     		<div class="tab_show event_list_follow" style="display: block;">
+     		   <% if @user.is_industry_icon? %>
+       		    <%@industry_icon_attend_event_ids.each do |e|%>
+                <%if !e.blank? && e.eid %>
+                  <%event = Event.find(e.eid)%>
+                  <%=render :partial=>"/client/events/event_item",:locals=>{:event=>event}%>
+                 <%end%>
+              <%end%>        
+            <%else%>
+              <%@events.each do |event|%>
+               <%=render :partial=>"/client/events/event_item",:locals=>{:event=>event}%>     
+              <% end %>         
+            <%end%>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--pagination begin-->
+			<%= will_paginate @events %>      
+      <!--pagination begin-->
+        <!--event list box end-->
+        <!--event list box begin-->
+     		<div class="tab_show event_list_follow" style="display: none;">
+           <% @event_follows.each do |event|%>
+            <%=render :partial=>"/client/events/event_item",:locals=>{:event=>event}%>     
+          <% end %> 
+					<div class="clear">&nbsp;</div>
+        </div>
+        <!--event list box end-->        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+			<!--pagination begin-->
+			<%= will_paginate @event_follows %>      
+      <!--pagination begin-->    
+      <div class="clear">&nbsp;</div>
+
+    
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+	});
+</script>

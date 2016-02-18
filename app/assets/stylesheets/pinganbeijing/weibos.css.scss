@@ -1,0 +1,76 @@
+// Place all the styles related to the pinganbeijing/weibos controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.weibo-list{
+
+  .search{
+    
+  }
+
+
+  .source_weibo{
+    
+    .item{
+      border:solid 1px #ccc;
+    }
+
+  }
+
+  .main_weibo{
+    border-bottom: solid 1px #ccc;
+
+    .detail-box{
+      width:600px;
+    }
+  }
+
+  .item{
+    display:table;
+    margin:20px;
+    padding:10px;
+    .avatar{
+      width:70px;
+      float:left;
+    }
+
+    .detail{
+      float:left;
+
+      .name{
+        margin:0 0 5px;
+      }
+      .content{
+        line-height: 24px;
+      }
+
+      .infos{
+        margin-top:5px;
+        clear:both;
+        color: #14a0cd;
+        a,a:hover,a:visited{
+          color: #14a0cd;
+        }
+
+        .time{
+          float:left;
+          margin-right:20px;
+        }
+        .source{
+          float:left;
+
+        }
+        .forwards{
+          float:right;
+        }
+        .comments{
+          float:right;
+          margin-left:20px;
+        }
+      }
+    }
+  }
+  .paginate{
+    text-align: center;
+  }
+}

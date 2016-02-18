@@ -1,0 +1,160 @@
+<!--main begin-->
+<div class="main">
+
+  <!--find people square top begin-->
+	<div class="search_area mg_t10 border_top3 backg_color">
+    <%=render "users_search_form" %>
+    <%=render "users_tags" %>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--find people square top end-->
+
+  <!--find people square content begin-->
+	<div class="event_outer border_top3">
+  	<!--left begin-->
+    <div class="left720">
+    	<!--event begin-->
+      <div class="">
+      	<!--tab title begin-->
+        <div class="e_square_t">
+        	<a href="#" class="current"><%=_('用户广场')%></a>
+          <a href="<%=activities_client_users_path%>"><span><%=_('用户动态')%></span><em>&nbsp;</em></a>
+        </div>
+        <!--tab title end-->
+
+        <!--tab event begin-->
+      	<div class="mg_t10">
+				<% if @industry_tags.size > 0%>
+					<!--hot industry begin-->
+          <div class="pd_15 w690 general_type">
+            <div class="square_t">
+              <a class="current"><%=_('热门行业')%></a>
+            </div>
+            <div class="pd_t10">
+              <% @industry_tags[0,6].each_with_index do |industry_tag, index| %>
+                <!--unit begin-->
+                <div class="mg_t10 mg_b10 hot_general">
+                	<div class="border backe7 hot_gtitle">
+                  	<strong><%=industry_tag.name if industry_tag.name %></strong>
+                    <%=link_to _('更多'),list_client_users_path(:search=>{:with=>{:industry_id=>industry_tag.id}}), :target=>"_blank"%>
+                  </div>
+                  <ul class="member_unit">
+                  	<% @hot_industry_users[index][0,4].each do |user| %>
+                    	<li>
+                    	  <%=link_to user_avatar_tag(user,:medium,:size=>"60x60", :scaling=>true), user_path(user),:class=>"member_avatar", :target=>"_blank"%>
+                    	  <%=link_to user.business_card.display_name,user_path(user),:class=>"member_name", :target=>"_blank"%>
+                      </li>
+                    <%end%>
+                  </ul>
+                </div>
+              	<!--unit end-->
+              <% end %>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="clear">&nbsp;</div>
+          </div>
+					<!--hot industry end-->
+
+          <!--Other more industry begin-->
+					<div class="pd_15 w690">
+          	<div class="border backe7 hot_gtitle">
+            	<strong><%=_('其它更多行业')%></strong>
+            </div>
+            <div class="other_itag pd_t10">
+           	 <% @industry_tags[4,30].each_with_index do |industry_tag, index| %>
+           	  <%=link_to industry_tag.name,list_client_users_path(:search=>{:with=>{:industry_id=>industry_tag.id}}), :target=>"_blank"%>
+           	 <% end %>
+           	</div>
+          	<div class="clear">&nbsp;</div>
+          </div>
+					<!--Other more industry end-->
+        <% end %>
+				<% if @hot_events.size > 0%>
+					<!--elite event begin-->
+          <div class="pd_15 w690 general_type mg_t10">
+            <div class="square_t">
+              <a class="current"><%=_('活动精英')%></a>
+            </div>
+            <div class="elite_unit pd_t10 pad_b15 w690">
+          		<%@hot_events[0,6].each do |event| %>
+              		<!--elite unit begin-->
+                	<div class="view_unit mg_t10">
+                  	<!--BASIC BEGIN-->
+                  	<div class="unit_basic">
+                  		<div class="unit_basic_pic">
+                      	<%= link_to ce_image(event, :image_banner, :wall, {:size=>"190x85", :alt=>event.title,:scaling=>true}), client_event_path(event), :target=>"_blank" %>
+                      </div>
+                      <div class="e_title"><%= link_to event.title, client_event_path(event), :target=>"_blank" %></div>
+                      <div class="clear">&nbsp;</div>
+                    </div>
+                    <!--BASIC END-->
+                    <%
+                      speakers =  event.multipal_speakers[0,5]
+                      like_peoples =  event.event_follows.profile_complished.actived
+                    %>
+                      <!--speakers_name BEGIN-->
+								      <div class="u_avatar35 b_top elite_avatar">
+								      <% speakers[0,5].each do | speaker | %>
+                         <% unless speaker.person.blank? %>
+                           <% path = speaker.person.user_id ? user_path(speaker.person.user_id) : '#speakers' %>
+                           <%= link_to ce_image(speaker.person, :image, :thumb, :size=>"35x35",:scaling=>true), path, :target=>"_blank"%>
+                         <%end%>
+                      <% end %>
+                       <% like_peoples[0,5].each do | user | %>
+                          <%=link_to user_avatar_tag(user,:thumb,:size=>"35x35", :scaling=>true), user_path(user), :target=>"_blank"%>
+                      <% end %>
+                      </div>
+                      <!--speakers_name END-->
+								    <div class="like_bar_tip backg_cf like_center">
+                    	<span><var><%= event.event_follows.profile_complished.actived.size %></var><%=_('人感兴趣')%></span>
+								      <span class="mar_left"><var><%= event.views %></var><%= _('次浏览') %></span>
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                  </div>
+                  <!--elite unit end-->
+               <% end %>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="clear">&nbsp;</div>
+          </div>
+					<!--elite event end-->
+         <% end %>
+         <div class="clear">&nbsp;</div>
+        </div>
+        <!--tab event end-->
+
+
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--event end-->
+
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left end-->
+
+  	<!--right begin-->
+      <%=render "users_right"%>
+    <!--right end-->
+  	<div class="clear">&nbsp;</div>
+	</div>
+  <!--find people square content end-->
+	<div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<script type="text/javascript">
+     $(function(){
+         var speed = 1000;
+         $(".elite_unit").masonry({
+            singleMode: true,
+            columnWidth: 230,
+            itemSelector: '.view_unit',
+            animate: true,
+            animationOptions: {
+                duration: speed,
+                queue: false
+            }
+
+        });
+     });
+</script>
+

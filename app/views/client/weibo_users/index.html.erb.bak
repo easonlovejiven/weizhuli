@@ -1,0 +1,206 @@
+  <div class="info_name">
+    粉丝管理
+  </div>
+
+  <div class="row-fluid search-box radius-3">
+    <div class='title'>
+      <strong>筛选条件</strong>
+    </div>
+    <div class="span12 conditions">
+      <%=form_for :search, :url=>client_weibo_users_path,:method=>:get do |form|
+        %>
+      <div class="tags">
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="is_friends" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">是</button>
+              <button type="button" class="btn btn-mini" data-val="no">否</button>
+          </div>
+          <lable>我的关注</lable>
+          <%=form.hidden_field :is_friends, :value=>@q[:is_friends]%>
+          <%#=form.select :is_friends,options_for_select([["是否我的关注",""],["是",'yes'],["否","no"]],@q[:is_friends])%>
+          
+        </span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="is_verified" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">是</button>
+              <button type="button" class="btn btn-mini" data-val="no">否</button>
+          </div>
+          <lable>认证用户</lable>
+          <%=form.hidden_field :is_verified, :value=>@q[:is_verified]%>
+          <%#=form.select :is_verified,options_for_select([["是否认证用户",""],["是",'yes'],["否","no"]],@q[:is_verified])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_interactions" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>互动</lable>
+          <%=form.hidden_field :has_interactions, :value=>@q[:has_interactions]%>
+          <%#=form.select :has_interactions,options_for_select([["是否互动过",""],["是",'yes'],["否","no"]],@q[:has_interactions])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_avatar" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>头像</lable>
+          <%=form.hidden_field :has_avatar, :value=>@q[:has_avatar]%>
+          <%#=form.select :has_avatar,options_for_select([["是否有头像",""],["是",'yes'],["否","no"]],@q[:has_avatar])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="gender" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="1">男</button>
+              <button type="button" class="btn btn-mini" data-val="0">女</button>
+          </div>
+          <lable>性别</lable>
+          <%=form.hidden_field :gender, :value=>@q[:gender]%>
+          <%#=form.select :gender,options_for_select([["性别",""],["男",'1'],["女","0"]],@q[:gender])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_email" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>邮箱</lable>
+          <%=form.hidden_field :has_email, :value=>@q[:has_email]%>
+          <%#=form.select :has_email,options_for_select([["是否有邮箱",""],["是",'yes'],["否","no"]],@q[:has_email])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_phone" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>手机</lable>
+          <%=form.hidden_field :has_phone, :value=>@q[:has_phone]%>
+          <%#=form.select :has_phone,options_for_select([["是否有手机",""],["是",'yes'],["否","no"]],@q[:has_phone])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_address" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>地址</lable>
+          <%=form.hidden_field :has_address, :value=>@q[:has_address]%>
+          <%#=form.select :has_address,options_for_select([["是否有地址",""],["是",'yes'],["否","no"]],@q[:has_address])%></span>
+        <span>
+          <div class="btn-group" data-toggle="buttons-checkbox" data-bind="has_company" data-single-select>
+              <button type="button" class="btn btn-mini" data-val="yes">有</button>
+              <button type="button" class="btn btn-mini" data-val="no">无</button>
+          </div>
+          <lable>公司信息</lable>
+          <%=form.hidden_field :has_company, :value=>@q[:has_company]%>
+          <%#=form.select :has_company,options_for_select([["是否有公司信息",""],["是",'yes'],["否","no"]],@q[:has_company])%></span>
+      </div>
+
+      <div class="tags select-unit">
+        <span><lable>关注数量: </lable><%=form.select :friends_range,options_for_select([["不限",""],"0-10",'11-50','51-100','101-200','201-500','501-1000','1000+'],@q[:friends_range])%></span>
+        <span><lable>粉丝数量: </lable><%=form.select :followers_range,options_for_select([["不限",""],'0-500','501-1000','1001-5000','5001-10000','10001-500000','500001-1000000','1000001-5000000','5000001-10000000','10000000+'],@q[:followers_range])%></span>
+        <span><lable>微博数量: </lable><%=form.select :weibo_number,options_for_select([["不限",""],'0-100','101-500','501-1000','1001-5000','5001-10000','10001+'],@q[:weibo_number])%></span>
+        <span><lable>注册时间: </lable><%=form.select :reg_time,options_for_select([["不限",""],'0-100','101-200','201-300','301-400','401-500','501-600','601-700','701-800','801-900','901-1000','1000+'],@q[:reg_time])%></span>
+        <br/>
+        <span><lable>地域选择: </lable>
+          <%=form.select :province,options_for_select([["不限",""]],@q[:province])%>
+          <%=form.select :city,options_for_select([["不限",""]],@q[:city])%>
+        </span>
+        <span><lable>分组筛选: </lable><%=form.select :in_group,options_for_select([["不限",""],["是",'yes'],["否","no"]],@q[:in_group])%>
+        </span>
+      </div>
+      <div class="search-btn"><%=form.submit "搜索", :class=>"btn btn-info"%></div>
+      <%end%>
+    </div>
+  </div>
+
+  <div class="row-fluid fans-list-box radius-3">
+		<div class='title'>
+			<strong>共有<span>465789</span>粉丝</strong>
+			<div class="btn-right">
+				<button type="button" class="btn btn-default">添加备注</button>
+				<button type="button" class="btn btn-default">添加分组</button>
+			</div>
+		</div>
+    <div class="span12 list">
+      <table class='table table-hover'>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>关注</th>
+          <th>粉丝</th>
+          <th>微博</th>
+          <th>互动次数</th>
+          <th></th>
+          <th></th>
+        </tr>
+      <%@rels.each{|rel|
+        user = rel.by_user
+        next if user.nil?
+        mu = MUser.find(user.uid)
+        remark = @remarks[user.uid]
+      %>
+        <tr class="basic-row">
+          <td></td>
+          <td>
+            <a href="http://weibo.com/<%=user.uid%>" target="_blank">
+              <%=image_tag user.profile_image_url,:size=>"30x30", style:"float:left"%>
+            </a>
+              <span>
+            <a href="http://weibo.com/<%=user.uid%>" target="_blank">
+                <%=user.screen_name%>
+            </a>
+                <%if user.verified_type == 0%>
+                  <i class="icon approve"></i>
+                <%elsif (1..10).include?(user.verified_type)%>
+                  <i class="icon approve_co"></i>
+                <%end%>
+
+                <br/>
+                <%if user.gender == 1%>
+                  <i class="icon male"></i>
+                  男
+                <%end%>
+                <%if user.gender == 0%>
+                  <i class="icon famale"></i>
+                  女
+                <%end%>
+                <%=user.location%>
+              </span>
+          </td>
+          <td><%=user.friends_count%></td>
+          <td><%=user.followers_count%></td>
+          <td><%=user.statuses_count%></td>
+          <td>互动9次</td>
+          <td>选择分组</td>
+          <td><a>详情</a></td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="9">
+            <div class="span6">
+              <ul>
+                <li><span>认证: </span><%=user.human_verified_type*","%></li>
+                <li><span>标签: </span><%=(mu.try(:tags)||[])*","%></li>
+                <li><span>注册时间: </span><%=user.created_at.strftime("%Y-%m-%d %H:%M")%></li>
+                <li><span>年龄: </span>暂无数据</li>
+                <li><span>学校: </span>暂无数据</li>
+                <li><span>简介: </span><%=mu.description%></li>
+              </ul>
+            </div>
+            <div class="span6">
+              <ul data-object="weibo_user_remark" data-url="/client/weibo_user_remarks/<%=user.uid%>">
+                <li><span>备注: </span><span class="rest-in-place" data-attribute="demo"><%= remark.try(:demo) || '暂无数据'%></span></li>
+                <li><span>真实姓名: </span><span class="rest-in-place" data-attribute="real_name"><%= remark.try(:real_name) || '暂无数据'%></span></li>
+                <li><span>电话: </span><span class="rest-in-place" data-attribute="phone"><%= remark.try(:phone) || '暂无数据'%></span></li>
+                <li><span>公司: </span><span class="rest-in-place" data-attribute="company"><%= remark.try(:company) || '暂无数据'%></span></li>
+                <li><span>邮箱: </span><span class="rest-in-place" data-attribute="email"><%= remark.try(:email) || '暂无数据'%></span></li>
+                <li><labspanel>地址: </span><span class="rest-in-place" data-attribute="address"><%= remark.try(:address) || '暂无数据'%></span></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <%}%>
+      </table>
+    </div>
+
+    <div>
+      <%=will_paginate @rels,:renderer => WillPaginate::ActionView::BootstrapLinkRenderer%>
+    </div>
+  </div>
+
+<%content_for :tail do%>
+  <script>
+    init_city_selects($("#search_province"),$("#search_city"),'<%=@q[:province]%>','<%=@q[:city]%>');
+
+  </script>
+<%end%>

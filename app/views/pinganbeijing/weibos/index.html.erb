@@ -1,0 +1,168 @@
+  <div class="info_name">
+    微博列表
+  </div>
+
+
+<!--
+
+  <ul class="nav nav-tabs">
+    <li class="<%= @account_type.blank? ? "active" : ""%>"><a href="/pinganbeijing/weibos">平安北京</a></li>
+    <li class="<%= @account_type == "1" ? "active" : ""%>"><a href="<%=pinganbeijing_weibos_path(account_type:"1",accounts_sort:@accounts_sort)%>">分局和总队</a></li>
+    <li class="<%= @account_type == "2" ? "active" : ""%>"><a href="<%=pinganbeijing_weibos_path(account_type:"2",accounts_sort:@accounts_sort)%>">派出所/警务站</a></li>
+    <li class="<%= @account_type == "3" ? "active" : ""%>"><a href="<%=pinganbeijing_weibos_path(account_type:"3",accounts_sort:@accounts_sort)%>">民警个人</a></li>
+    <li class="<%= @account_type == "4" ? "active" : ""%>"><a href="<%=pinganbeijing_weibos_path(account_type:"4",accounts_sort:@accounts_sort)%>">社区民警</a></li>
+  </ul>
+-->
+
+
+
+  <div class="row-fluid fans-list-box radius-3" >
+    <div class='span12'>
+    <div class='title'>
+      <strong>微博列表</strong>
+    </div>
+
+      <div class="row-fluid weibo-list">
+        <div class='span12'>
+            <div class="item search">
+              <%=form_for :search, :url=>pinganbeijing_weibos_path,:method=>:get do |form|%>
+              <%=hidden_field_tag :account_type,@account_type.to_s%>
+                <span>
+                  <lable>时间范围：</lable>
+                  <%=form.text_field :start_time, :size=>"10",:placeholder=>"起始",:style=>"width:100px;",:value=>@q[:start_time]%> -
+                  <%=form.text_field :end_time, :size=>"10",:placeholder=>"结束",:style=>"width:100px;",:value=>@q[:end_time]%>
+                </span>
+                <span>
+                  <lable>关键字：</lable>
+                  <%=form.text_field  :keyword,:value=>@q[:keyword]%>
+                </span>
+                <div class="search-btn"><%=form.submit "搜索", :class=>"btn btn-info"%></div>
+
+              <%end%>
+
+            </div>
+          <%@weibos.each{|weibo|
+            mweibo = MWeiboContent.find weibo.weibo_id
+            user = WeiboAccount.find_by_uid(weibo.uid)
+          %>
+            <div class='item  main_weibo'>
+
+              <div class="avatar">
+                <span style='width:40px'><%=image_tag user.profile_image_url,:size=>"60x60", style:""%></span>
+              </div>
+              <div class="detail detail-box">
+                <div class='name'>
+                  <a href="http://weibo.com/<%=user.uid%>" target="_blank">
+                    <b><%=user.screen_name%></b>
+                  </a>
+                  <%if user.verified_type == 0%>
+                    <i class="icon approve"></i>
+                  <%elsif (1..10).include?(user.verified_type)%>
+                    <i class="icon approve_co"></i>
+                  <%end%> 
+                </div>
+                <div class='content'>
+                  <%=mweibo.text%>
+                </div>
+                <div class='image'>
+                  <%if mweibo.thumbnail_pic%>
+                    <%=link_to image_tag(mweibo.thumbnail_pic), mweibo.original_pic, :target=>"_blank"%>
+                  <%end%>
+                </div>
+
+
+                <% 
+                  retweeted_status = mweibo.retweeted_status
+                  if retweeted_status
+
+                    ruser = retweeted_status.user 
+                    ruser ||= WeiboAccount.new
+
+                %>
+                <div class="source_weibo">
+                  <div class='item'>
+
+                    <div class="detail">
+                      <div class='name'>
+                        <a href="http://weibo.com/<%=user.uid%>" target="_blank">
+                          <b><%=ruser.screen_name%></b>
+                        </a>
+                        <%if ruser.verified_type == 0%>
+                          <i class="icon approve"></i>
+                        <%elsif (1..10).include?(ruser.verified_type)%>
+                          <i class="icon approve_co"></i>
+                        <%end%> 
+                      </div>
+                      <div class='content'>
+                        <%=retweeted_status.text%>
+                      </div>
+                      <div class='image'>
+                        <%if retweeted_status['thumbnail_pic']%>
+                          <%=link_to image_tag(retweeted_status.thumbnail_pic), retweeted_status.original_pic, :target=>"_blank"%>
+                        <%end%>
+                      </div>
+                      <div class="infos">
+                        <span class="time">
+                          <%=l Time.parse(retweeted_status.created_at)%>
+                        </span>
+                        <span class="source">
+                          来自 <%=retweeted_status.source.try(:html_safe)%>
+                        </span>
+                        <span class="comments">
+                          评论(<%=retweeted_status.reposts_count%>)
+                        </span>
+                        <span class="forwards">
+                          转发(<%=retweeted_status.comments_count%>)
+                        </span>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <%end%>
+
+
+                <div class="infos">
+                  <span class="time">
+                    <%=link_to l(weibo.post_at), "http://weibo.com/#{weibo.uid}/#{WeiboMidUtil.mid_to_str(weibo.weibo_id.to_s)}", :target=>"_blank"%>
+                  </span>
+                  <span class="source">
+                    来自 <%=mweibo.source.html_safe%>
+                  </span>
+                  <span class="comments">
+                    评论(<%=weibo.reposts_count%>)
+                  </span>
+                  <span class="forwards">
+                    转发(<%=weibo.comments_count%>)
+                  </span>
+
+                </div>
+              </div>
+            </div>
+          <%}%>
+
+        </div>
+        <div class="row-fluid">
+          <div class="span8 paginate">
+            <%=will_paginate @weibos%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<%content_for :tail do%>
+
+<script type="text/javascript">
+$("#search_start_time").datepicker({  
+           dateFormat: 'yy-mm-dd'
+         });
+$("#search_end_time").datepicker({  
+           dateFormat: 'yy-mm-dd'
+         });
+</script>
+
+<%end%>

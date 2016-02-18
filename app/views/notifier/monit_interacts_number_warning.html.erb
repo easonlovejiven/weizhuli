@@ -1,0 +1,30 @@
+<strong><%=@screen_name%> 监控帐号互动量提醒 :</strong> <br/>
+
+<table cellpadding="2" cellspacing="0" border="1" bordercolor="#ccc">
+  <tr>
+    <th width='8%'>转发/评论</th>
+    <th>微博内容</th>
+    <th width='10%'>链接</th>
+    <th width='10%'>时间</th>
+  </tr>
+<%@weibos.each{|weibo|
+  mw = MWeiboContent.find(weibo.weibo_id)
+  %>
+
+  <tr>
+    <td><%=weibo.reposts_count%>/<%=weibo.comments_count%></td>
+    <td><%=mw.text%></td>
+    <td><%=link_to weibo.url,weibo.url%></td>
+    <td><%=l weibo.post_at%></td>
+  </tr>
+<%}%>
+
+
+</table>
+
+
+
+
+
+
+

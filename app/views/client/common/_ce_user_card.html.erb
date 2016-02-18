@@ -1,0 +1,52 @@
+ <% business_card = user.business_card.reload %>
+<!--User rec begin-->
+        <div class="reco_user">
+        	<dl>
+          	<dt>
+            	<%=link_to user_avatar_tag(user,:thumb,:size=>"40x40", :scaling=>true), user_path(user)%>
+            </dt>
+      	    <dd class="reco_name"><%=link_to business_card.display_name,user_path(user)%></dd>
+            <dd><%=business_card.title if business_card %></dd>
+            <dd><%=business_card.company if business_card %></dd>
+            <dd class="add_follow">
+			 <%=render :partial=>"common/card_exchange_status",:locals=>{:user=>user}%>
+            <%
+            
+            if !current_user.blank?
+            
+                case Follow::follow_status(current_user, user)
+                when Follow::STATUS_FOLLOW_EACH_OTHER
+            %>
+                <a class="ce_followed_user"><%=_('已关注')%></a>
+            <%
+              when Follow::STATUS_FOLLOWING
+            %>
+               <a class="ce_followed_user"><%=_('已关注')%></a>
+            <%
+               when Follow::STATUS_CAN_NOT_FOLLOW
+            %>
+            <% else %>
+                <%=link_to _('关注'),client_follow_path(user),:class=>"ce_status_follow_user" %>
+            <%
+              end #end case
+            
+            else
+            %>
+            
+            <%
+            end # end if 
+            
+            %>
+			</dd>
+            <div class="clear">&nbsp;</div>
+          </dl>
+           <!--change_card begin-->
+            <div class="change_card">
+            	<div class="down_f60"><var>◆</var></div>
+              <%= render "/client/common/ce_card" , :user=>user%>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--change_card end-->
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--User rec end-->

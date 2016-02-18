@@ -1,0 +1,28 @@
+<div class="layout bgf">
+  <!--step begin-->
+  <div class="nav-step fix step3">
+    <span class="st1">选择方式</span>
+    <span>DIY/上传照片填写</span>
+    <span  class="current">核对信息，提交订单</span>
+  </div>
+  <!--step end-->
+  <div class="pay-title mgt10 fix">
+    <h4>您本次需要支付的金额为：<var><%=@order.amount%> </var>元</h4>
+  </div>  
+  <div class="mgt10 payment">
+    <h5>点击选择支付方式：</h5>
+    <ol>
+      <li>
+        <%=link_to @pay_url, :target=>"_blank",:class=>"btncode" do%>
+          <label class="alpay"><span>支付宝</span></label>
+        <%end%>
+      </li>    
+    </ol> 
+    <div class="back-page">
+      <a href="/client/orders">返回我的订单</a>
+    </div> 
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+

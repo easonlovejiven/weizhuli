@@ -1,0 +1,64 @@
+<!--begin-->
+  <div class="popup_login backg_cf">
+  	<div class="title38 bc_botttom1">
+    	<strong><%=_('登录思易网')%></strong>
+  	</div>
+  	<!--left -->
+    <div class="mgt20 fl w420 mgb10">
+    	<% form_for @user_session do |f| %>
+    	   <%=hidden_field_tag :return,params[:return]%>
+      	 <!--form_unit begin-->
+              <div class="form_unit">
+              	<div class="s_unit">
+                  <label><%=_('邮箱')%> <var>*</var></label>
+                   <%=f.text_field :login,:class =>"w225 required" %>
+                </div>
+                 <div class="error_msg mgL110 radius2"> 
+                  <%=f.error_message_on :login%>
+		              <%=f.error_message_on :base%>
+		              </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+          <!--form_unit end-->
+        
+				 <!--form_unit begin-->
+              <div class="form_unit">
+              	<div class="s_unit">
+                  <label><%=_('密码')%> <var>*</var></label>
+                  <%=f.password_field :password,:class =>"w225 required" %>
+                </div>
+                <div class="error_msg mgL110 radius2">
+                  <%=f.error_message_on :password %>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+        <!--form_unit end-->        
+				
+				<div class="form_unit">
+					<div class="s_unit">
+						<label>&nbsp;</label>
+						<%= f.check_box :check,{:checked=>true,:class=>"checkbox"},"", "user_session" %>
+						<b><%=_('Remember Me')%></b>
+						<%=link_to _('忘记密码?'),'/password_resets/new',:class=>"c069"%>
+					</div>
+				</div>
+      	<div class="mgt10 mgL135">
+           <%= f.submit _('登录'),:class=>"btn28 radius3 bc"%>
+        </div>       
+      	<div class="clear">&nbsp;</div>
+    	<% end %>
+    </div>
+    <!--left-->
+    <!--right-->
+  	<div class="fr another_login">
+			<div class="other_login_title"><%=_('还没有CE180账号?')%></div>
+			<div>
+				<%= link_to _('立刻加入'),signin_path, :class=>"btn30 radius3 bc " %>
+				<div class="clear">&nbsp;</div>
+			</div>      	
+			<div class="clear">&nbsp;</div>
+    </div>
+    <!--right-->
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--end-->

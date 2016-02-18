@@ -1,0 +1,24 @@
+      <div style="float:left">
+        <p  border = "1"  ><a >导出列属性：</a><font color="red" size="4">uid 转发主号次数 评论主号次数 互动</font></p>
+      </div>
+
+      <div class="span4" style="clear:both;float:left">
+        输入 UIDs 列表(每行一个):
+        <%=text_area_tag "params[uids]", "", :rows=>"10"%>
+      </div>
+
+      <div class="span4">
+         输入互动主号UID(<br/>
+         例如：(<ul>
+         <li>金融街：192453194</li>
+         <li>商用频道：2295615873</li>
+         <li>中国： 2637370927</li>
+         <li>超级本：2637370247</li>
+        )</ul>
+
+        <%=text_field_tag "params[uid]",""%>
+      
+        <br/>
+      </div>
+
+

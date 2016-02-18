@@ -1,0 +1,29 @@
+  <!--title begin-->
+  <div class="title32">
+  	<strong><%=user_salutation(@user)+_('的粉丝')%>&nbsp;&gt;</strong>
+  	<%= link_to _('返回%s的首页')%[user_salutation(@user)], user_path(@user)%>
+  </div>
+  <!--title end-->    
+  <!--follow list begin-->
+  <div class="mg_t10 follow_box">
+  	<!--tip begin-->
+    <div class="tips_40">
+    	<strong><%=_('共有')%><%=@user.microblog_info.followers%><%=_(' 人关注了')%></strong>
+    </div>
+    <!--tip end-->
+    <%@followers.each{|follow|
+       user = follow.user
+    %>
+   <%if !user.business_card.blank? %>
+      <%=render :partial=>"/client/common/common_user_list",:locals=>{:user=>user}%>
+   <%end%>
+    <% } %>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--follow list end-->
+	<!--pagination begin-->
+	
+	<%=will_paginate @followers%>
+     
+  <!--pagination end-->    
+

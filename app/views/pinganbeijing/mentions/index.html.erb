@@ -1,0 +1,17 @@
+  <div class="info_name">
+    @列表
+  <% if @mention_uid.present?%>
+  -- 来自 <%=@mention_user.screen_name%>
+  <a href="javascript:history.back()" class="back-btn"><<返回</a>
+  <%end%>
+
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="<%= @mod == "interactions" ? "active" : ""%>"><a href="/pinganbeijing/mentions?mod=interactions">微博互动</a></li>
+    <li class="<%= @mod == nil ? "active" : ""%>"><a href="/pinganbeijing/mentions">直发</a></li>
+    <li class="<%= @mod == "over_forward" ? "active" : ""%>"><a href="/pinganbeijing/mentions?mod=over_forward">转发@</a></li>
+  </ul>
+
+
+  <%=render @mod || "direct"%>

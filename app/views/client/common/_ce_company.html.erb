@@ -1,0 +1,22 @@
+ <!--Companies rec begin-->
+          <div class="reco_comp">
+            <h4><%= link_to truncate_u(company.name, :length=>30),client_organization_path(company)%></h4>
+            <dl>
+              <dt><%=link_to  ce_image(company,:image,:thumb, :size=>"60x60", :scaling=>true),client_organization_path(company)%></dt>
+              <%if company.followed>0%>
+              <dd><%=link_to client_organizations_user_list_path(company) do%><span><%=company.followed%><%=" "+_('关注 ')%></span><%end%></dd>
+              <%end%>
+              <dd class="add_follow">
+                 <%
+                    if current_user && current_user.organization_followed?(company)
+                 %>
+                   <span class="ce_followed_company"><%=_('已关注')%></span>  
+                 <%else%>
+                    <%= link_to _('关注'), client_organizations_follow_path(company),:class=>"follow" %>
+                 <%end%>
+              </dd>
+            </dl>
+            <div class="clear">&nbsp;</div>
+          </div>
+ <!--Companies rec end-->                               
+

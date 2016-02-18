@@ -1,0 +1,59 @@
+<div class="pay_main">
+	<!--step begin-->
+  <div class="step step_3">
+  	<span class="">1.<%=_("订单信息确认")%></span>
+    <span class="">2.<%=_("选择支付方式")%></span>
+    <span class="current">3.<%=_("完成支付")%></span>
+  </div>
+  <!--step end-->
+  <!--pay notice begin-->
+  <div class="payment_last">
+		<div class="pay_notice">
+    	<img src="/images/payment_fail.jpg" alt="" />
+    	<span><%=_("支付失败")%></span>
+    </div>
+    <div class="pay_gauge">
+    	<a href="#"><%=link_to _("查看付款订单"), client_order_path(@order)%></a>
+    	<%if !@order.full_paied?%>
+    	  <%=link_to  _("继续未完支付"), new_pay_path(:order_id=>@order.id)%>
+    	<%end%>
+    </div>	
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--pay notice end-->
+  <!--industry event box begin-->
+  <div class="mg_t30">
+  	<!--left455 begin-->
+    <div class="left455">
+      <!--ce_event e_t40  begin-->
+      <div class="e_t40"><strong><%=_("行业相关活动")%></strong></div>
+      <!--ce_event e_t40  end-->       
+    	<ul  class="ev_120">
+    	  <%@related_events.each{|event|%>
+      	<li><%=link_to ce_image(event,:image,:medium, :size=>"120x120", :scaling=>true)%></li>
+    	  <%}%>
+    	</ul>    
+    	<div class="clear">&nbsp;</div>
+    </div>
+  	<!--left455 end-->
+    
+    <!--rightt455 begin-->
+    <div class="right455">
+      <!--ce_event e_t40  begin-->
+      <div class="e_t40"><strong><%=_("该公司其他活动")%></strong></div>
+      <!--ce_event e_t40  end-->       
+    	<ul class="ev_120">
+    	  <%@other_events.each{|event|%>
+      	<li><%=link_to ce_image(event,:image,:medium, :size=>"120x120", :scaling=>true)%></li>
+    	  <%}%>
+    	</ul>      
+    	<div class="clear">&nbsp;</div>
+    </div>
+  	<!--right455 end-->  	
+    <div class="clear">&nbsp;</div>  
+  </div>  
+  <!--industry event box end-->
+
+  <div class="clear">&nbsp;</div>
+</div>
+

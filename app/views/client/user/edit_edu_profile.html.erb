@@ -1,0 +1,261 @@
+<%content_for(:special_js) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+    var upload_iframe_link  = null;
+  
+    function after_image_upload(fileObj){
+      website.log(fileObj);
+      if(upload_iframe_link){
+        var thumb_div = $(upload_iframe_link).parents(".basic_information").find(".image_uploaded");
+        thumb_div.html("<img src='"+fileObj.image.file_path.thumb+"'/>");
+        $(upload_iframe_link).parents(".basic_information").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+      }
+    }
+
+
+    //
+    function crop_avatar(fileObj){
+      website.log(fileObj);
+      if(upload_iframe_link){
+      
+        var limit_width = 300;
+        var limit_height = 300;
+      
+        var thumb_div = $(upload_iframe_link).parents(".basic_information").find(".image_uploaded");
+        var org_width = fileObj.image.attachment_width;
+        var org_height = fileObj.image.attachment_height;
+        var new_width, new_height = 0;
+        var scale = 0;
+        if(org_width > org_height){
+          scale = limit_width/org_width;
+          new_width = limit_width;
+          new_height = org_height * scale;
+        }else{
+          scale = limit_height/org_height;
+          new_height = limit_height;
+          new_width = org_width * scale;
+        }
+        
+        
+        thumb_div.html("<img src='"+fileObj.image.file_path.original+"' width='"+new_width+"' height='"+new_height+"' />");
+        $(upload_iframe_link).parents(".basic_information").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+        
+        $(".image_uploaded img").imgAreaSelect({
+          aspectRatio: '1:1',
+          handles: true,
+          onSelectEnd: function image_on_cropped(img, selection){
+            website.log(selection);
+            $("#avatar_crop_top").val(selection.y1/scale);
+            $("#avatar_crop_left").val(selection.x1/scale);
+            $("#avatar_crop_height").val(selection.height/scale);
+            $("#avatar_crop_width").val(selection.width/scale);
+          }
+        });
+
+        
+        $("#avatar_scale").val(scale);
+        $("#avatar_image_id").val(fileObj.image.id);
+        
+        
+        
+      }
+    }
+
+  // for activity comment post form
+  $("#crop_avatar_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      $(".notice",this).text("success");
+    });
+
+
+
+    $(function(){
+      $("a.iframe").fancybox({width:543 , height:170});
+      
+      $("a.upload_iframe_link").click(function(){
+        upload_iframe_link = this;
+      });
+    });
+
+  </script>
+
+<%end%>
+
+
+
+
+
+
+
+
+			<!--title begin-->
+      <div class="title32">
+        <%= render :partial => "edit_header" %>
+
+        <!--edu box begin-->
+     		<div class="change_info">
+        	
+       		  <%=nested_form_for @user,:url=>client_user_path, :remote=>true, :html=>{:id=>"edu_edit_form",:"data-type"=>:json} do |form|%>
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	  </div>
+						<div class="edit_button">
+         		  <%if @user.profiles.size==1
+         		      if @user.profile.locale=="en"
+         		  %>
+             		  <button class="add_profile_language_btn btop_edu1" data-language='zh_CN' data-profile-type='edu'><%= _('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_edu2" style="display:none"><%=_('删除中文PROFILE')%></button>
+         		  <%
+         		      end
+         		      if @user.profile.locale=="zh_CN"
+         		  %>
+             		  <button class="add_profile_language_btn btop_edu1" data-language='en' data-profile-type='edu'><%=_('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_edu2" style="display:none"><%_('删除English PROFILE')%></button>
+         		  <%  
+         		      end
+         		    end
+         		  %>
+						</div>	
+            <%=form.fields_for :profiles do |profile_form|%>
+            <div class="profile_fields">
+            <div class="language"><span><%=Const::value(:languages, profile_form.object.locale)%></span></div>
+            <%=profile_form.hidden_field :created_at%>
+            <%=profile_form.fields_for :edu do |profile_edu_form|%>
+          	<div class="edit_f"><label><%=_('学校名称')%></label><%=profile_edu_form.text_field :school_name%><span></span></div>
+            <div class="edit_f"><label><%=_('主修专业')%></label><%=profile_edu_form.text_field :college_major%><span></span></div>
+            <div class="edit_f">
+            	<label><%=_('在校时间')%></label>
+              <%=profile_edu_form.date_select :start_date, :discard_day=>true, :start_year=>1960%>
+	      <var>-</var> 
+              <%=profile_edu_form.date_select :end_date, :discard_day=>true, :start_year=>1960%>
+            </div>
+
+            <%end%>
+            <%=profile_form.link_to_add "", :edu, :class=>"add_more_edu_btn"%>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+            </div>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+            
+            <div class="edit_b">
+            <input value="<%=_('保存')%>" type="submit">
+            <span class="notice"></span>
+            </div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--edu box end-->
+
+                                        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+  
+      <div class="clear">&nbsp;</div>
+    
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+	});
+	
+	
+
+  // for activity comment post form
+  $("#basic_info_edit_form, #edu_edit_form, #company_edit_form, #password_edit_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.errors){
+        for(var key in data.errors){
+          var msg = data.errors[key];
+          $("."+key+"_error", this).text(msg.join(","));
+        }
+        $(".notice",this).addClass("failed").text("<%=_("更新失败")%>");
+      }else{
+        $(".notice",this).addClass("success").text("<%=_("更新成功")%>");
+      }
+
+    });
+  
+	
+	//
+	$(".add_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	    // add profile form
+  	  form.find(".add_more_profiles_btn").click();
+	    var type = $(this).attr("data-profile-type");
+	    switch(type){
+	      case  "profile":{
+	        break;
+	      }
+	      case  "edu":{
+	        form.find(".add_more_edu_btn:last").click();
+	        break;
+	      }
+	      case  "company":{
+	        form.find(".add_more_company_btn:last").click();
+	        break;
+	      }
+	      case  "addition":{
+	        form.find(".add_nested_fields:last").click();
+	        break;
+	      }
+	    }
+	    
+	    $("form div[data-locale]:last").attr("data-locale","<%=another_locale(@user.profiles.first.locale)%>");
+      form.find(".profile_fields:last .language>span").text("<%=Const::value(:languages, another_locale(@user.profiles.first.locale).to_s)%>");
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").show();
+	    form.find(".profile_fields:last input[name*=destroy]").val("0");
+	  }
+	  
+    form.find(".profile_fields:last legend").text("English");
+	  // hide ADD  button, show remove button
+	  $(this).hide();
+	  form.find(".remove_profile_language_btn").show();
+	  
+	  
+	  return false;
+	});
+	
+	// 
+	$(".remove_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").hide();
+	    form.find(".profile_fields:last input[name*=destroy]").val("1");
+	  }
+	  
+	  // hide REMOVE  button, show ADD button
+	  $(this).hide();
+	  form.find(".add_profile_language_btn").show();
+
+	  
+	  return false;
+	});
+	
+	
+	
+	
+	
+	
+</script>
+

@@ -1,0 +1,23 @@
+<script language=JavaScript>
+  function CurentTime()
+  { 
+    var now = new Date(); 
+    var hh = now.getHours(); 
+    var mm = now.getMinutes(); 
+    var clock = hh+':'; 
+    if (mm < 10) clock += '0'; 
+    clock += mm ;
+    return clock;
+  }
+
+  function refreshCalendarClock()
+  { 
+     document.getElementById('show_current_time').innerHTML = CurentTime(); 
+  }
+  setInterval('refreshCalendarClock()',1000);
+</script>
+<div class="f_right time" id ="show_now_time">
+	<strong id ="show_current_time"></strong>
+	<span><%=l(Time.now, :format=>:all_date)%></span>
+</div>
+

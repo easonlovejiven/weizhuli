@@ -1,0 +1,24 @@
+   <!--company begin-->
+		<div class="das_comp mg_t">
+        	<!--title public begin-->
+			<div class="title_bg">
+            	<div class="title_bg_left">
+                	<div class="title_bg_right">
+            			<strong><%=_('公司')%></strong>
+                		<%=link_to _('更多'), list_client_organizations_path, :class=>"color_f6"%>
+                	</div>
+                </div>
+            </div>            
+			<!--title public end-->
+        	<div class="guest rounded2">
+        	  <%Organization.limit(4).each{|company|%>
+            	<dl>
+                	<dt><%=link_to ce_image(company, :image, :thumb, :size=>"47x47", :scaling=>true), client_organization_path(company)%></dt>
+                    <dd><%=link_to company.name, client_organization_path(company)%></dd>
+                    <dd><%=company.followed%><%=_('关注')%></dd>
+                </dl>
+            <%}%>
+          </div>
+        </div>
+    <!--company end-->                                  
+

@@ -1,0 +1,24 @@
+<div class="mtitle"><%= _('搜索商业人脉') %></div>
+<%
+search = params[:search]||{}
+search[:conditions] ||= {}
+search[:with] ||= {}
+
+city_id = search[:with][:business_card_city_id_eq]
+province_id = search[:with][:business_card_province_id_eq]
+country_id  = search[:with][:business_card_country_id_eq]
+%>
+<%= form_for :search, :url=>list_client_users_path, :html=>{:method => "get"} do |form|%>
+  <%= form.hidden_field "conditions[status]", :value=>1%>
+  <div class="search_unit bottom_110">
+    <%= form.text_field :key,:value=> search[:key],:placeholder=>_("输入姓名、职位、城市、公司…"),:class=>"w360"%>
+    <input type="submit" class="submit event_form_submit" value="<%= _('搜索') %>" name=""/>
+  </div>  
+	<div class="search_unit w155 location_selection_container">
+    <%=form.select("with[business_card_country_id_eq]", [[_("国家"),nil]]+Country.includes(:locales).all.map{|c|[c.name,c.id]}, {:selected => country_id}, :class=>"country_selector",:"data-locale"=>I18n.locale)%>
+    <%=form.select("with[business_card_province_id_eq]", [[_("省"),nil]]+Location.includes(:locales).where(["parent_id = ?",country_id]).map{|p|[p.name,p.id]}+Province.includes(:locales).where(["parent_id = ?",country_id]).map{|p|[p.name,p.id]},{:selected => province_id}, :class=>"province_selector",:"data-locale"=>I18n.locale)%>
+    <%=form.select("with[business_card_city_id_eq]", [[_("城市"),nil]]+City.includes(:locales).where(["parent_id = ? or id = ?",province_id, city_id]).map{|c|[c.name,c.id]},{:selected => city_id}, :class=>"city_selector",:"data-locale"=>I18n.locale)%>
+    <%= form.select("with[industry_id]", options_for_select(@industries_h.map{|x| [x[:industry_name],x[:id]]}, search[:with][:industry_id]), {:prompt => _("行业")},:class=>"no_margin" ) %>
+  </div>
+<% end %>
+

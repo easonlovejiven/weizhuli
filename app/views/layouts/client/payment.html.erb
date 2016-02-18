@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('iphone定制服务')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<%=stylesheet_link_tag "pay"%>
+</head>
+
+
+<body class="bgf5">
+<%=render "common/header"%>
+<!--main start-->
+
+<%=yield%>
+
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+<script type="text/javascript">
+  $(document).ready(function(){
+  });
+</script>
+</body>
+</html>
+

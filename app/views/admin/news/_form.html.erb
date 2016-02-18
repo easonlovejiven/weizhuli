@@ -1,0 +1,149 @@
+<%content_for(:special_head) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+    var upload_iframe_link  = null;
+  
+    function after_image_upload(fileObj){
+      website.log(fileObj);
+      if(upload_iframe_link){
+        var thumb_div = $(upload_iframe_link).parents(".fields").find(".image_uploaded");
+        thumb_div.html("<img src='"+fileObj.image.file_path.thumb+"'/>");
+        $(upload_iframe_link).parents(".fields").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+      }
+    }
+
+
+    $(function(){
+      
+      $(".upload_iframe_link").live("click", function(){
+        upload_iframe_link = this;
+      });
+      
+    });
+
+  </script>
+
+<%end%>
+
+  <div class="group">
+    <%= f.label :title, t("activerecord.attributes.news.title", :default => _('新闻标题')), :class => :label %>
+    <%= f.text_field :title, :class => 'text_field' %>
+    <span class="description"><%=_('Ex: a simple text')%></span>
+    <%= f.error_message_on :title %>
+  </div>
+
+    <div class="group">
+    <%= f.label :title, t("activerecord.attributes.news.article_source_url", :default => "Article Source URL"), :class => :label %>
+    <%= f.text_field :article_source_url, :class => 'text_field' %>
+    <span class="description"><%=_('Exemple http:// ')%> </span>
+    <%= f.error_message_on :title %>
+  </div>
+
+    <div class="group">
+    <%= f.label :title, t("activerecord.attributes.news.article_source", :default => "Article Source"), :class => :label %>
+    <%= f.text_field :article_source, :class => 'text_field' %>
+    <span class="description"><%=_('Ex: The name of the publication')%></span>
+    <%= f.error_message_on :title %>
+  </div>
+
+  	<div class="group">
+  <%= f.label :title, t("activerecord.attributes.news.locale", :default => "Language"), :class => :label %>
+  <%= f.select :locale, [["English","en"],["Chinese","zh_CN"]],{},:class => 'select' %>
+  <span class="description"><%=_('Ex: The locale ')%></span>
+  <%= f.error_message_on :locale%>
+</div>
+
+  <div class="group">
+    <%= f.label :online_time, t("activerecord.attributes.news.online_time", :default => _('上线时间')), :class => :label %>
+    <%= f.datetime_select :online_time, :class => 'datetime_select' %>
+    <span class="description"><%=_('Ex: a simple text')%></span>
+    <%= f.error_message_on :online_time %>
+  </div>
+
+  <div class="group">
+    <%= f.label :category_id, t("activerecord.attributes.news.category_id", :default => _('类别')), :class => :label %>
+    <%= f.select :category_id,[].concat(NewsCategory.all.map{|nc|[nc.name,nc.id]}), :class => 'text_field' %>
+    <%=link_to _('新类别'),new_admin_news_category_url(:layout=>"dialog"), :class=>"iframe newcategory"%>
+    <span class="description"><%=_('Ex: a simple text')%></span>
+    <%= f.error_message_on :category_id %>
+  </div>
+
+  <div class="group">
+    <%= f.label :industry_id, t("activerecord.attributes.news.industry_id", :default => _('类别')), :class => :label %>
+    <%= f.select :industry_id,[].concat(Industry.all.map{|nc|[nc.name,nc.id]}), :class => 'text_field' %>
+    <%=link_to _('行业'),new_admin_industry_url(:layout=>"dialog"), :class=>"iframe new_industry"%>
+    <span class="description"><%=_('Ex: a simple text')%></span>
+    <%= f.error_message_on :industry_id %>
+  </div>
+
+  <div class="group">
+    <%= f.label :image, _('图片'), :class => :label %>
+    <%= f.fields_for :image_reference do |image_f|%>
+
+      <%=image_f.hidden_field :upload_id%>
+      <%=image_f.hidden_field :category,:value=>News::IMAGE_FILE_REF_TYPE_MAIN %>
+      <div class="image_uploader">
+        <%=link_to _('上传图片'),new_upload_type_path("image",:layout=>'dialog',:content_type=>"News",:callback=>"after_image_upload"), :class=>"iframe upload_iframe_link"%>
+      </div>
+      <div class="image_uploaded">
+      <%=image_tag @news.image_reference.upload.attachment.url(:thumb) if @news.image_reference && @news.image_reference.upload%>
+      </div>
+      <div class="image_upload_error"></div>
+      <%=image_f.check_box :_destroy%><%=image_f.label :_destroy,_("删除")%>
+    <%end%>
+  </div>
+        
+  <div class="group">
+    <%= f.label :images, _('更多图片'), :class => :label %>
+    <%= f.fields_for :image_references do |image_f|%>
+      <%=image_f.hidden_field :upload_id%>
+    <div class="image_uploader">
+      <%=link_to _('上传图片'),new_upload_type_path("image",:layout=>'dialog',:content_type=>"News",:callback=>"after_image_upload"), :class=>"iframe upload_iframe_link"%>
+    </div>
+      <%=image_f.hidden_field :category,:value=>News::IMAGE_FILE_REF_TYPE_OTHER %>
+      <%=image_tag image_f.object.upload.attachment.url(:thumb) if image_f.object && image_f.object.upload%>
+      <%=image_f.link_to_remove "remove"%>
+      <div class="image_uploaded">
+      </div>
+    <%end%>
+    <%= f.link_to_add "new", :image_references%>
+    <div class="image_upload_error"></div>
+  </div>
+        
+
+  <div class="group">
+    <%= f.label :tag_names, _('标签'), :class => :label %>
+    <%= f.text_field :tag_names,  :class => 'text_field',:"tag-autocomplete"=>admin_tags_path %>
+    <span class="description">Ex: a simple text</span>
+  </div>
+
+
+
+
+  <div class="group">
+    <%= f.label :content, t("activerecord.attributes.news.content", :default => _('内容')), :class => :label %>
+    <%= f.text_area :content, :class => 'text_area mceEditor' %>
+    <span class="description">Ex: a simple text</span>
+    <%= f.error_message_on :content %>
+  </div>
+
+<div class="group navform wat-cf">
+  <button class="button" type="submit">
+    <%= image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+  </button>
+  <span class="text_button_padding"><%= t("web-app-theme.or", :default => "or") %></span>
+	<%= link_to t("web-app-theme.cancel", :default => "Cancel"), admin_news_index_path, :class => "text_button_padding link_button" %>
+</div>
+<script>
+function after_create_news_category(news_cat){
+  news_cat = $.parseJSON(news_cat).news_category;
+  $.fancybox.close();
+  var opt = $("<option selected value='"+news_cat.id+"'>"+news_cat.name+"</option>");
+  $("#news_category_id").append(opt);
+}
+
+
+
+</script>

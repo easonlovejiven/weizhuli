@@ -1,0 +1,15 @@
+        <div class="follow_info">
+        	<h4>
+          	<%=user_avatar_tag(user, :medium, :alt=>"",:size=>"140x140", :scaling=>false)%>
+          </h4>
+          <div class="follow_info_bar">
+              	<a href="#"><strong><%=link_to _("关注"), user_followings_path%></strong><var><%=link_to  user.get_microblog_info.followings, user_followings_path%></var></a>
+          </div>
+					<div class="follow_info_bar">
+          	<a href="#"><strong><%=link_to _("粉丝"), user_followers_path%></strong><var><%=link_to user.get_microblog_info.followers, user_followers_path%></var></a>
+        	</div>
+					<div class="follow_info_bar">
+          	<a href="#"><strong><%=_("分享")%></span></strong><var><%=user.get_microblog_info.blogs%></var></a>
+        	</div>
+        </div>
+

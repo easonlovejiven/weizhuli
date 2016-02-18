@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div style="width:650px;margin:0px auto; background-color:#fff;padding:0px 75px;font-size:12px;font-family:tahoma,Arial,sans-serif;">
+    <%=render :partial => "mail_header_en"%>
+    
+			<!--text 1 begin-->
+			<div style="width:610px;margin:0px;line-height:24px;background-color:#eee;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;">
+				<div style="width:610px;line-height:20px;">
+					<div style="height:30px; line-height:30px;color:#333; font-size:18px;font-weight:bold;"><%= _("注册成功") %></div>
+					<div style="height:10px;line-height:10px;">&nbsp;</div>
+					<div style="line-height:20px;font-size:14px;color:#333;"><%= _("欢迎加入CE180，您的用户名和密码如下") %></div>
+					<div style="height:20px;line-height:20px;">&nbsp;</div>				
+					<div style="line-height:30px;font-size:14px;color:#333;">
+						<span style="line-height:30px;font-size:14px;color:#333;"><%= _("用户名")%>：</span>
+						<span style="line-height:30px;font-size:14px;color:#006699;"><%= @login %></span>
+					</div>
+					<div style="line-height:30px;font-size:14px;color:#333;">
+						<span style="line-height:30px;font-size:14px;color:#333;"><%= _("密码") %>：</span>
+						<span style="line-height:30px;font-size:14px;color:#006699;"><%= @pass %></span>
+					</div>
+					<div style="height:20px;line-height:20px;">&nbsp;</div>	 
+					<div style="line-height:20px;font-size:14px;color:#333;"><%= _("以下是您参加活动的链接地址，可以点击查看详情") %></div>
+					<div style="height:10px;line-height:10px;">&nbsp;</div>	                        
+					<div style="line-height:30px;font-size:14px;color:#333;">
+						<%= link_to client_events_show_url(@event), client_events_show_url(@event) %>
+					</div>
+				</div>
+				<div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+			</div>
+			<!--text 1 end-->
+
+    <%=render :partial => "mail_bottom_en"%> 
+  <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>

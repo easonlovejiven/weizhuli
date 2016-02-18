@@ -1,0 +1,51 @@
+<%= form_for(@feedback, :url=>admin_feedback_path) do |f| %>
+  <% if @feedback.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@feedback.errors.count, "error") %> prohibited this feedback from being saved:</h2>
+
+      <ul>
+      <% @feedback.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="group field">
+    <%= f.label :email %><br />
+    <%= f.object.email %>
+  </div>
+  <div class="group field">
+    <%= f.label :details %><br />
+    <div style='border:1px solid;width:300px;'>
+      <%= f.object.details.html_safe if !f.object.details.blank? %>
+    </div>
+  </div>
+  <br />
+  <div class="group field">
+    <%=_('来源')%><br />
+    <div style='border:1px solid;width:300px;'>
+      <%= link_to f.object.http_referer, f.object.http_referer, :target=>'_blank' %>
+    </div>
+  </div>
+  <br />
+  <div class="group field">
+    <%= f.label :status %>
+    <%= f.select :status,[].concat(Const.feedback_status.map{|nc|[nc[0],nc[1]]}), :class => 'select' %>
+  </div>
+  <br />
+  <div class="group field">
+    <%= f.label :comment %><br />
+    <%= f.text_area :comment %>
+  </div>
+  <br />
+  <div class="group navform wat-cf">
+    <button class="button" type="submit">
+      <%= image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}") %> <%= t("web-app-theme.save", :default => "Save") %>
+    </button>
+  </div>
+  <br />
+  <div class="group navform wat-cf">
+    <%= link_to _("返回"), admin_feedbacks_path %>
+  </div>
+<% end %>
+

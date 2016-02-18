@@ -1,0 +1,59 @@
+<div class="nav40">
+  <%=link_to _("Account info") ,upload_avatar_client_user_path, :class=>(action=='edit_password' || action=="upload_avatar" || action=='active_mail') ?  "current" : ""%>
+  <%=link_to _("My Events"),client_orders_path,:class=>"#{(action=='my_order' || controller_name == "events" || (controller_name == "my_events" && action_name == "index")) ? 'current' : nil} "%>
+  <%=link_to _('My Contacts'), exchanged_invites_client_user_business_cards_path, :class=>(action_name == "exchanged_invites" || action_name == "my_card" || action_name == "my_en_card" || action_name == "receive_invites") ? "current" : ""%>
+	<a id="private_messages" class="<%= 'current' if controller_name == 'private_messages'%>" href="<%= client_private_messages_path %>"><%= _('Messages') %></a>
+</div>
+<div class="create_btn20 second_tabs <%= 'tab_show' if (action!='edit_password' && action!="upload_avatar" && action!='active_mail')%>">
+	<%=link_to _("Edit Password"),modify_password_client_user_path,:class=>"#{action=='edit_password' ? 'current' : nil} "%>
+  <%=link_to _("上传头像") ,upload_avatar_client_user_path, :class=>(action=="upload_avatar") ?  "current" : ""%>
+	<%=link_to _("Email"),active_mail_client_user_path,:class=>"#{action=='active_mail' ? 'current' : nil} "%>
+	<div class="clear">&nbsp;</div>
+</div>
+<div class="create_btn20 second_tabs <%= 'tab_show' if (action!='my_order' && controller_name != "events" && !(controller_name == "my_events" && action_name == "index"))%>">
+  <%=link_to _("My orders"),client_orders_path,:class=>"#{action=='my_order' ? 'current' : nil} "%>
+  <%=link_to _("Events I created"),partner_events_path,:class=>controller_name == "events" ? "current" : " "%>
+  <%=link_to _("Events I saved"),client_user_events_path,:class=>controller_name == "my_events" && action_name == "index" ? "current" : " "%>
+	<div class="clear">&nbsp;</div>
+</div>
+<% 
+  if I18n.locale.to_s == "zh_CN"
+    my_card_path  = my_card_client_user_business_cards_path
+    add_card_path = add_card_client_user_business_cards_path
+  else
+    my_card_path  = my_en_card_client_user_business_cards_path
+    add_card_path = add_en_card_client_user_business_cards_path
+  end
+%>
+
+<div class="create_btn20 second_tabs <%= 'tab_show' if (action_name != "exchanged_invites" && action_name != "my_card" && action_name != "my_en_card" && action_name != "receive_invites")%>">
+  <%=link_to _('我的名片夹'), exchanged_invites_client_user_business_cards_path, :class=>action_name == "exchanged_invites" ? "current" : ""%>
+  <%=link_to _('定制我的名片'), my_card_path, :class=>(action_name == "my_card" || action_name == "my_en_card") ? "current" : ""%>
+  <%=link_to _('收到的名片邀请'), receive_invites_client_user_business_cards_path, :class=>(action_name == "receive_invites") ? "last current" : "last"%>
+	<div class="clear">&nbsp;</div>	
+</div>
+<div class="create_btn20" style="height:0px;line-height:0px;padding:0px;">&nbsp;</div>
+
+<script>
+/*
+<% if action=='edit_password' || action=="upload_avatar" || action=='active_mail' %>
+var index = 0
+<% elsif action=='my_order' || controller_name == "events" || (controller_name == "my_events" && action_name == "index") %>
+var index = 1
+<% elsif action=='messages' %>
+var index = 3
+<% else %>
+var index = 2
+<% end %>
+$(function(){
+	$(".header_tabs").tabs(".second_tabs", {initialIndex:index,event:'mouseover'});
+	$(".header_tabs a").mouseover(function(){
+		$('#private_messages').removeClass('current');
+	})
+	$("#private_messages").mouseover(function(){
+		$('.header_tabs a').removeClass('current');
+		$(".second_tabs").css('display','none');
+	})
+})
+*/
+</script>

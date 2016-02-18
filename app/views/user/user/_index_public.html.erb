@@ -1,0 +1,190 @@
+
+  <!--title begin-->
+      <div class="title32">
+      	<strong>
+         <%=_("公共主页")%>&nbsp;&gt;
+        </strong>
+        <%= link_to _('返回我的首页'), client_root_path%>
+      </div>
+      <!--title end-->
+      <!--follow list begin-->
+      <div class="mg_t10 follow_box">      
+     		<!--visiting card box begin-->
+				<div class="v_card_box backg_color">
+          <%= render :partial => "/client/common/ce_card",:locals=>{:user=>@user} %>
+			<% if current_user && current_user != @user %>	
+        	<!--rightbar_120 begin-->	
+          <ol class="exchange_c140">
+				
+				<li>
+				<%=render :partial=>"common/card_exchange_status",:locals=>{:user=>@user}%>
+				</li>
+						
+             <%
+                case Follow::follow_status(current_user, @user)
+                when Follow::STATUS_FOLLOW_EACH_OTHER
+            %>
+                 <li class="follw"><span><em><%=_('已关注')%></em>&nbsp;|&nbsp;<%=link_to _('取消'),client_unfollow_path(@user)%></span></li>
+            <%
+              when Follow::STATUS_FOLLOWING
+            %>
+                <li class="follw"><span><em><%=_('已关注')%></em>&nbsp;|&nbsp;<%=link_to _('取消'),client_unfollow_path(@user)%></span></li>
+              <%
+                  when Follow::STATUS_CAN_NOT_FOLLOW
+                %>
+                  <% else %>
+                 <li class="follw"><span><%=link_to _('关注'),client_follow_path(@user)%></span></li> 
+              <%end%>
+                <li class="private"><%=link_to(_('发送私信'), new_client_private_message_path(:private_message=>{:to_user_id=>@user.id,:to_user_name=>@user.displayable_name}),:class=>"msg fancybox") if current_user.id != @user.id%></li>
+        	</ol>
+          <!--rightbar_120 end-->
+          <% elsif !current_user %>
+          	<!--rightbar_120 begin-->	
+            <ol class="exchange_c140">
+				      <li>
+				      <%=render :partial=>"common/card_exchange_status",:locals=>{:user=>@user}%>
+				      </li>
+              <li class="follw"><span><%=link_to _('关注'),login_path(:return => request.url), :class=>"fancybox"%></span></li> 
+              <li class="private"><%=link_to(_('发送私信'), login_path(:return => request.url), :class=>"fancybox")%></li>
+        	  </ol>
+        	  <!--rightbar_120 end-->
+	        <% end %>	
+        </div>
+        <!--visiting card box  end-->
+        <!--u_intro begin-->
+        <%if @user.profile && !@user.profile.description.blank?%>
+          <div class="u_intro mg_t10">
+          	<strong><%=_('简介')%>:</strong>
+           <span><%=simple_format(@user.profile.description) %></span>
+          </div>
+        <%end%>
+        <!--u_intro  end--> 
+      </div>
+      <!--follow list end-->
+
+			<!--his event begin-->
+			<% if @events.size > 0 %>
+			<div class="mg_t10">
+      	<!--title 40 begin-->
+        <div class="title40_6">
+        	<div class="title40_6_left">
+          	<div class="title40_6_right">
+            	<strong><%=_('CE活动')%></strong>
+              <%= link_to _('更多'),user_events_path(@user)%>
+            </div>
+          </div>
+        </div>
+        <!--title 40 end-->      
+      	<!--his event content begin-->
+        <div class="his_event c_border">
+        <%@events.each{|event|%>
+         <%= render :partial => "/client/events/square_unit", :locals => {:event => event} %>   
+        
+        <% } %>        
+        	<div class="clear">&nbsp;</div>       
+        </div>
+        <!--his event content end-->
+        
+        <!--bottom 3 begin-->
+        <div class="bottom3">
+        	<span><em>&nbsp;</em></span>
+        </div>
+        <!--bottom 3 end-->        
+      	<div class="clear">&nbsp;</div>
+      </div>
+      <% end %>
+      <!--his event end-->
+
+      <!--Friends active begin-->
+      <div class="mg_t10">
+          <!--title 40 begin-->
+          <div class="title40">
+            <div class="title40_left">
+              <div class="title40_right">
+                <strong><%=_('商业动态')%></strong>
+                <%= link_to _('更多'),user_activities_path(@user)%>
+              </div>
+            </div>
+          </div>
+          <!--title 40 end-->
+          <!--content begin-->
+          <div class="u_content c_border">
+          <% @activities.each{|activity|%>
+          <!--list begin-->
+            <div class="u_list">
+              <div class="u_avatar">
+               <%=link_to user_path(activity.user) do%>
+                <%=user_avatar_tag(activity.user, :thumb,:size=>"40x40",:scaling=>true, :alt=>"")%>
+              <%end%>
+              </div> 
+              <div class="u_name">
+                <strong><%=link_to activity.user.displayable_name+":", user_path(activity.user) %></strong>
+                <span>
+              	<%=render "/client/activities/activity_content", :activity=>activity%>
+                </span>
+                
+                 <%if activity.forwarding
+                    forwarding = activity.forwarding
+                 %>
+                 <!--trends_return begin-->
+                <div class="trends_return">
+                  <div class="wards_22 p_left10">◆</div>
+                  <strong><%=link_to forwarding.user.displayable_name, user_path(forwarding.user)%></strong>
+                  <span>
+                	<%=render "/client/activities/activity_content", :activity=>activity%>
+                  </span>
+                  <%if (str_length(raw(activity_content(forwarding.content.to_s))) > 300)%>
+                  <div class="bottom_bar1"><%=link_to _("原文阅读→"), client_activity_path(forwarding)%></div>
+                  <%end%>
+                  <div class="clear">&nbsp;</div> 
+                </div>
+                <!--trends_return end--> 
+                <%end%>
+                <%if (str_length(raw(activity_content(activity.content.to_s))) > 300)%>
+                  <div class="bottom_bar1"><%=link_to _("未完，继续阅读→"), client_activity_path(activity)%></div>
+                <%end%>
+                <div class="bar_fcc">
+                  <strong class="color9"><%= activity_time(activity.created_at.to_datetime)%></strong>
+                  <h5><%=link_to _('转发')+"(#{activity.forwarded})", new_client_activity_path(:forward=>activity), :class=>"fancybox"%>&nbsp;|&nbsp;<%=link_to _('评论')+"(#{activity.commented})",client_activity_activity_comments_path(activity),:class=>"activity-replies-link"%></h5>
+                </div> 
+                 <!--trends_return begin-->
+        			<div class="trends_return activity_replies" style="display:none">
+              	<div class="wards_22 p_right10">◆</div>
+                <div class="title_colse">
+                	<em><%=_('评论')%></em>
+                	<a href="#" class="close_replies">x</a>
+                </div>
+                <div class="text_area send_botton82">
+                    <%=form_for [:client,activity,ActivityComment.new(:activity=>activity)],:remote=>true, :"date-type"=>"json", :html=>{:'data-type'=>'html', :id=>"post_activity_comment_form"} do |form|%>
+                      <%=hidden_field_tag :from, @from%>
+                      <%=form.text_area :content, :rows=>5%>
+                      <%=form.error_message_on :content%>
+                      <%=form.hidden_field  :activity_id%>
+                      <%=form.submit _("评论")%>
+                    <%end%>
+                </div>
+                
+                <div class="activity_replies_list">
+                </div>
+                             
+              </div>
+              <!--trends_return end-->      
+                <div class="clear">&nbsp;</div>           
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--list end-->
+          <% } %>
+            <div class="check_moref"><%=link_to _("查看全部动态"),user_activities_path(@user)%></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--content end-->
+          <!--bottom 3 begin-->
+          <div class="bottom3">
+            <span><em>&nbsp;</em></span>
+          </div>
+          <!--bottom 3 end-->
+          <div class="clear">&nbsp;</div>
+      </div>
+      <!--Friends active end-->
+

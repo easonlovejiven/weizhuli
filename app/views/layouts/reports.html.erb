@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>微博日报|微助力</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/assets/bootstrap_and_overrides.css" rel="stylesheet">
+    <%=stylesheet_link_tag "reports"%>
+    <link href="/assets/reports.css" rel="stylesheet">
+    <script type="text/javascript" src="/assets/jquery.js"></script>
+    <script type="text/javascript" src="/assets/twitter/bootstrap.js"></script>
+    <script type="text/javascript" src="/assets/highcharts.js"></script>
+    <script type="text/javascript" src="/assets/highcharts/highcharts-more.js"></script>
+<style>
+body{font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+</style>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="/assets/ico/favicon.png">
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+
+<header>
+  <div class="nav_in">
+            <section id="headnav">
+                <div class="nav_back">
+                    <span><em></em></span>
+                    <a href="#" class="prepage" onclick='history.go(-1);return false;'>返 回</a>
+        </div>
+            </section>
+            <section>
+                <span>填写信息</span>
+      </section>
+        <section><img alt="" width="31px" height="31px" border="0" src="/assets/logo_31x31.png"></section>
+  </div>
+</header>
+
+
+
+    <div class="container">
+      <%=yield%>
+    </div>
+
+    <footer>
+    <div>
+            魔丽游&nbsp;微助力&nbsp;创建于二零一零年<br><span style="font-family:Times New Roman;">©</span> 2013&nbsp;魔丽游、微助力&nbsp;版权所有<br>ICP许可证号&nbsp;京ICP备13028567号
+        </div>
+    </footer>
+
+  </body>
+
+
+
+
+</html>
+
+

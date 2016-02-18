@@ -1,0 +1,29 @@
+        	<!--list begin-->
+            <div class="news_block">
+            	<div class="title_2">
+                	<strong><%=_('最新行业列表')%></strong>
+                </div>            
+            	<!--repeat begin-->
+            	  <%@news.each{|news|%>
+                <div class="news_list">
+                    <div class="news_title">
+                        <a href="#"><%=link_to news.title, news%></a>
+                    </div>
+                    <div class="date">
+                        <var><%=l news.online_time%></var>
+                    </div>
+                    <div class="introduction">
+                      <%=truncate(strip_tags(news.content),:length=>100)%>
+                    </div>
+                    <div class="more">
+                    	<%=link_to _('查看详情>>'), news%>
+                    </div>
+                </div>
+                <%}%>
+                <!--repeat end-->
+                <!--Page begin-->
+                <%=will_paginate @news%>
+                <!--Page end-->                
+            </div>
+            <!--list end-->
+

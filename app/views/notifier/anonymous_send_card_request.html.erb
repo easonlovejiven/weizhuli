@@ -1,0 +1,58 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<table width="700" cellpadding="0" cellspacing="0" border="0" align="center" style="color:#000;font-family:Arial;">
+	<tr style="background-color:#eee;">
+  	<td>
+    	<div style="height:10px;line-height:10px;">&nbsp;</div>&nbsp;&nbsp;
+      <a href="#"><img src="http://www.ce180.com/images/ce180_logo.jpg" width="226" height="34" border="0" alt=""/></a>
+    	<div style="height:10px;line-height:10px;">&nbsp;</div>
+    </td>
+  </tr>
+	<tr>
+  	<td style="background-color:#e5e5e5;">
+    	<table width="100%" border="0"  cellpadding="0" cellspacing="20">
+        <tr>
+          <td style="font-size:14px;">
+          	<div style="line-height:30px;">Hi <%=@send_card.name%><%=@send_card.last_name if @send_card.last_name%> <%=@send_card.first_name if @send_card.first_name%>,</div>
+            <div style="height:10px;line-height:10px;">&nbsp;</div>
+						<div style="line-height:18px;">你在CE180上成功的给 <%=@to_user.displayable_name%> 发送了名片</div>
+            <div style="line-height:18px;">You sent your business card to <%=@to_user.displayable_name%> on CE180</div>
+            <div style="height:10px;line-height:10px;">&nbsp;</div>
+            <div style="font-size:14px;line-height:1.5;">
+            	<table width="660" border="0" cellpadding="0" cellspacing="20" style="background:#FFF">
+                <tr>
+                  <td width="415">
+                    <div style="line-height:20px;font-size:14px">注册CE180,你不需要在交换名片的时候重复输入名片信息，还可以拥有在线的名片夹
+</div>
+                    <div style="line-height:20px;font-size:14px">With a CE180 account, you don't need to re-enter your card details each time you exchange card with others</div>                 
+                  </td>
+                  <td width="105">
+                  <div>    
+                  	<a href="<%=signin_url%>" style="display:inline-block;color:#fff;border:1px solid #c30;border-radius:3px;background-color:#f60;height:30px;text-decoration:none;line-height:30px;font-size:12px;">&nbsp;&nbsp;注册 | Join CE180&nbsp;&nbsp;</a>
+                  </div>
+                  
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+            <div style="height:10px;line-height:10px;">&nbsp;</div>
+            <div style="font-size:14px;line-height:1.5;">思易网团队<br/>The CE180 Team</div>
+          </td>
+        </tr>                                 
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div style="line-height:30px;height:30px;border-top:1px solid #333;background-color:#eee; font-size:12px;color:#999;">&nbsp;&nbsp;&copy;2012,CE180</div>
+    </td>
+  </tr>        
+</table>
+</body>
+</html>

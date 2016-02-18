@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9"/>
+  <%=render "/client/common/head_tag_content_for_client"%>
+  <title><%=_('思易网')%> <%= @html_title.to_s %></title>
+  <%#=render "common/init_tiny_mce"%>
+</head>
+<body class="bge">
+<%=render "common/header"%>
+
+ 	<!--main begin-->
+  <div class="main">
+    <%=render "common/left_bar"%>
+    <!--right begin-->
+    <div class="fr w850 percent100">
+      <%=yield%>
+			<div class="clear">&nbsp;</div>
+		</div>
+    <!--right end-->
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--main end-->
+  <% if current_user && !current_user.is_organization? %>
+    <%=render :partial=>"/client/business_cards/my_business_card" %>
+  <% end %>
+  <%=render "common/bottom"%>
+  <%=render "common/bottom_js"%>
+  <%=render "/client/common/buy_now"%>
+
+	<!--feedback_bar begin-->
+	<div class="feedback_bar">
+		<div class="feedback_unit">
+			<% if I18n.locale.to_s == "zh_CN" %>
+				<%= link_to '' ,feedbacks_path ,:class=>"feedback_zh_CN fancybox"%>		
+			<% else %>
+				<%= link_to '' ,feedbacks_path ,:class=>"feedback_en fancybox"%>
+			<% end %>
+		</div>		
+	</div>
+	<!--feedback_bar end-->
+
+  <script>
+    //set_main_height = function(){
+    //  $(".main").css("height", ($(window).height()-94-75)+"px");
+    //}
+    //set_main_height();
+    //window.onresize = set_main_height;
+  </script>
+
+<script type="text/javascript">
+  var jiathis_config = {}
+  function setShare(title, url) {
+      jiathis_config.title = title;
+      jiathis_config.url = url;
+  }
+</script>  
+<script type="text/javascript" src="http://v1.jiathis.com/code/jia.js?uid=1585960" charset="utf-8"></script>
+
+</body>
+</html>
+

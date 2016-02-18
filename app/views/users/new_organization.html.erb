@@ -1,0 +1,142 @@
+<script>
+$(function() {
+  show_valid_code = function(){
+    $("#img_valid_code").attr("src",'/proof_image');
+  }
+  show_valid_code();
+});
+</script>
+      <!--title 38 begin-->
+      <div class="title38 radius3 bc w790 mgLR3">
+        <strong><%=_('Join CE180')%></strong>
+      </div>
+      <!--title 38 end-->      
+
+        <!--content begin-->
+        <div class="content mgt10">
+        
+          <!--join ce180 begin-->
+          <div class="pdt10 join_login mg0a">
+            <div>
+              <%= link_to _("注册个人用户"), signin_path, :class=>"join_login_a" %>
+            </div>
+          <%=nested_form_for @user||User.new, :url=>create_organization_path do |form|%>
+          
+            <%= form.fields_for :organization do |org| %>
+              <%= org.fields_for :locales do |l| %>
+                <%= l.hidden_field :locale, :value=>I18n.locale %>
+                <!--form_unit begin-->
+                <div class="form_unit">
+                	<div class="s_unit">
+                    <label><%=_('Company/Organization')%> <var>*</var></label>
+                     <%=l.text_field  :name,:class=>"w225"%>
+                  </div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+              	<!--form_unit end-->
+                <!--form_unit begin-->
+                <div class="form_unit">
+                	<div class="s_unit">
+                    <label><%=_("Contact Person's Name")%> <var>*</var></label>
+                     <%=l.text_field  :manager,:class=>"w225"%>
+                  </div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+              	<!--form_unit end-->
+                <!--form_unit begin-->
+                <div class="form_unit">
+                	<div class="s_unit">
+                    <label><%=_('Position')%> <var>*</var></label>
+                     <%=l.text_field  :manager_title,:class=>"w225"%>
+                  </div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+              	<!--form_unit end-->
+              <% end %>
+            <% end %>
+           
+            <!--form_unit begin-->
+            <div class="form_unit">
+            	<div class="s_unit">
+                <label><%=_('Email')%> <var>*</var></label>
+                 <%=form.text_field  :email,:class=>"w225"%>
+              </div>
+              <div class="error_msg mgL110 radius2">
+              <% if !form.object.errors[:email].blank? %>
+                <div class="error"><%=form.object.errors[:email].to_s.html_safe%></div>
+              <% end %>
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end-->
+            <!--form_unit begin-->
+            <div class="form_unit">
+            	<div class="s_unit">
+                <label><%=_('Password')%> <var>*</var></label>
+                  <%=form.password_field  :password,:class=>"w225"%>
+              </div>
+              <div class="error_msg mgL110 radius2"><%=form.error_message_on :password%></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end--> 
+
+            <!--form_unit begin-->
+            <div class="form_unit">
+            	<div class="s_unit">
+                <label><%=_('Re-type Password')%> <var>*</var></label>
+                <%=form.password_field  :password_confirmation,:class=>"w225"%>
+              </div>
+              <div class="error_msg mgL110 radius2"><%=form.error_message_on :password_confirmation%></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end-->   
+          	
+           <!--form_unit begin-->
+            <div class="form_unit img_code">
+            	<div class="s_unit">
+                <label><%=_('Visual Code')%> <var>*</var></label>
+                <%= text_field_tag :valid_code ,'',:class=>"w110"%>
+			          <img src="" id="img_valid_code">
+              </div>
+              <div class="error_msg mgL110 radius2">
+              <% if !@user.errors.blank? && !@user.errors[:verification_code].blank?  %>
+                <div class="error">
+                  <%=@user.errors[:verification_code]%>
+                </div>
+              <% end %>
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end-->                                                           
+
+            <!--form_unit begin-->
+            <div class="form_unit agree_ce180">
+            	<div class="s_unit">
+                <label>&nbsp;</label>
+                <%= check_box_tag :agreement,1, true,:class=>"checkbox" %>
+								<span>
+									<%=_('I agree ')%>		
+								</span>
+								<%= link_to _('CE180 user agreement'),general_agreement_basic_path,:target=>"_blank" %>
+              </div>
+              <div class="error_msg mgL110 radius2"></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end-->   
+            
+            <!--form_unit begin-->
+            <div class="mgt10 mgL135">
+              <%= form.submit _('Join CE180'),:class=>"fl btn028 radius3 bc w95" %>
+              <%=link_to _('Already a CE180 Member?'),'/login',:class=>"fl c069"%>
+              <div class="clear">&nbsp;</div>
+            </div>
+          	<!--form_unit end-->               
+            <% end %>
+						<div class="clear">&nbsp;</div>	
+          </div>
+          <!--join ce180 end-->
+
+          <div class="clear">&nbsp;</div>	
+        </div>
+        <!--content end-->
+

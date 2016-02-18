@@ -1,0 +1,39 @@
+  <%
+     search = params[:search]||{}
+     search[:conditions] ||= {}
+     search[:with] ||= {}
+     
+     city_id = search[:with][:business_card_city_id_eq]
+     province_id = search[:with][:business_card_province_id_eq]
+     country_id  = search[:with][:business_card_country_id_eq]
+  %>
+<!--search_unit begin-->
+    <div class="f_left w540">
+    	<div class="mtitle"><%=_('寻找商业人脉')%></div>
+        <%= form_for :search, :url=>list_client_users_path, :html=>{:method => "get"} do |form|%>
+        <div class="search_unit mg_top20 advanced_search">
+            <%= form.hidden_field "conditions[status]", :value=>1%>
+            <%= form.text_field :key,:placeholder=>_("输入姓名、职位、城市、公司…"),:class=>"w296"%>
+            <%= form.submit _("搜索"),:class=>"submit" %>
+          <a href="javascript:void(0);" class="advanced_search_link"><%=_('高级搜索')%></a>
+        </div>
+        <div class="advanced_search mg_b10">
+        	<strong><%=_('例如')%>:</strong>
+          <span><%=_('李开复, 产品经理 , IBM 等等')%></span>
+        </div>
+               
+			  <div class="search_unit select120 high_level_search location_selection_container" style="display:none">
+            	<%=form.select("with[business_card_country_id_eq]", [[_("国家"),nil]]+Country.includes(:locales).all.map{|c|[c.name,c.id]}, {:selected => search[:with][:industry_id]}, :class=>"country_selector",:"data-locale"=>I18n.locale)%>
+    <%=form.select("with[business_card_province_id_eq]", [[_("省"),nil]]+Location.includes(:locales).where(["parent_id = ?",country_id]).map{|p|[p.name,p.id]}+Province.includes(:locales).where(["parent_id = ?",country_id]).map{|p|[p.name,p.id]},{:selected => province_id}, :class=>"province_selector",:"data-locale"=>I18n.locale)%>
+    <%=form.select("with[business_card_city_id_eq]", [[_("城市"),nil]]+City.includes(:locales).where(["parent_id = ? or id = ?",province_id, city_id]).map{|c|[c.name,c.id]},{:selected => city_id}, :class=>"city_selector",:"data-locale"=>I18n.locale)%>
+    <%= form.select("with[industry_id]", options_for_select(@industries_h.map{|x| [x[:industry_name],x[:id]]}, search[:with][:industry_id]), {:prompt => _("行业")},:class=>"no_margin" ) %>
+        </div>
+      <% end %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--search_unit end-->
+  <script type="text/javascript">
+    $(".advanced_search_link").click(function(){
+       $(".high_level_search").slideToggle();
+    });
+  </script> 

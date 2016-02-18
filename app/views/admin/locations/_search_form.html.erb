@@ -1,0 +1,9 @@
+<!-- search form -->
+<div id="search">
+<%=form_for :search, nil, :html=>{:method=>"get"} do |form|%>
+<%params[:search] ||= {}%>
+<%=form.label :name_like, "name"%> : <%=form.text_field :name_like ,:value=>params[:search][:name_like],:size=>15%>
+<%=submit_tag "search"%>
+<%end%>
+</div>
+<!-- end search -->

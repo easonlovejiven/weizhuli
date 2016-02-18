@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+</head>
+<body>
+<%=render "common/header"%>
+<!--main begin-->
+<div class="w_main h_bg">
+  <%=yield%>
+  <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+
+<%=render :partial=>"/client/business_cards/my_business_card" %>
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+<script type="text/javascript">
+	// tabs
+	$(".tab").tabs(".tab_show");
+	 $(function(){
+
+      $("#post_activity_form").click(function(){
+        $(".publish_activity_content").show();
+        $("#activity_content").css("height","50");
+      })
+      $("#post_activity_form textarea").blur(function (){
+        var self = $(this);
+        setTimeout(function(){
+          if(self.data("dont_hide")){}
+          else{
+            $(".publish_activity_content").hide();
+            $("#activity_content").css("height","18");
+          }
+        },100);
+      });
+
+      $("#activity_submit").click(function(){
+        $("#post_activity_form textarea").data("dont_hide",true);
+        setTimeout(function(){
+          $("#post_activity_form textarea").data("dont_hide",false);
+        },500);
+      });
+	 });
+
+</script>
+<!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js"></script>
+<!-- UJian Button END -->
+</body>
+</html>
+

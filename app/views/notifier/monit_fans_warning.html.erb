@@ -1,0 +1,33 @@
+<strong><%=@screen_name%> 新增高质量粉丝提醒 :</strong> <br/>
+
+<table cellpadding="2" cellspacing="0" border="1" bordercolor="#ccc">
+  <tr>
+    <th> 昵称 </th>
+    <th> 粉丝数 </th>
+    <th> 认证类型 </th>
+    <th> 标签 </th>
+    <th> 关注时间 </th>
+  </tr>
+<%@accounts.each{|account|
+  muser = MUser.find(account.uid)
+  tags = muser && muser.tags || []
+  %>
+
+  <tr>
+    <td><%=link_to account.screen_name, "http://weibo.com/#{account.uid}",:target=>"_blank"%></td>
+    <td><%=account.followers_count%></td>
+    <td><%=account.human_verified_type*","%></td>
+    <td><%=tags*","%></td>
+    <td><%=(Time.now - 2.hour).strftime("%Y-%m-%d %H:00")%></td>
+  </tr>
+<%}%>
+
+
+</table>
+
+
+
+
+
+
+

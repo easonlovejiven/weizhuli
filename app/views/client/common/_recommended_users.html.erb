@@ -1,0 +1,52 @@
+	<!--User Recommended begin-->
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30">
+          <strong><%=_('推荐用户')%></strong>
+          <%=link_to _('换一换'),"javascript:void(0);",:class=>"for_change",:id=>"recommend_user"%>
+      </div>
+        <!--title end-->
+        <!--user_recom begin-->
+        <!--<div class="recommend">   -->
+        <%
+         @recommend_users = User.profile_complished.actived.includes([:profiles,:avatar,:property,{:business_card=>:locales}]).recommend_no_exchange_cards(current_user).has_avatar.where("business_card_locales.company != 'CEBEX Group' and business_card_locales.company != '创业中国精英会'").limit(20)
+      if @recommend_users.size < 20
+         @recommend_users += User.profile_complished.actived.includes([:profiles,:avatar,:property,{:business_card=>:locales}]).no_exchange_cards(current_user).has_avatar.where("business_card_locales.company != 'CEBEX Group' and business_card_locales.company != '创业中国精英会'").limit(20-@recommend_users.size)
+      end
+      @recommend_users = @recommend_users.uniq_by {|user| user.id}
+      %>
+      <%@recommend_users.in_groups_of(5,false).each do |t| %>
+          <div class = "user_change" style="display: none;">
+          <%t.each do |user|%>
+           <%= render :partial => "/client/common/ce_user_card" ,:locals=>{:user=>user} %>
+           <%end%>
+          </div>
+        <%end%>
+        <!--</div> -->
+        <!--user_recom end-->             
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--User Recommended end-->
+
+    <script type="text/javascript">
+         $(document).ready(function(){
+              var a1Divs=$('a#recommend_user').parent().siblings('div.user_change');
+              a1Divs.eq(0).show();
+              $('a#recommend_user').click(function(){
+                  change_num(this)
+              });
+            function change_num(obj) {
+		            var obja = $(obj);
+		            var Divs = obja.parent().siblings('div.user_change');
+		            var nDiv = Divs.filter(':visible');
+                var idx= Divs.index(nDiv);
+                idx++;
+		            if (idx >= Divs.length) {
+			            idx = 0;
+		            }
+                Divs.hide();
+                Divs.eq(idx).show();
+                return false;
+	            }
+           });
+    </script>

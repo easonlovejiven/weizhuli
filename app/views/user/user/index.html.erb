@@ -1,0 +1,6 @@
+    
+  <% if @user.is_industry_icon? %>
+         <%=render :partial => "index_speaker" ,:user=>@user%>
+  <% else %>
+         <%=render :partial => "index_public" ,:user=>@user%>
+  <% end %>

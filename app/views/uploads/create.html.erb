@@ -1,0 +1,13 @@
+
+<%=flash[:notice]%>
+<script>
+pwin = window.parent ;
+if(pwin==null) pwin = window.openner;
+
+if(pwin!=null){
+  pwin.<%=params[:callback]%>(<%=raw @upload.to_json(:methods=>[:file_path])%>);
+  window.close();
+}else{
+  document.write(<%=raw @upload.to_json(:methods=>[:file_path])%>);
+}
+</script>

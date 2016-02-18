@@ -1,0 +1,74 @@
+<%= form_for(@comment,:remote=>true) do |f| %>
+  <%if flash[:notice]%>
+  <div>
+  <%=flash[:notice]%>
+  </div>
+  <%end%>
+
+  <%=hidden_field_tag   :return_to, params[:return_to] || request.env['HTTP_REFERER']%>
+
+  <% if @comment.errors.any? %>
+    <div id="error_explanation" class="errors comments_list">
+      <!--
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+      -->
+      <h2><%=_('对不起, 您的评论提交失败 ')%>:</h2>
+
+      <ul>
+      <% @comment.errors.each do |col, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+            <div class="comments_list">
+            	<div class="comments_ti"><%=_('发表评论')%></div>
+                <div id="comments">
+                	<div class="field">
+              	    <%= f.hidden_field :target_type %>
+                    <%= f.hidden_field :target_id %>
+                    <%= f.text_area :content %>
+                    </div>
+                    <div class="expression_t">
+                    biaoqing
+                    </div>
+                    <div class="clear">&nbsp;</div>
+                </div>
+                <div class="mar_top">
+                  <%=f.fields_for :evaluate do |ef|%>
+                    差<%=ef.radio_button :point, "-1"%>  好<%=ef.radio_button :point, "1"%>
+                  <%end%>
+                </div>
+                <div class="mar_top validate_code">
+                  <%= label_tag :valid_image, _('请输入图片中的验证码(点击后显示):')%>
+                  <%= text_field_tag  :valid_image%> <%=image_tag "/proof_image?"+Time.now.to_i.to_s,:class=>"proof_image"%>
+                </div>
+                <dl class="comments_login">
+                  <%if current_user.nil?%>
+                  <%if @user_session && @user_session.errors.any?%>
+                  <dd class="errors">
+                  <%=_('登录失败, 用户名或者密码不正确!')%>
+                  </dd>
+                  <%end%>
+                	<dd>
+                      <label><%=_('用户')%>：</label>
+                      <%= text_field_tag 'user_session[login]' ,"", :title=>_('请输入用户名')%>
+                      <label><%=_('密码')%>：</label>
+                      <%= password_field_tag 'user_session[password]' ,"", :title=>_('请输入密码')%>
+                      <a href="#"><%=_('忘记密码')%>?</a>
+                      <a href="#"><%=_('注册')%></a>
+                    </dd>
+                  <%end%>
+                    <dt>
+                        <%= f.submit _('发送')%>
+                        <label><%=_('[完成后可按 Ctrl+Enter发布]')%></label>	
+                    </dt>                    
+                </dl>
+            </div>
+
+
+
+
+    
+<% end %>

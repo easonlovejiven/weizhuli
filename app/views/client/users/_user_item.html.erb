@@ -1,0 +1,51 @@
+<!--unit begin-->
+<div class="member_basic w705">
+	<div class="u_avatar35">
+  	<%=link_to  user_avatar_tag(user,:thumb, :size=>"35x35", :scaling=>true),user_path(user) %>
+  </div>
+  <div class="member_basic_c">
+  	<div class="user_name">
+    	<%=link_to user.displayable_name, user_path(user)%>
+  	</div>
+    <div class="user_position">
+      <span><%=user.business_card.title if user.business_card%></span>
+      <span><%=user.business_card.company if user.business_card%></span>
+    </div>
+    <div class="description">
+      <% unless user.events.finished.blank? %>
+        <%= user_salutation(user) + _('参加了') %>  <%= user.events.finished.first.title %> <%= _('on') %> <%= l(user.events.finished.first.start_time.to_date, :format=>:dot) %> .....
+      <% end %>
+      <% unless user.events.upcoming.blank? %>
+        <%= user_salutation(user) + _(" would go to attend") %> <%= user.events.upcoming.first.title %> <%= _('on') %> <%= l(user.events.upcoming.first.start_time.to_date, :format=>:dot) %> .....
+      <% end %>
+    </div>
+    <div class="follow_btn">
+    	<span><var>125</var>followers</span>
+	    <%
+  			case Follow::follow_status(current_user, user)
+  			when Follow::STATUS_FOLLOW_EACH_OTHER
+	    %>
+			<span class="border ce_followed_user"><%=_('已关注')%></span>
+	    <%
+	      when Follow::STATUS_FOLLOWING
+	    %>
+        <span class="border ce_followed_user"><%=_('已关注')%></span>
+      <%
+        when Follow::STATUS_CAN_NOT_FOLLOW
+      %>
+      <% else %>
+		    <%=link_to _('关注'),client_follow_path(user),{:class=>"border ce_follow_user",:data_follow_url=>client_follow_path(user),:data_unfollow_url=>client_unfollow_path(user),:data_from_dashboard=>"yes"}%>
+	    <%end%>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <ol class="op_btn">
+  	<li>
+    	<%=link_to(_('发私信'), new_client_private_message_path(:private_message=>{:to_user_id=>user.id,:to_user_name=>user.displayable_name}),:class=>"send_msg msg fancybox") if current_user.id != user.id%>
+  	</li>
+    <li><a class="card">交换名片</a></li>
+  </ol>
+	<div class="clear">&nbsp;</div>
+</div>
+<!--unit end-->
+

@@ -1,0 +1,2 @@
+module Pinganbeijing::WeibosHelper
+end

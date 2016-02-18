@@ -1,0 +1,45 @@
+<% content_for :special_css do%>
+<%=stylesheet_link_tag "general"%>
+<%end%>
+
+<!--about us main begin-->
+<div class="about_block">
+  <%=render "left_menu"%>
+	<!--right begin-->
+	<div class="about_right">
+		<div class="about_title">
+			<strong><%=_('在先提交建议 / BUG / 问题')%></strong>
+			<div class="clear">&nbsp;</div>
+		</div>
+		<div class="about_content">
+			<div class="message_type">
+				<var><%=_('留言类型：')%></var>
+				<input type="radio" value="1" name=""/>
+				<span><%=_('意见建议')%></span>
+				<input type="radio" value="1" name=""/>
+				<span><%=_('BUG提交')%></span>
+				<input type="radio" value="" name=""/>
+				<span><%=_('投诉举报')%></span>
+				<input type="radio" value="" name=""/>
+				<span><%=_('站内求助')%></span>
+			</div>
+			<div class="message_type">
+				<label><%=_('您的昵称')%>：</label>
+				<input type="text" class="message_in" value=""/>
+			</div>
+			<div class="proposals">
+				<label><%=_('建议内容')%>：</label>
+				<textarea><%=_('输入内容')%></textarea>
+			</div>
+			<div class="message_submit">
+				<input type="submit"  value=<%=_('提交')%>/>
+			</div>
+			<div class="clear">&nbsp;</div>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+	<!--right end-->
+
+	<div class="clear">&nbsp;</div>
+</div>
+<!--about us main end-->

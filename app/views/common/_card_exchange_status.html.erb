@@ -1,0 +1,19 @@
+
+<%
+  if current_user && current_user != user && !user.business_card.blank?
+    case CardsRelation::relation_status(current_user,user)
+	when CardsRelation::NO_RELATION
+	user_avatar = user_avatar_tag(user,:thumb,:size=>"40x40",:scaling=>true)
+%>
+	<a onclick="$('#my_business_card').reset();" data-card-id="<%=user.business_card.id%>" data-card-name="<%=user.business_card.display_name.to_s%>" data-card-title="<%=user.business_card.title.to_s%>" href="#my_business_card" class="card round change_cbutton exchange_card exchange_card_<%=user.business_card.id%>" data-card-image='<%= "#{user_avatar.to_s}" %>'><%=_('交换名片')%></a>
+	<% when CardsRelation::SENT %>
+	<a class="card round"><%=_('已发送')%></a>
+	<% when CardsRelation::RECEIVED %>
+	<a class="card round"><%=_('已收到')%></a>
+	<% when CardsRelation::EXCHANGED %>
+	<a class="card round"><%=_('已相互交换')%></a>
+	<% end %>
+<% elsif current_user.nil?%>
+  <%=link_to _('交换名片'),login_path(:return => request.url), :class=>"card round fancybox"%>
+<%  end %>
+

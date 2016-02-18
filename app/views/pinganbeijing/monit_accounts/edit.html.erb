@@ -1,0 +1,19 @@
+  <div class="info_name">
+    其它帐号记录 - 编辑信息
+  </div>
+
+
+  <div class="row-fluid">
+    <div class="span12">
+      <%=form_for @monit_account, :url=>pinganbeijing_monit_account_path(@monit_account) do |form|%>
+        <%=render form%>
+        <p>
+          <%=form.submit "保存",:class=>"btn btn-primary"%>
+          <%=link_to "<<取消", pinganbeijing_monit_accounts_path(site:@site)%>
+        </p>
+      <%end%>
+    </div>
+  </div>
+    
+
+  </div>

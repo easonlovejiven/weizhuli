@@ -1,0 +1,258 @@
+<%content_for(:special_js) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+    var upload_iframe_link  = null;
+    var image_selector = null;
+    var uploaded_file = null;
+    //
+    function crop_avatar(fileObj){
+      uploaded_file = fileObj;
+      if(image_selector) image_selector.cancelSelection();
+      website.log(fileObj);
+      if(upload_iframe_link){
+      
+        var limit_width = 300;
+        var limit_height = 300;
+      
+        var thumb_div = $(upload_iframe_link).parents(".basic_information").find(".image_uploaded");
+        var org_width = fileObj.image.attachment_width;
+        var org_height = fileObj.image.attachment_height;
+        var new_width, new_height = 0;
+        var scale = 0;
+        var default_top, default_left, default_width, default_height;
+        if(org_width > org_height){
+
+          scale = limit_width/org_width;
+          new_width = limit_width;
+          new_height = org_height * scale;
+          
+          default_height = new_height/2;
+          default_width = default_height;
+          default_top = (new_height - default_height) / 2;
+          default_left = (new_width - default_width) / 2;
+          
+        }else{
+        
+          scale = limit_height/org_height;
+          new_height = limit_height;
+          new_width = org_width * scale;
+          
+          default_width = new_width/2;
+          default_height = default_width;
+          default_top = (new_height - default_height) / 2;
+          default_left = (new_width - default_width) / 2;
+          
+        }
+        
+        
+        thumb_div.html("<img src='"+fileObj.image.file_path.original+"' width='"+new_width+"' height='"+new_height+"' />");
+        $(upload_iframe_link).parents(".basic_information").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+        
+        image_selector = $(".image_uploaded img").imgAreaSelect({
+          x1: default_left,
+          y1: default_top,
+          x2: default_left+default_width,
+          y2: default_top+default_height,
+          aspectRatio: '1:1',
+          instance: true,
+          handles: true,
+          onSelectEnd: function image_on_cropped(img, selection){
+            website.log(selection);
+            $("#avatar_crop_top").val(selection.y1/scale);
+            $("#avatar_crop_left").val(selection.x1/scale);
+            $("#avatar_crop_height").val(selection.height/scale);
+            $("#avatar_crop_width").val(selection.width/scale);
+          }
+        });
+
+
+        // set default position
+        $("#avatar_crop_top").val(default_top/scale);
+        $("#avatar_crop_left").val(default_left/scale);
+        $("#avatar_crop_height").val(default_height/scale);
+        $("#avatar_crop_width").val(default_width/scale);
+
+
+        
+        $("#avatar_scale").val(scale);
+        $("#avatar_image_id").val(fileObj.image.id);
+        
+        
+        $(".submit_button").show();
+        
+      }
+    }
+
+  // for activity comment post form
+  $("#crop_avatar_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      if($('#return').length>0){
+        window.location.href = $('#return').val();
+      }
+      $(".notice .success",this).show().find(".message").text(ce_edit_success);
+      
+      // replace user avatar
+      $("#user_avatar").html("<img width=60 height=60 src=\""+data+"\"/>");
+    })
+    .live("ajax:failed", function(xhr, data, status) {
+      $(".notice .failed",this).show().find(".message").text("failed");
+    });
+
+
+
+    $(function(){
+      $("a.iframe").fancybox({width:543 , height:170});
+      
+      $("a.upload_iframe_link").click(function(){
+        upload_iframe_link = this;
+      });
+    });
+
+  </script>
+
+<%end%>
+
+
+<!--Title begin-->
+  <%= render :partial => 'common/right_buttons/my_accounts', :locals=>{:action => 'upload_avatar'} %>    
+<!--Title end-->    	
+
+  <!--content begin-->
+  <div class="content mgt10">
+
+    <!--change begin-->
+    <div class="basic_information mgt20">
+ 		  <%=form_for :avatar, :url=>crop_avatar_client_user_path, :html=>{:id=>"crop_avatar_form", :"data-type"=>"html"}, :remote=>true do |form|%>
+
+   		  <%=hidden_field_tag :avatar_scale%>
+   		  <%=hidden_field_tag :avatar_image_id%>
+   		  <%=hidden_field_tag :avatar_crop_top%>
+   		  <%=hidden_field_tag :avatar_crop_left%>
+   		  <%=hidden_field_tag :avatar_crop_width%>
+   		  <%=hidden_field_tag :avatar_crop_height%>
+   		  <% if !params[:return].blank? %>
+     		  <%=hidden_field_tag :return, params[:return] %>
+   		  <% end %>
+			
+				<div class="">
+					<div id="user_avatar" class="">
+						<%= ce_image(current_user, :avatar, :index_thumb, :size=>"60x60", :scaling=>true) %>
+					</div>
+					<div class="button mgt10">
+						<%=link_to _('上传图片'),new_client_upload_type_path("image",:layout=>'dialog',:content_type=>"User",:callback=>"crop_avatar"), :class=>"iframe upload_iframe_link btn28 bc radius3"%>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</div>
+			
+				<div class="image_uploaded avatar300 mgt10">
+   		    <%=image_tag "avatar300.jpg", :size=>"300x300"%>
+   		  </div>
+   		  <div class="submit_button mgt10" style="display:none">
+   		    <%=form.submit _("保存"),:class=>"btn30 bc radius3 w85"%>
+   		  </div>
+        <div class="notice mgt10 success_failed">
+					<p class="success" style="display:none"><img src="/images/ok_21.gif" alt=""/><span class="message"></span></p>
+					<p class="failed" style="display:none"><img src="/images/e_17.jpg" alt=""/><span class="message"></span></p>
+        </div>
+ 		  <%end%>
+      <div class="clear">&nbsp;</div>	
+    </div>
+    <!--change end-->
+    
+    
+    <div class="clear">&nbsp;</div>	
+  </div>
+  <!--content end-->
+
+    
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+	});
+	
+  // for activity comment post form
+  $("#basic_info_edit_form, #edu_edit_form, #company_edit_form, #password_edit_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.errors){
+        for(var key in data.errors){
+          var msg = data.errors[key];
+          $("."+key+"_error", this).text(msg.join(","));
+        }
+      }else{
+        $(".notice",this).show().find(".success .message").text("success");
+      }
+
+    });
+  	
+	//
+	$(".add_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	    // add profile form
+  	  form.find(".add_more_profiles_btn").click();
+	    var type = $(this).attr("data-profile-type");
+	    switch(type){
+	      case  "profile":{
+	        break;
+	      }
+	      case  "edu":{
+	        form.find(".add_more_edu_btn:last").click();
+	        break;
+	      }
+	      case  "company":{
+	        form.find(".add_more_company_btn:last").click();
+	        break;
+	      }
+	      case  "addition":{
+	        form.find(".add_nested_fields:last").click();
+	        break;
+	      }
+	    }
+	    
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").show();
+	    form.find(".profile_fields:last input[name*=destroy]").val("0");
+	  }
+	  
+    form.find(".profile_fields:last legend").text("English");
+	  // hide ADD  button, show remove button
+	  $(this).hide();
+	  form.find(".remove_profile_language_btn").show();
+	  
+	  
+	  return false;
+	});
+	
+	// 
+	$(".remove_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").hide();
+	    form.find(".profile_fields:last input[name*=destroy]").val("1");
+	  }
+	  
+	  // hide REMOVE  button, show ADD button
+	  $(this).hide();
+	  form.find(".add_profile_language_btn").show();
+	  
+	  return false;
+	});
+</script>
+
+

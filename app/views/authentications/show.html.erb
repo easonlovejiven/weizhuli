@@ -1,0 +1,18 @@
+<p>
+  <b>User:</b>
+  <%=h @authentication.user_id %>
+</p>
+
+<p>
+  <b>Provider:</b>
+  <%=h @authentication.provider %>
+</p>
+
+<p>
+  <b>Uid:</b>
+  <%=h @authentication.uid %>
+</p>
+
+
+<%= link_to 'Edit', edit_authentication_path(@authentication) %> |
+<%= link_to 'Back', authentications_path %>

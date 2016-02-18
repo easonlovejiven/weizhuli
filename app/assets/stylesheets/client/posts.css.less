@@ -1,0 +1,135 @@
+// Place all the styles related to the client/posts controller here.
+// They will automatically be included in application.css.
+// You can use Less here: http://lesscss.org/
+
+
+#new_post{
+  
+  .post-form-container{
+    border: 1px solid #ddd;
+    border-bottom: none;
+    outline: 0;
+  //  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+  //  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+  //  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);  
+    
+    textarea{
+      width:100%;
+      border:none;
+      resize:none;
+      margin:0;
+      padding:0;
+      
+      &:focus{
+        border-color:none;
+        border:none;
+        -webkit-box-shadow:none;
+        box-shadow:none;
+      }
+    }
+    
+    .left-words{
+      i{
+        color:red;
+      }
+    }
+
+    .image-thumb{
+      text-align:center;
+
+      img{
+        &:hover{
+          -webkit-mask: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,.8)), to(rgba(255,255,255,.8)));
+        }
+      }
+    }
+    .multi{
+      img{
+        border: 0;
+        width: 33%;
+        float: left;
+        
+      }
+
+    }
+  }
+
+  .post-form-status-bar{
+    background: #fafafa;
+    border: 1px solid #ddd;
+
+    .send_chose {
+      padding: 8px 0;
+      text-indent: 20px;
+      label {
+        display:inline;
+      }
+    }  
+    .alert{
+      margin-bottom:0px;
+    }
+
+  }
+
+}
+#post-image-form-container{
+  width:150px;
+  height:auto;
+  padding:15px;
+  text-align:center;
+  .uploading-progress{
+    display:none;
+  }
+}
+.footer > *{
+  float:left;
+  margin:0 10px;
+}
+
+#post_category{
+  width:auto;
+}
+
+
+#time-selector {
+  select {
+    width: 80px;
+  }
+  #time_auto_increase {
+    width: 50px;
+  }
+}
+
+#image-upload-popbox {
+  left:-185px;
+  top:20px;
+  z-index:99;
+}
+
+
+.upload-button{
+  text-align: center;
+  .fileinput-button{
+    float:none;
+  }
+}
+
+
+.weibo-widgts{
+  > a{display:inline-block;margin-right:5px;height:16px;line-height:16px;padding-left:22px;background:url(/assets/ic_2.jpg) no-repeat;color:#71a7c3;}
+  a:hover{}
+  .la1{background-position:0 0px;}
+  .la2{background-position:0 -16px;}
+  .la3{background-position:0 -32px;}
+  .la4{background-position:0 -48px;}
+  .la5{background-position:0 -64px;}
+} 
+
+
+.post-list{
+  .post-content{
+    img{
+      float:right;
+    }
+  }
+}

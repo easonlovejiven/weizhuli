@@ -1,0 +1,68 @@
+
+		<!--share content begin-->
+    <div class="s_content">
+      <%=raw(activity_content(@activity.content))%>
+      <div class="upload_pic">
+      </div>
+      
+      <!--bottom_bar begin-->
+      <div class="bar_fcc">
+        <strong class="color9"><%= activity_time(@activity.created_at.to_datetime)%></strong>
+        <h5>
+        <%=link_to _('删除'), client_activity_path(@activity), :method => "DELETE",:class=>"remote_activity_destroy",:'data-remote'=>true %> | <%=link_to _('转发')+"(#{@activity.forwarded})", new_client_activity_path(:forward=>@activity), :class=>"fancybox"%> | <%=link_to _('评论')+"(#{@activity.commented})",client_activity_activity_comments_path(@activity),:class=>"activity-replies-link"%>
+        </h5>  
+      </div>      
+      <!--bottom_bar end-->          
+      <div class="clear">&nbsp;</div>    
+    </div>
+    <!--share content end-->
+   
+		<!--share  begin-->
+    <div class="share_comment">
+    	<div class="d_comment">
+        <%=form_for [:client,@activity,ActivityComment.new(:activity=>@activity)],:remote=>true, :"date-type"=>"json", :html=>{:'data-type'=>'html', :id=>"post_activity_comment_form"} do |form|%>
+          <%=hidden_field_tag :from, @from%>
+          <%=form.text_area :content, :rows=>5%>
+          <%=form.error_message_on :content%>
+          <%=form.hidden_field  :activity_id%>
+          <%=form.submit _("评论")%>
+        <%end%>
+      </div>
+		</div>          
+    <!--share end-->
+      
+    <div id="activity_comments_container" data-load="<%=client_activity_activity_comments_path(@activity,:from=>"list_for_activity")%>">
+    </div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<script>
+
+  var load_comments = function(){
+    $("#activity_comments_container").load($("#activity_comments_container").attr("data-load"));
+  }
+
+  $("#post_activity_comment_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      $("textarea",this).val("");
+      load_comments();
+    });
+  
+    load_comments();
+  
+</script>
+
+
+

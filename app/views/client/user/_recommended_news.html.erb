@@ -1,0 +1,6 @@
+
+    <ul class="indu_list">
+      <%industry_news.each{|news|%>
+      <li><%=link_to news.title, client_news_path(news),:title=>news.title%></li>
+      <%}%>
+    </ul>

@@ -1,0 +1,138 @@
+  <div class="info_name">
+    <%
+      @title = (@uid.to_i == 2295615873 ? "微博监控" : "内容库")
+
+    %>
+    <%=@title%>
+  </div>
+
+  <div class="row-fluid search-box radius-3">
+    <div class='title'>
+      <strong>筛选条件</strong>
+    </div>
+    <div class="span12 conditions">
+      <%=form_for :search, :url=>client_contents_path,:method=>:get do |form|
+        %>
+      <div class="tags">
+        <span>
+          发布时间范围:
+          <%=form.text_field :start_time,:value=>@q[:start_time],:placeholder=>"大于,如:2013-10-1"%>
+          -
+          <%=form.text_field :end_time,:value=>@q[:end_time],:placeholder=>"小于,如:2013-10-1"%>
+        </span>
+        <span>
+          微博类型:
+          <%=form.select :content_type,options_for_select([['不限',nil],['图片','image'],['视频','video']],@q[:content_type])%>
+        </span>
+        <span><lable>关键词: </lable>
+          <%=form.text_field :keyword,:value=>@q[:keyword],:placeholder=>"关键词"%>
+        </span>
+        <span><lable>监控帐号: </lable>
+          <%=form.select :uid,options_for_select([["不限",""]]+@accounts.map{|a|[a.screen_name, a.uid]},@q[:uid])%> <a href="#" onclick="alert('如需添加更多监控帐号, 请联系您的销售经理.')">添加</a>
+        </span>
+        <span><lable>互动量大于: </lable>
+          <%=form.text_field :interaction_egt,:value=>@q[:interaction_egt]%>
+        </span>
+      </div>
+      <div class="search-btn"><%=form.submit "搜索", :class=>"btn btn-info"%></div>
+      <%end%>
+    </div>
+  </div>
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong><%=@title%>列表</strong>
+      <!--
+      <div class="btn-right">
+        <button type="button" class="btn btn-default">添加备注</button>
+        <button type="button" class="btn btn-default">添加分组</button>
+      </div>
+    -->
+    </div>
+    <div class="list">
+      <table class="table table-bordered table-hover post-list">
+
+        <thead>
+          <%
+          s1 = sort_type(@sort_col,"post_at",@sort_type)
+          s2 = sort_type(@sort_col,"interactions",@sort_type)
+
+          l1 = sort_label(@sort_col,"post_at",@sort_type)
+          l2 = sort_label(@sort_col,"interactions",@sort_type)
+          %>
+
+          <th width="100">帐户</th>
+          <th>内容</th>
+          <th width="80"><%=link_to "发布时间#{l1}", client_contents_path(sort_type:s1,sort_col:"post_at")%></th>
+          <th width="40">类型</th>
+          <th width="80"><%=link_to "互动量#{l2}", client_contents_path(sort_type:s2,sort_col:"interactions")%></th>
+          <th width="40">操作</th>
+        </thead>
+        <tbody>
+          <%
+            users = {}
+            @posts.each{|p|
+            post = MWeiboContent.find(p.weibo_id)
+            user = (users[post.uid] ||= WeiboAccount.find_by_uid(post.uid))
+            %>
+          <tr style="height:120px">
+            <td> <%=user.screen_name%> </td>
+            <td class="post-content">
+              <span style="float:left;width:75%" class="content">
+                <%=post.text%>
+              </span>
+              <%if post.thumbnail_pic?
+                %>
+                <%=image_tag post.thumbnail_pic%>
+              <%end%>
+            </td>
+            <td><%=l Time.parse(post.created_at)%></td>
+            <td>
+              <!-- <%=p.weibo_id%> -->
+              <%="图片" if p.image?%>
+              <%="视频" if p.video?%>
+            </td>
+            <td><%=p.reposts_count+p.comments_count%></td>
+            <td>
+              <%=link_to "查看", post.url,:target=>"_blank" if post.url%>
+            </td>
+          </tr>
+          <%}%>
+          <%if !@posts.any?%>
+          <tr>
+            <td colspan=6 class='text-center'>没有内容</td>
+          </tr>
+          <%else%>
+          <tr>
+            <td colspan=6 class='text-right'>
+              <div class="span10 pull-right">
+                <%=will_paginate(@posts)%>
+              </div>
+            </td>
+          </tr>
+          <%end%>
+        </tbody>
+        
+
+      </table>
+    </div>
+
+  </div>
+
+<%content_for :tail do%>
+  <script>
+//    init_city_selects($("#search_province"),$("#search_city"),'<%=@q[:province]%>','<%=@q[:city]%>');
+
+    <%if @q[:keyword].present?%>
+
+    $("span.content").each(function () {
+
+        var text = $(this).text();
+        text = text.replace(/<%=@q[:keyword]%>/g, '<span class="highlight"><%=@q[:keyword]%></span>')
+        $(this).html(text);
+    });
+    <%end%>
+
+
+  </script>
+<%end%>

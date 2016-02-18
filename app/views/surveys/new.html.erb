@@ -1,0 +1,191 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>微信有奖小调查</title>
+<style type="text/css"> 
+body{font-family:"微软雅黑";font-size:14px;margin:0px;padding:0px;}
+.wxdc{text-align:justify;overflow:hidden;}
+.wxdc_tit{margin:0px;width:100%;height:auto;}
+.wxdc_jj{margin:0px;}
+.wxdc_jj img{width:100%;height:auto;}
+.wxdc dl{margin:0px;background:#f7f7f7;}
+.wxdc dt{margin:10px 0px;padding:12px 10px;background:#FFF;border-bottom:1px solid #f1f1f1;color:#78ad71;font-weight:bold;}
+.wxdc dd{margin:0px;padding:5px 10px 0px;height:35px;color:#4e4e4e;}
+.wxdc input{margin:0px;display:inline-block;}
+.wxdc label{margin:0px;line-height:18px;display:inline-block;padding-left:3px;}
+.wxdc textarea{width:100%;}
+.wxdc input[type="submit"]{padding:3px 10px;height:50px;background-color: #78ad71;border-color: transparent;display: inline-block;text-align: center;background-image: none;font-size: 15px;font-weight: 300;color:#ffffff;}
+
+</style>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="wxdc">
+    <img class="wxdc_tit" src="/assets/magic.jpg" />
+    <div class="wxdc_jj">
+        <img src="/assets/banner.jpg" />
+    </div>
+    <form action="/surveys" method="post" onsubmit="return validate(this)">
+    <dl>
+        <dt style="margin-top:0px;">您希望在【中智北京】订阅号中看到那些内容信息：（多选）</dt>
+        <dd>
+          <input type="checkbox" name="answer[answer[s_1_1]]][]" value="行业资讯"/>
+            <label>行业资讯</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="HR政策解读"/>
+            <label>HR政策解读</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="中智业务流程"/>
+            <label>中智业务流程</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="HR沙龙课程资讯"/>
+            <label>HR沙龙课程资讯</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="HR专业知识"/>
+            <label>HR专业知识</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="励志&amp;职场故事"/>
+            <label>励志&amp;职场故事</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="娱乐&amp;生活服务信息"/>
+            <label>娱乐&amp;生活服务信息</label>
+        </dd>
+        <dd>
+          <input type="checkbox"  name="answer[answer[s_1_1]][]" value="其它"/>
+          <input type="text" placeholder="其他..."  name="answer[answer[a_1_1]]" value=""/>
+        </dd>
+        <dt>“智服务”栏目内的文章长度，您觉得是否合理：</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_2_1]]" value="太长"/>
+            <label>太长</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_2_1]]" value="太短"/>
+            <label>太短</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_2_1]]" value="正好"/>
+            <label>正好</label>
+        </dd>
+        <dt>“智服务”选取的流程文章，是您（您的客户）最常需要的吗：</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_3_1]]" value="是"/>
+            <label>是</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_3_1]]" value="不是"/>
+            <label>不是</label>
+            <input type="text" placeholder="我希望去掉或者增加..."   name="answer[answer[a_3_1]]" value=""/>
+        </dd>
+        <dt>您对“智查询”栏目设置的“非交互式查询”内容的意见：</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_4_1]]" value="满意"/>
+            <label>满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_4_1]]" value="基本满意"/>
+            <label>基本满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_4_1]]" value="我希望去掉或者增加"/>
+            <input type="text" placeholder="我希望去掉或者增加..."   name="answer[answer[a_4_1]]" value=""/>
+        </dd>
+        <dt>您对“中智北京”栏目设置的意见：</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_5_1]]" value="满意"/>
+            <label>满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_5_1]]" value="基本满意"/>
+            <label>基本满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_5_1]]" value="我希望去掉或者增加"/>
+            <input type="text" placeholder="我希望去掉或者增加..."  name="answer[answer[a_5_1]]"/>
+        </dd>
+        <dt>您对“自动回复”内容的意见：</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_6_1]]" value="满意"/>
+            <label>满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_6_1]]" value="基本满意"/>
+            <label>基本满意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_6_1]]" value="我希望去掉或者增加"/>
+            <input type="text" placeholder="我希望去掉或者增加..."  name="answer[answer[a_6_1]]"/>
+        </dd>
+        <dt>您是否愿意向朋友推荐并分享中智北京微信的内容？</dt>
+        <dd>
+          <input type="radio"  name="answer[answer[s_7_1]]" value="愿意"/>
+            <label>愿意</label>
+        </dd>
+        <dd>
+          <input type="radio"  name="answer[answer[s_7_1]]" value="不愿意"/>
+            <label>不愿意</label>
+        </dd>
+        <dt>您的意见或者建议？</dt>
+        <dt>
+          <textarea rows=5 name="answer[answer[a_8_1]]" placeholder="请输入您的意见或建议..."></textarea>
+        </dt>
+        <dt align="center">
+          <input type="submit" value="提  交"/>
+        </dt>
+    </dl>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+Array.prototype.unique = function() {
+    var unique = [];
+    for (var i = 0; i < this.length; i++) {
+        if (unique.indexOf(this[i]) == -1) {
+            unique.push(this[i]);
+        }
+    }
+    return unique;
+};
+
+var validate = function(f){
+  // f = document.forms[0];
+
+  var names = [];
+  for(var i in f.elements){
+    names.push(f.elements[i].name);
+  }
+
+  names = names.unique();
+  for(var i=0; i < names.length; i++){
+    var name = names[i];
+    if(name == null) continue;
+    var n = name.split(/[\[|\]]/)[2];
+    if(n==null) continue;
+    if(n.match(/^s_/)){
+      var ele = document.querySelector('input[type=checkbox][name*='+n+']:checked') || document.querySelector('input[type=radio][name*='+n+']:checked');
+      if (ele == null){
+        alert("选择题请至少选择一个选项");
+        return false;
+      }
+    }else if(n.match(/^a_/)){
+    }
+  }
+  return true;
+}
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<%content_for :css do%>
+  <%= stylesheet_link_tag "pinganbeijing/account_summaries", :media => "all" %>
+<%end%>
+  <div class="info_name">
+    控制面版
+  </div>
+
+
+  <%=render "/pinganbeijing/account_summaries/summary"%>
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong>最新收到评论内容列表</strong>
+    </div>
+    <div class="list">
+      <table class='table'>
+        <%@comments.each{|comment|
+          user = WeiboAccount.find_by_uid(comment.comment_uid)
+          mcomment = MComment.find(comment.comment_id)
+          origin_url = "http://weibo.com/#{mcomment.status['user']['id']}/#{WeiboMidUtil.mid_to_str(mcomment.status['mid'])}"
+        %>
+        <tr>
+          <td><span style='width:40px'><%=image_tag user.profile_image_url,:size=>"30x30", style:""%></span></td>
+          <td width="45%"><a href="http://weibo.com/<%=user.uid%>" target="_blank">
+                <%=user.screen_name%>
+            </a>
+                <%if user.verified_type == 0%>
+                  <i class="icon approve"></i>
+                <%elsif (1..10).include?(user.verified_type)%>
+                  <i class="icon approve_co"></i>
+                <%end%> :
+            <%=mcomment.text%>
+            (<%=l comment.comment_at%>)
+          </td>
+          <td width="45%">
+            原微博内容：<%=truncate(mcomment.status['text'],:length=>20)%><br/>
+            原微博链接：<%=link_to origin_url,origin_url,:target=>"_blank"%>
+          </td>
+        </tr>
+        <%}%>
+
+      </table>
+      <%=will_paginate @comments%>
+    </div>
+  </div>

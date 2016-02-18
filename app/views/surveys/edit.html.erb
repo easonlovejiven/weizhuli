@@ -1,0 +1,89 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>微信有奖小调查</title>
+<style type="text/css"> 
+body{font-family:"微软雅黑";font-size:14px;margin:0px;padding:0px;}
+.wxdc{text-align:justify;overflow:hidden;}
+.wxdc_tit{margin:0px;width:100%;height:auto;}
+.wxdc_jj{margin:0px;}
+.wxdc_jj img{width:100%;height:auto;}
+.wxdc dl{margin:0px;background:#f7f7f7;}
+.wxdc dt{margin:10px 0px;padding:12px 10px;background:#FFF;border-bottom:1px solid #f1f1f1;color:#78ad71;font-weight:bold;}
+.wxdc dd{margin:0px;padding:15px 10px;color:#4e4e4e;}
+.wxdc input{margin:0px;display:inline-block;}
+.wxdc label{margin:0px;line-height:18px;display:inline-block;padding-left:3px;}
+.wxdc textarea{width:100%;}
+.wxdc input[type="submit"]{padding:3px 10px;height:50px;background-color: #78ad71;border-color: transparent;display: inline-block;text-align: center;background-image: none;font-size: 15px;font-weight: 300;color:#ffffff;}
+h3{text-align: center;color: #666666;padding:10px;line-height:30px;}
+table{width:100%;}
+</style>
+<script type="text/javascript" src="/assets/jquery.min.js"></script>
+
+</head>
+
+<body>
+<div class="wxdc">
+    <img class="wxdc_tit" src="/assets/magic.jpg" />
+    <div class="wxdc_jj">
+        <img src="/assets/banner.jpg" />
+    </div>
+    <%if !@answer["info"]%>
+    <h3>感谢您的参与，请留下您的联系方式<br/>该联系方式作为您参与此次活动中奖的唯一标识</h3>
+    <%=form_for @answer, :url=>survey_path(@answer), :html=>{:onsubmit=>"return validate(this)"} do |form|%>
+
+    <dl>
+        <dd>
+          <table>
+            <table>
+              <tr>
+                <td width="40%">您的姓名: </td>
+                <td><input type="text" placeholder="姓名"  id="name" name="answer[info[name]]" value=""/></td>
+              </tr>
+              <tr>
+                <td>您所在的公司: </td>
+                <td><input type="text" placeholder="公司名称"  id="company" name="answer[info[company]]" value=""/></td>
+              </tr>
+              <tr>
+                <td>您的手机号码: </td>
+                <td><input type="text" placeholder="手机号码" id="phone"  name="answer[info[phone]]" value=""/></td>
+              </tr>
+              <tr>
+                <td>微信昵称: </td>
+                <td><input type="text" placeholder="微信昵称" id="weixin_name"  name="answer[info[weixin_name]]" value=""/></td>
+              </tr>
+            </table>
+          </table>
+          <label></label>
+        </dd>
+        <dt align="center">
+          <%=form.submit "提  交"%>
+        </dt>
+    </dl>
+    <%end%>
+    <%else%>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h3>您的信息已经提交成功, 感谢您的参与 </h3>
+    <%end%>
+</div>
+
+<script type="text/javascript">
+
+var validate = function(form){
+  if($("#name").val() == ""){alert("请填写您的姓名"); return false}
+  if($("#company").val() == ""){alert("请填写您的公司"); return false}
+  if($("#phone").val() == ""){alert("请填写您的手机号码"); return false}
+  if($("#weixin_name").val() == ""){alert("请填写您的微信昵称"); return false}
+  if($("#phone").val().match((/1\d{10}/)) == null) {alert("手机号码格式不正确"); return false}
+  return true;
+}
+
+</script>
+</body>
+</html>

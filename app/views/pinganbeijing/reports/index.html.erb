@@ -1,0 +1,300 @@
+<%content_for :css do%>
+  <%= stylesheet_link_tag "pinganbeijing/account_summaries", :media => "all" %>
+<%end%>
+  <div class="info_name">
+    统计报表
+  </div>
+
+
+  <%=render "/pinganbeijing/account_summaries/summary"%>
+
+  <div class="row-fluid fans-list-box radius-3 search-box">
+    <div class='title'>
+      <strong>近7天粉丝增长趋势</strong>
+    </div>
+    <div class="list">
+      <div class="row-fluid">
+        <div id='chart1' class='span12' style='height:200px;'></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row-fluid fans-list-box radius-3 search-box">
+    <div class='title'>
+      <strong>近7天每日新增粉丝</strong>
+    </div>
+    <div class="list">
+      <div class="row-fluid">
+        <div id='chart2' class='span12' style='height:200px;'></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row-fluid fans-list-box radius-3 search-box">
+    <div class='title'>
+      <strong>近7天每日发微博数量</strong>
+    </div>
+    <div class="list">
+      <div class="row-fluid">
+        <div id='chart3' class='span12' style='height:200px;'></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row-fluid fans-list-box radius-3 search-box">
+    <div class='title'>
+      <strong>近7天互动数量</strong>
+    </div>
+    <div class="list">
+      <div class="row-fluid">
+        <div id='chart4' class='span12' style='height:200px;'></div>
+      </div>
+    </div>
+  </div>
+
+
+<%content_for :tail do %>
+
+<script type="text/javascript">
+
+$(function(){
+
+
+
+
+
+  $('#chart1').highcharts({
+      chart: {
+        type: 'spline'
+      },
+      credits: { 
+        enabled: false
+      },
+      plotOptions: {
+          spline: {
+              lineWidth: 4,
+              states: {
+                  hover: {
+                      lineWidth: 5
+                  }
+              },
+              marker: {
+                  enabled: false
+              },
+              events:{
+                click: function(event){
+                }
+              }
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      title: {
+          text: null
+      },
+      xAxis: {
+          categories: <%=@account_snaps.map(&:date).to_json.html_safe%>,
+          gridLineWidth: 1,
+          gridLineColor: '#d0d0d0',
+          gridLineDashStyle: "Dash",
+          style: {
+            color: '#6D869F',
+            fontSize: "9px",
+            fontWeight: 'bold'
+          }
+
+      },
+      yAxis: {
+          title: {
+              text: null
+          }
+      },
+      series: [{
+          name:"粉丝数量",
+          data: <%=@account_snaps.map(&:followers_count).to_json.html_safe%>
+      }]
+  });
+
+
+
+
+
+  $('#chart2').highcharts({
+      chart: {
+        type: 'spline'
+      },
+      credits: { 
+        enabled: false
+      },
+      plotOptions: {
+          spline: {
+              lineWidth: 4,
+              states: {
+                  hover: {
+                      lineWidth: 5
+                  }
+              },
+              marker: {
+                  enabled: false
+              },
+              events:{
+                click: function(event){
+                }
+              }
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      title: {
+          text: null
+      },
+      xAxis: {
+          categories: <%=@account_snaps.map(&:date).to_json.html_safe%>,
+          gridLineWidth: 1,
+          gridLineColor: '#d0d0d0',
+          gridLineDashStyle: "Dash",
+          style: {
+            color: '#6D869F',
+            fontSize: "9px",
+            fontWeight: 'bold'
+          }
+
+      },
+      yAxis: {
+          title: {
+              text: null
+          }
+      },
+      series: [{
+          name:"新增粉丝数量",
+          data: <%=@account_snaps.map(&:fans_increase).to_json.html_safe%>
+      }]
+  });
+
+
+  $('#chart3').highcharts({
+      chart: {
+        type: 'spline'
+      },
+      credits: { 
+        enabled: false
+      },
+      plotOptions: {
+          spline: {
+              lineWidth: 4,
+              states: {
+                  hover: {
+                      lineWidth: 5
+                  }
+              },
+              marker: {
+                  enabled: false
+              },
+              events:{
+                click: function(event){
+                }
+              }
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      title: {
+          text: null
+      },
+      xAxis: {
+          categories: <%=@content_snaps.map(&:date).to_json.html_safe%>,
+          gridLineWidth: 1,
+          gridLineColor: '#d0d0d0',
+          gridLineDashStyle: "Dash",
+          style: {
+            color: '#6D869F',
+            fontSize: "9px",
+            fontWeight: 'bold'
+          }
+
+      },
+      yAxis: {
+          title: {
+              text: null
+          }
+      },
+      series: [{
+          name:"微博数量",
+          data: <%=@content_snaps.map(&:new_statuses_count).to_json.html_safe%>
+      }]
+  });
+
+
+
+  $('#chart4').highcharts({
+      chart: {
+        type: 'column'
+      },
+      credits: { 
+        enabled: false
+      },
+      plotOptions: {
+          column: {
+              stacking: 'normal',
+              states: {
+                  hover: {
+                      lineWidth: 5
+                  }
+              },
+              events:{
+                click: function(event){
+                }
+              }
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      title: {
+          text: null
+      },
+      xAxis: {
+          categories: <%=@content_snaps.map(&:date).to_json.html_safe%>,
+          gridLineWidth: 1,
+          gridLineColor: '#d0d0d0',
+          gridLineDashStyle: "Dash",
+          style: {
+            color: '#6D869F',
+            fontSize: "9px",
+            fontWeight: 'bold'
+          }
+
+      },
+      yAxis: {
+          title: {
+              text: null
+          }
+      },
+      series: [{
+          name:"转发",
+          data: <%=@content_snaps.map(&:be_forwarded_count).to_json.html_safe%>
+      },{
+          name:"评论",
+          data: <%=@content_snaps.map(&:be_commented_count).to_json.html_safe%>
+      }]
+  });
+
+
+
+
+
+})
+
+
+
+
+
+</script>
+
+<%end%>

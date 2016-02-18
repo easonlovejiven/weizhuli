@@ -1,0 +1,11 @@
+<div class="block">
+  <div class="content">            
+    <h2 class="title"><%= t("web-app-theme.new", :default => "New")%>  NewsCategory</h2>
+    <div class="inner">
+      <%= form_for :news_category, :url => admin_news_categories_path, :remote=>true,:html => { :class => :form } do |f| -%>
+        <%= render :partial => "form", :locals => {:f => f} %>
+      <% end -%>
+    </div>
+  </div>
+</div>
+

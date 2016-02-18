@@ -1,0 +1,22 @@
+      <div style="float:left">
+        <p border = "1"><a >导出列属性：</a><font color="red" size="4">UID  昵称  互动粉丝总数  互动新粉丝数</font></p>
+      </div>
+
+      <div class="span4" style="clear:both;float:left">
+        输入 UID 列表(每行一个<默认为下列帐号>):
+        例如：(<p>英特尔中国:	2637370927英特尔中国天天事:	1340241374英特尔商用频道:	2295615873超极本	:2637370247Qualcomm中国	:1738056157Snapdragon骁龙:	2619244577联想	:2183473425ThinkPad:	1617785922东芝电脑	:1765189187戴尔中国	:1687053504ASUS华硕	:1747360663惠普电脑	:1847000261杜蕾斯官方微博:	1942473263
+戴尔促销	:1785529887ARM中国:	2216786767AMD中国:	1883832215Acer宏碁:	1775695331英特尔新极客:	2030206793 可口可乐: 1795839430 星巴克中国:1741514817 小米公司: 1771925961  饭团AMD:2027607132
+): <br/>
+        <%=text_area_tag "params[uids]", "", :rows=>"10",:placeholder=>"可以填写空默认以上uid（必须监控帐号）"%>
+      </div>
+
+      <div class="span4">
+        选择日期条件: <br/>
+
+        <%=text_field_tag "params[start_time]",nil, :placeholder=>"起始日期"%>
+        <%=text_field_tag "params[end_time]", nil, :placeholder=>"结束日期"%>
+
+        <br/>
+      </div>
+
+

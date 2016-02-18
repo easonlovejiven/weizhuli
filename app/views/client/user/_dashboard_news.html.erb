@@ -1,0 +1,105 @@
+<div class="w_245 f_right">
+    <!--title 39 begin-->
+    <div class="bg39">
+      <div class="bg39_left">
+        <div class="bg39_right">
+    				<strong><%=_('我的行业新闻')%></strong>
+        </div>
+      </div>
+    </div>
+    <!--title 39 end-->
+    <!--content begin-->
+    <div class="height370 backg_cf">
+    	<!--n_title30 begin-->
+      <div class="n_title30">
+		    <% my_industries = @user.industries.publish.includes(:news).first(3) %>
+      	   <%if !@user.industries.blank? && !@user.industries.publish.blank? && @user.industries.publish.size > 0 %>
+      	    <div class="t30_left f_left tab">
+      	  <% else %>
+      	    <div class="t30_left f_left">
+      	  <% end %>
+      	  	<a href="#" class="current"><%=_('热议')%></a>
+        <%if !@user.industries.blank? && !@user.industries.publish.blank? && @user.industries.publish.size > 0 %>
+			      <% my_industries.each{|industry| %>
+					    <%=link_to industry.name, "#"%>
+           	 <% } %>
+				<% else %>
+			    	<%=link_to _("发现更多行业"),client_industries_path %>
+				<% end %>
+          </div>
+				  <%= link_to "" ,client_user_industries_path,:title=>_('点击这里进入您的行业中心，查看更多您所关注行业的新闻...'),:class=>"more_16"%>
+      </div>
+      <!--n_title30 end-->
+	  
+	  <!--tab 1 new begin-->
+     
+      <%if !@user.industries.blank? && !@user.industries.publish.blank? && @user.industries.publish.size > 0 %>
+      	<div class="tab_show">
+  	  <% else %>
+  	    <div class="">
+  	  <% end %>
+			<% general_news = News.with_category(NewsCategory::GENERAL_NEWS_CATEGORY).limit(7) %>
+			<% general_news[0..2].each  do | news | %>	
+	        	<!--new_unit begin-->
+		        <div class="new_unit">
+		          <h5><%=link_to news.title, client_news_path(news),:title=>news.title%></h5>
+		          <p><%= truncate_u(strip_tags(news.content), :length=>40).html_safe%></p>
+		          <div class="bar_ffs">
+		            <%=l(news.online_time,:format=>:all_time)%>
+		          </div>    
+		        </div>
+		        <!--new_unit end-->
+	        <% end %>
+        	<!--new_unit begin-->
+	        <div class="new_unit">
+				<% if general_news.size > 3 %>
+				<% general_news[3..6].each do | news | %>
+	          		<h5><%=link_to news.title, client_news_path(news),:title=>news.title%></h5>
+				<% end %> 		
+				<% end %>
+	        </div>
+	        <!--new_unit end-->  
+	        <div class="e_more"></div> 
+      	<div class="clear">&nbsp;</div>
+      </div>                              
+      <!--tab 1 new end-->
+
+	
+	
+	  <% my_industries.each{|industry| %>
+		    <% industry_news =  industry.news.order("id desc").limit(7) %> 	
+	<!--tab 1 new begin-->
+      <div class="tab_show">
+			<% industry_news[0..2].each do | news | %>	
+	        <!--new_unit begin-->
+	        <div class="new_unit">
+	          <h5><%=link_to news.title, client_news_path(news),:title=>news.title%></h5>
+	          <p><%= truncate_u(strip_tags(news.content), :length=>40).html_safe%></p>
+	          <div class="bar_ffs">
+	            <%=l(news.online_time,:format=>:all_time)%>
+	          </div>    
+	        </div>
+	        <!--new_unit end-->
+	        <% end %>
+        <!--new_unit begin-->
+        <div class="new_unit">
+			<% if industry_news.size > 3 %>
+			<% industry_news[3..6].each do | news | %>
+          		<h5><%=link_to news.title, client_news_path(news),:title=>news.title%></h5>
+			<% end %> 		
+			<% end %>
+        </div>
+        <!--new_unit end-->            
+					<div class="e_more mg_t5"><a href="<%=client_industries_show_path(industry)%>" class="view_all"><%=_('更多')%></a></div> 
+      	<div class="clear">&nbsp;</div>
+      </div>                              
+      <!--tab 1 new end-->
+      
+      <% } %> 
+                
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--content end-->
+    <div class="bottom2"><span><em>&nbsp;</em></span></div> 
+  	<div class="clear">&nbsp;</div>
+  </div>

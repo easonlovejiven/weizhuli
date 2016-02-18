@@ -1,0 +1,25 @@
+
+        <div class="follow_list">
+          <%if news.image%>
+        	<div class="industry_pic90">
+						<%=link_to  client_news_path(news) do%>
+						<%=ce_image(news, :image, :thumb, :size=>"60x60", :scaling=>true)%>
+						<%end%>
+          </div>
+          <%end%> 
+          <div class="news_title"><%=link_to news.title, client_news_path(news)%></div>
+          	<div class="industry_des">
+          	<%=truncate_u(strip_tags(news.content).html_safe, :length=>300)%>
+            </div>
+          <div class="i_bottom"> 
+            <%if (str_length(strip_tags(news.content))) > 300%>  
+          	<div class="bottom_bar1"><%=link_to _("阅读全文"), client_news_path(news)%></div>
+            <%end%>
+            <div class="bar_fcc">
+            	<strong class="color9"><%= activity_time(news.online_time)%></strong>
+              <h5><%=link_to _("分享")+"(#{news.shared}", share_path(news), :class=>"share_link"%>&nbsp;|&nbsp;<%=link_to _("收藏"),client_favorites_follow_path(:content_type=>news.type,:content_id=>news.id),:class=>"ce_favorite_news"%>
+</h5>
+            </div>
+          </div>   
+          <div class="clear">&nbsp;</div>
+       	</div>

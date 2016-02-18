@@ -1,0 +1,9 @@
+<form action="" method="get">
+  输入微博昵称: <input name="screen_name" value="<%=@name%>"/> <button>查询</button><br/>
+  <%if @res%>
+    关键字结果:
+    <pre>
+      <%=@res['keywords']*","%>
+    </pre>
+  <%end%>
+</form>

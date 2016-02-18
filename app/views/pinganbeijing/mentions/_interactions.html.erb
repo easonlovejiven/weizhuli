@@ -1,0 +1,235 @@
+  <div class="row-fluid fans-list-box radius-3" style="background: #f6f6f6;">
+    <div class='title'>
+      <strong>
+        转发评论
+      </strong>
+
+      <div class="btn-right">
+        <div style="float:left">
+          微博发布时间
+        </div>
+        <div class="date-selector pull-right">
+            <%=@date_start%> 至 <%=@date_end%>
+        </div>
+      </div>
+
+    </div>
+
+
+              <div style="padding:5px">
+                微博列表 共<%=@weibos.size%> 条
+              </div>
+
+    <div style="width:100%">
+      <div class="left" style="float:left;width:50%;height:100%;">
+              <table class='table weibos-list tablesorter'>
+                <thead>
+                  <tr style="border-top:solid 1px #ccc">
+                    <th>内容</th>
+                    <th>时间</th>
+                    <th style="min-width: 30px;">转</th>
+                    <th style="min-width: 30px;">评</th>
+                  </tr>
+                </thead>
+                <tbody>
+          <%
+          @weibos.each{|weibo|
+            mweibo = MWeiboContent.find(weibo.weibo_id)
+          %>
+                <tr data-weibo-id="<%=weibo.weibo_id%>">
+                  <td><%=truncate mweibo.text, :length=>50%></td>
+                  <td><%=l weibo.post_at%></td>
+                  <td><%=weibo.reposts_count%></td>
+                  <td><%=weibo.comments_count%></td>
+                </tr>
+          <%}%>
+                </tbody>
+              </table>
+      </div>
+      <div class="right" style="float:left;width:50%;height:100%;position:relative">
+          <div id="interactions" style="background:#fff;padding:20px;border-top: solid 1px #ddd;">
+            <ul class="nav nav-tabs interaction-tab">
+              <li class="active" data-type="forwards"><a href="#weibo_forwards_list" data-toggle="tab">转发</a></li>
+              <li class="" data-type="comments"><a href="#weibo_comments_list" data-toggle="tab">评论</a></li>
+            </ul>
+
+              <div id="weibo_forwards_list" class="tab-content active">
+              </div>
+
+              <div id="weibo_comments_list" class="tab-content">
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <table>
+      <tr>
+        <td width="50%" valign="top" style="padding: 0px; display:none">
+          正在加载...
+        </td>
+        <td  valign="top" style="padding: 0px;position:relative;display:none">
+          正在加载...
+        </td>
+      </tr>
+    </table>
+
+
+
+
+  </div>
+
+
+  <%content_for :tail do%>
+
+<script type="text/javascript">
+  var current_select = null;
+
+
+  var load_interaction_list = function(type,weibo_id,opts){
+    var list = $("#weibo_"+type+"_list");
+    $("#weibo_forwards_list,#weibo_comments_list").hide();
+    list.show();
+    var params = {mod:"interactions",data_type:type,weibo_id:weibo_id}
+    if(opts){
+      if(opts.user_type) params.user_type = opts.user_type;
+      if(opts.user_group) params.user_group = opts.user_group;
+      
+    }
+
+    $.get("/pinganbeijing/mentions", params, function(data){
+      list.html(data);
+    })
+
+  }
+
+  var load_interactions = function(tr){
+    
+    var interaction_type = $(".interaction-tab li.active").data("type");
+
+    var weibo_id = $(tr).data("weibo-id");
+    var padding_top = $(tr).prevAll("tr:last").size() > 0 ? 
+                      $(tr).offset().top - $(tr).prevAll("tr:last").offset().top : 0;
+    $("#interactions").parent().css("padding-top", padding_top);
+
+    load_interaction_list(interaction_type, weibo_id);
+
+  }
+
+
+  $(".weibos-list tbody tr").click(function(){
+    if(current_select == this) return;
+    load_interactions(this);
+    $(this).addClass("selected");
+    if(current_select) $(current_select).removeClass("selected");
+    current_select = this;
+  })
+
+
+  // $("#weibo_comments_list, #weibo_forwards_list").
+
+    $(".weibos-list tbody tr:first").click()
+
+
+  $(".interaction-tab a[data-toggle='tab']").on('shown',function(e){
+    var a = $(e.target);
+    var type = a.parent("li").data("type");
+    var weibo_id = $("tr[data-weibo-id].selected").data("weibo-id");
+    //if($(a.attr("href")).html().trim()==""){
+      load_interaction_list(type,weibo_id);
+    //}
+    console.debug(e.target);
+  });
+
+
+
+
+  $(document).on("click","#weibo_forwards_list .pagination a", function(){
+    if($(this).attr("href")!="#"){
+      $.get(this.href,function(data){
+        $("#weibo_forwards_list").html(data);
+      });
+    }
+    return false;
+  });
+
+  $(document).on("click","#weibo_comments_list .pagination a", function(){
+    if($(this).attr("href")!="#"){
+      $.get(this.href,function(data){
+        $("#weibo_comments_list").html(data);
+      });
+    }
+    return false;
+  });
+
+
+  $(document).on("change","#forwards_user_type,#comments_user_type,#forwards_user_group,#comments_user_group",function(){
+    var action = $(this).data("interaction-type");
+    var user_type = $("#"+action+"_user_type").val();
+    var user_group = $("#"+action+"_user_group").val();
+    load_interaction_list(action,
+      $(this).data("weibo-id"),
+      {user_type:user_type, user_group:user_group});
+    console.info(this);
+  })
+
+
+  $(function(){
+
+    $(".date-selector").dateRangePicker({
+      format: 'YYYY-MM-DD',
+      separator: ' 至 ',
+    }).bind('datepicker-change',function(event,obj)
+    {
+      console.log(obj);
+      // obj will be something like this:
+      // {
+      //    date1: (Date object of the earlier date),
+      //    date2: (Date object of the later date),
+      //    value: "2013-06-05 to 2013-06-07"
+      // }
+    })
+    .bind('datepicker-apply',function(event,obj)
+    {
+      // $(".date-selector").text(obj.date1+" 至 "+obj.date2);
+      $(".date-selector").text(obj.value);
+
+      var url = "<%=pinganbeijing_mentions_path(params.select{|k,v| !["start_date","end_date"].include?(k)}).html_safe%>";
+      var ds = obj.value.split("至");
+      if(url.match('\\?')){
+        url = url+"&"
+      }else{
+        url = url+"?"
+      }
+      url = url+"start_date="+ds[0].trim()+"&end_date="+ds[1].trim();
+      location.href = url;
+      console.log(obj);
+    })
+    .bind('datepicker-close',function()
+    {
+      console.log('close');
+    });;
+
+
+    $(".date-selector").data('dateRangePicker').setDateRange('<%=@date_start%>','<%=@date_end%>')
+
+
+    // http://tablesorter.com/docs/
+    $(".tablesorter").tablesorter({sortList:[[1,1]]})
+    $(".tablesorter").bind("sortStart",function() { 
+    }).bind("sortEnd",function() { 
+      var tr = $("tr.selected")
+      var padding_top = $(tr).prevAll("tr:last").size() > 0 ? 
+                        $(tr).offset().top - $(tr).prevAll("tr:last").offset().top : 0;
+      $("#interactions").parent().css("padding-top", padding_top);
+    }); 
+
+  })
+
+</script>
+  <%end%>
+
+
+
+

@@ -1,0 +1,106 @@
+// Place all the styles related to the client/mentions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.weibos-list{
+    
+
+  tr{
+    border-right:solid 1px #ccc;
+  }
+
+  tr.selected{
+    border-right-color: #fff;
+    background: #3C97D8;/*-webkit-gradient(linear, left top, right top, from(#eee), to(#fff));*/
+    color:#fff;
+  }
+
+
+  td{
+    em{
+      color:#0078c6;
+      font-style: normal;
+    }
+  }
+
+}
+
+div.tab-content{
+}
+div.active{
+  display:block;
+}
+
+
+.back-btn{
+  font-size:14px;
+}
+
+.btn-right{
+}
+
+#interactions{
+  .nav{
+    .active{
+      a{
+        color: #3C97D8;
+      }
+    }
+  }
+  
+}
+
+
+.date-selector{
+  border: solid 1px #ccc;
+  margin: 5px;
+  height: 28px;
+  line-height: 28px;
+  background: #fff;
+  padding: 0 5px;
+  cursor: hand;
+  cursor: pointer;
+  float:right;
+}
+
+.headerSortDown:after{
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0% 0%;
+  background-repeat: repeat;
+  margin-top: 0;
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+  content: "\f062";
+}
+
+
+
+.headerSortUp:after{
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0% 0%;
+  background-repeat: repeat;
+  margin-top: 0;
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+  content: "\f063";
+}

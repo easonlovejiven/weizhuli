@@ -1,0 +1,262 @@
+  <div class="info_name">
+    新建礼品申请单
+  </div>
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+      <%=nested_form_for @intel_gift_apply, :url=>intel_gift_applies_path do |form|%>
+
+    <ul class="form-unit">
+      <table>
+      <tr>
+        <td><%=_('活动')%>: </td>
+        <td>
+          <%=form.text_field  :campaign%>
+          <em>*</em>
+          <span class="errors"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用帐号')%>: </td>
+        <td>
+          <%=form.text_field  :account%>
+          <em>*</em>
+          <span class="errors"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用时间')%>: </td>
+        <td>
+          <%=form.text_field  :use_time,  :class=>"datepicker"%>
+          <em>*</em>
+          <span class="errors"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用礼品')%>: </td>
+        <td>
+          <table>
+          <%=form.fields_for :items do |item_form|%>
+            <tr>
+              <td>
+                <%
+                gift_lefts = {}
+                IntelGiftPurchase.group("intel_gift_id").select("intel_gift_id,sum(number) lefts").each{|gift|gift_lefts[gift.intel_gift_id] = gift.lefts}
+
+                %>
+                <%=item_form.select  :intel_gift_id, options_for_select(IntelGift.all.map{|g|[g.name+"   (剩余#{gift_lefts[g.id]})",g.id]}) %>
+                <%=item_form.text_field  :number, :placeholder=>"数量"%>
+                <%=item_form.link_to_remove "删除", :class=>'icon-remove'%>
+              </td>
+            </tr>
+          <%end%>
+          <tr>
+            <td colspan=2><%=form.link_to_add "添加",:items, :class=>"icon-plus"%></td>
+          </tr>
+          </table>
+          <span class="errors"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>发送申请邮件给：</td>
+        <td>
+          <%=form.hidden_field :approve_emails%>
+          <div>
+            <%IntelGiftApply::APPROVERS.each{|email|%>
+              <label><input type='checkbox' value='<%=email%>' class='approve_email_select'/> <%=email%></label>
+            <%}%>
+          </div>
+          <span class="errors"></span>
+
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('备注')%>: </td>
+        <td>
+          <%=form.text_field  :apply_description%>
+          <em></em>
+          <span class="errors"></span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan=2 align="center">
+          <input type="submit" name="" value="<%=_('保存')%>" class="btn btn-primary" id="submit-btn">
+          <%=link_to "取消", intel_gift_applies_path%>
+        </td>
+      </tr>
+    </table>
+
+    </ul>
+    <div class="form-buttom">
+    </div>
+    <%end%>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+<%= javascript_include_tag :defaults, "nested_form" %>
+
+<script type="text/javascript" src="/assets/jquery_validate/jquery.validate.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+    
+
+    $(".approve_email_select").click(function(){
+      var emails = $(".approve_email_select:checked").map(function(){return $(this).val()}).toArray().join("\n");
+      $("#intel_gift_apply_approve_emails").val(emails.trim());
+    })
+
+    $("#new_intel_gift_apply").validate({
+      rules: {
+        "intel_gift_apply[campaign]": "required",
+        "intel_gift_apply[use_time]": "required",
+        "intel_gift_apply[account]": "required",
+        "intel_gift_apply[approve_emails]": "required"
+      },
+      messages: {
+        "intel_gift_apply[campaign]": "此项不能为空",
+        "intel_gift_apply[use_time]": "此项不能为空",
+        "intel_gift_apply[account]": "此项不能为空",
+        "intel_gift_apply[approve_emails]": "请至少选择一个审核邮件"
+      },
+
+      errorElement:"span",
+      errorClass:"alert",
+      errorPlacement: function(error, element) {
+        error.appendTo( element.parent().find("span.errors").first() );
+      },
+      submitHandler: function(form) {
+        $("#submit-btn").addClass("disabled");
+        $("#submit-btn").attr("disabled",true);
+        form.submit();
+      }
+    });
+
+  })
+
+</script>
+
+
+<script type="text/javascript">
+
+
+
+$(function(){
+  $("#kol_purchase_use_time").datepicker({dateFormat: "yy-mm-dd"});
+  $(".datepicker").datepicker({dateFormat: "yy-mm-dd"});
+
+  $("#kol_purchase_kol_attributes_uid").change(function(){
+    $.getJSON("/intel/kols?uid="+$(this).val(),function(data){
+      if(data.object == null){
+        $("#kol_purchase_kol_attributes_name").val("");
+        $("#kol_purchase_kol_attributes_id").val("");
+        $("#kol_purchase_kol_attributes_description").val("");
+        $("#kol_purchase_kol_attributes_interactions").val("");
+      }else{
+        $("#kol_purchase_kol_attributes_name").val(data.object.kol.name);
+        $("#kol_purchase_kol_attributes_id").val(data.object.kol.id);
+        $("#kol_purchase_kol_attributes_description").val(data.object.kol.description);
+        $("#kol_purchase_kol_attributes_interactions").val(data.object.kol.interactions);
+      }
+    })
+  })
+
+})
+
+</script>
+
+
+
+
+  <script>
+  $(function(){
+/*
+    $("#new_user").vatrdate({
+      
+        showErrors: function(errorMap, errortrst) {
+          $(errortrst).each(function(idx,obj){
+            
+            $(obj.element).parents("div.oForm_unit").first().next(".point").html("<div class='formError'>"+obj.message+"</div>");
+            
+          });
+          $("#summary").html("Your form contains "
+                                         + this.numberOfInvatrds() 
+                                         + " errors, see details below.");
+          //this.defaultShowErrors();
+        }
+    
+      });
+*/
+    $("ul.form-unit tr:odd").addClass("bg");
+
+
+
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        loadImageFileTypes:/^image\/(gif|jpeg|png)$/,
+        acceptFileTypes:/(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+          var goUpload = true;
+          var uploadFile = data.files[0];
+          if (!(/\.(gif|jpg|jpeg|png)$/i).test(uploadFile.name)) {
+              alert("只能上传图片文件 (gif|jpg|jpeg|png).");
+              goUpload = false;
+          }
+          if (uploadFile.size > 5000000)   { // 5mb
+            alert("文件大小不能超过5M")
+              goUpload = false;
+          }
+          if (goUpload == true) {
+              data.submit();
+          }
+        },
+        done: function (e, data) {
+          var image = data.result.image;
+          var path = image.file_path.thumb;
+          $("#kol_purchase_forward_weibo_image_id").val(image.id);
+          $(e.target).parents("span.upload-button").show();
+          $("#post-image-form-container .uploading-progress").hide();
+          $("form .image-thumb")
+            .html("<img src='"+path+"'/>").show();
+        },
+        start:function(e,data){
+          $(e.target).parents("span.upload-button").hide();
+          $("#post-image-form-container .uploading-progress").show();
+
+        },
+        progress: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        },
+
+        progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        }
+    });
+
+  });
+
+  </script>
+
+<%end%>

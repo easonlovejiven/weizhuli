@@ -1,0 +1,24 @@
+<%=stylesheet_link_tag "basic.css"%>
+<!--begin-->
+<div class="select_pic">
+		<div class="prompt">
+    	<strong>选择照片</strong>
+      <p>您可以从相册里面选择，点击选中您要印制的照片即可。</p>
+    </div>
+    <!--upload_box begin-->
+    <ul class="upload_unit">
+      <%@images.each{|image|%>
+
+      <li>
+        <%=image_tag image.attachment.url(:medium), :size=>image.get_scale_size_for_paperclip(:attachment,210,210)[0],:class=>"single_select"%>
+        <%=text_area_tag "image_json", raw(image.to_json(:methods=>[:file_path])), :style=>"display:none"%>
+      </li>
+
+
+      <%}%>    
+    </ul>
+    <!--upload_box end-->  
+</div>
+<!--end-->
+
+

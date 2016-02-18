@@ -1,0 +1,31 @@
+  <div class="row-fluid search-box radius-3">
+    <div class='title'>
+      <strong>帐号昨日概况(每日更新)</strong>
+    </div>
+    <div class="span12 account_summary">
+      <div class='span3'>
+        <ul>
+          <li><i class="icon-list icon-white"></i>粉丝总数：<em><%=@followers_count%></em></li>
+          <li><i class="icon-list icon-white"></i>新增粉丝数：<em><%=@followers_increase%></em></li>
+          <li><i class="icon-list icon-white"></i>掉粉数：<em><%=@followers_decrease%></em></li>
+          <li><i class="icon-list icon-white"></i>净增长数：<em><%=@new_followers_count%></em></li>
+        </ul>
+      </div>
+      <div class='span3'>
+        <ul>
+          <li><i class="icon-list icon-white"></i>微博总数：<em><%=@statuses_count%></em></li>
+          <li><i class="icon-list icon-white"></i>昨日微博数：<em><%=@yesterday_statuses_count%></em></li>
+          <li><i class="icon-list icon-white"></i>原创微博数：<em><%=@yesterday_origin_statuses_count%></em></li>
+          <li><i class="icon-list icon-white"></i>原创微博占比：<em><%=(@yesterday_origin_statuses_ratio.to_f*100).to_i%>%</em></li>
+        </ul>
+      </div>
+      <div class='span3'>
+        <ul>
+          <li><i class="icon-list icon-white"></i>转发+评论：<em><%=@interactions_count%></em></li>
+          <li><i class="icon-list icon-white"></i>转发数：<em><%=@forwards_count ? link_to(@forwards_count, pinganbeijing_forwards_path) : nil%></em></li>
+          <li><i class="icon-list icon-white"></i>评论数：<em><%=@comments_count ? link_to(@comments_count, pinganbeijing_comments_path) : nil%></em></li>
+          <li><i class="icon-list icon-white"></i>被提及次数：<em><%=@mentions_count%></em></li>
+        </ul>
+      </div>
+    </div>
+  </div>

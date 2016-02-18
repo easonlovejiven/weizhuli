@@ -1,0 +1,21 @@
+<div class="w240">
+    	<!--title begin-->
+      <div class="title30"><strong><%=_('行业新闻更新')%></strong></div>
+      <!--title end--> 
+      <div class="industry_tag mg_t10">
+      <%@industries.each do |industry|%>
+        <%if industry != @industry%>
+            <%=link_to list_client_industry_news_index_path(industry), :title=>industry.name do%>
+            <strong><%=truncate_u(industry.name, :length=>19).html_safe%></strong>
+            <var><%=industry.news.count%></var>
+           <%end%>
+        <% else %>
+            <%=link_to list_client_industry_news_index_path(industry) ,:class=> 'current' do%>
+              <strong><%=industry.name.html_safe%></strong>
+              <var><%=industry.news.count%></var>
+           <%end%>        
+          <% end %>  
+      <% end %>
+      </div>   
+      <div class="clear">&nbsp;</div>
+    </div>      

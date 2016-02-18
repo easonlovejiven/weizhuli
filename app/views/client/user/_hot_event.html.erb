@@ -1,0 +1,74 @@
+<% 	speakers =  event.multipal_speakers[0..3] %>
+<!--event_unit begin-->
+<div class="event_unit">
+  <div class="e_pic">
+  	<%= link_to ce_image(event, :image, :medium, {:size=>"60x60",:alt=>event.title}), client_event_path(event)%>
+    <span class="<%
+    	 if event.end_time<Time.now
+    	  concat 'finish'
+    	 else
+    	  concat 'upcoming'
+    	 end
+    	 %> ">
+    	<%= event.held_status	%>
+  	</span>
+  </div>
+
+  <div class="event_unit_right">
+    <div class="i_title">
+	    <%= link_to truncate_u(event.title, :length => 30), client_event_path(event) %>
+    </div>
+    <div class="bar_scale">
+    	<var><%= l(event.start_time.to_date, :format=>:dot) unless event.start_time.blank? %></var>
+    	<span><%= event.location_name %></span>
+    </div>
+    <div class="bar_scale">
+      <%= link_to('['+event.event_type.name+']', client_events_path(:search=>{:event_type_id_eq=>event.event_type.id}),:class=>"event_name") unless event.event_type.blank? %>
+    </div>
+    <div class="e_sponsor"><%= _('主办') + ": " +event.event_founders.order("weight desc").first.organization.name unless event.event_founders.blank? %></div>
+    <div class="speakers_name">
+			<% speakers.each do | speaker | %>
+				<% unless speaker.person.blank? %>
+				  <%if speaker == speakers.last && speakers.count>1%>
+				    <%=_('和')%>
+				  <%end%>
+					<%
+	      		if speaker.person.user_id
+	      			path = user_path(speaker.person.user_id)
+	      		else
+	      			path = client_event_path(event)+'#speakers'
+	      		end
+	      	%>
+					<%= link_to speaker.person.name, path %>
+				<% end %>
+			<%  end %>
+			<% if speakers.size>0 %>
+      <span><% if event.end_time<Time.now
+    						 concat _('出席了该会')
+    					 else
+      					 concat _('即将出席')
+    					 end
+  					%>
+      </span>
+      <% end %>
+    </div>
+			<% if event.end_time<Time.now %>
+       <div class="recommend_button event_ended">
+				  <%= link_to content_tag(:strong, _('内容')), client_event_path(event), :class => "button_content" %>
+				  <% if !event.galleries.blank? || !event.videos.blank? %>
+          	<%=link_to content_tag(:strong, _('视频')), video_and_photos_client_event_path(event), :class=>"button_rec"%>
+          <% end %>
+				  <%=link_to content_tag(:strong, _('到会嘉宾')), client_event_url(event)+'#speakers', :class => "button_rec" %>
+				</div>
+			<% else %>
+			 <div class="recommend_button">
+				  <%= link_to content_tag(:strong, _(' 参加 ')), attend_online_client_event_path(event), :class => "button_attend" %>
+          <%=link_to content_tag(:strong, _(' 推荐 ')), client_event_invites_path(event), :class => "button_rec", :id=>"new_private_message_link" %>
+				<%= link_to content_tag(:strong, _(' 了解详情 ')), client_event_path(event), :class => "button_rec" %>
+				</div>
+			<% end %>
+
+  </div>
+</div>
+<!--event_unit end-->
+

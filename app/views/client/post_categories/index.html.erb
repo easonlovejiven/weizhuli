@@ -1,0 +1,32 @@
+  <div class="info_name">
+    微博类型管理
+  </div>
+
+<%- model_class = PostCategory -%>
+<%= simple_form_for [:client,@post_category], :html => { :class => 'form-inline' } do |f| %>
+    <label>添加微博类型 <%= f.input_field :name, :placeholder=>"微博类型"%></label>
+    <%= f.button  :submit, :value=>"添加",:class => 'btn btn-primary' %>
+<% end %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @post_categories.each do |post_category| %>
+      <tr>
+        <td><%= post_category.name %></td>
+        <td>
+          <%= link_to "删除",
+                      client_post_category_path(post_category),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,30 @@
+ <!--notice begin-->	
+	<div class="dashboard_tip padd80">
+  	<%=_("还没有商业伙伴吗？")%>
+  	<%=link_to _("马上搜索商业伙伴..."),client_users_path%>
+  </div>
+  <!--notice end-->
+  <!--Influence the user begin-->
+      <div class="">
+        <!--m_title30 begin-->
+        <div class="m_title30">
+          <strong><%=_("影响力用户")%></strong>
+          <%=link_to _("更多"),client_users_path %>
+        </div>
+        <!--m_title30 end-->
+        <div class="inf_user">
+        <%@icon_users.each do|user|%>
+        	<dl>
+          	<dt>
+          	   <%=link_to user_path(user) do%>
+                 <%=user_avatar_tag(user, :thumb,:size=>"35x35",:scaling=>true, :alt=>"")%>
+               <%end%>
+            </dt>
+            <dd><%=link_to user.displayable_name, user_path(user),:title=>user.displayable_name%></dd>
+            <dd><%=truncate_u(user.business_card.company,:length=>10)%></dd>
+          </dl>                                                                     
+         <%end%>
+        </div> 
+      	<div class="clear">&nbsp;</div>
+      </div>
+  <!--Influence the user end-->  

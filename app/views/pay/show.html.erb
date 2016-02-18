@@ -1,0 +1,265 @@
+
+        <!--content begin-->
+        <div class="content mgt10">
+          
+          <!--Detail Events begin-->
+          <div class="bc_top1 pdt10">
+						
+						
+						<%if @order.is_a?(EventOrder)
+						
+						    if @order.items.size > 1
+						%>
+                  <!--title begin-->
+                  <div class="event_title mgt10 pdLR10">
+                  		<strong><%=_("您购买了%s个活动")%[@order.items.size]%></strong>
+                  </div>
+                  <!--title end-->
+						<%
+						    else
+						      @order.items.each{|item|
+        						@event = item.event
+						    
+						%>
+                    <!--title begin-->
+                    <div class="event_title mgt10 pdLR10">
+                    		<strong><%=@event.title%></strong>
+                        <p><%=l @event.start_time.to_date, :format=>:event_price_date%> - <%=l @event.end_time.to_date, :format=>:event_price_date%> <%=@event.location_name%></p>
+                    </div>
+                    <!--title end-->
+            <%
+                  }
+						    end
+            end%>
+
+            
+            <!--pay form begin-->
+            <div class="mgt10">
+            
+              <!--pay_unit start-->
+              <div class="bge bbe_top1 pay_unit">
+              
+              	<div class="title_f60 w595 mg0a"><%=_("Register and Pay in Less than 3 Minutes!")%></div>
+
+                <div class=" w575 bc radius3 mg0a  bgf">
+
+                  <!--title begin-->
+                  <div class="title38 bc_botttom1">
+                    <%=link_to  session[:last_link],:class=>"return_bg" do %>
+                      <em>&nbsp;</em>
+                      <span><%=_("Go Back")%></span>
+                    <%end%>
+                  </div>                  
+                  <!--title end-->
+                  <!--total begin-->
+                  <div class="total pdLR10 bge sold">
+                    <%
+                    @order.currencies_amount.each{|currency, amount|
+                      if currency != @order.currency
+                    %>
+                      <%=currency%> <strong class="no"><%=amount%></strong> X <%=_("汇率")%> <strong class="rate"><%="%.4f" % Currency.exchange_rate(currency, @order.currency)%></strong> = <%=@order.currency%> <strong class="no"><%="%.2f" % Currency.transfer(amount, currency, @order.currency)%></strong><br/>
+                    <%
+                      else
+                    %>
+                      <%=currency%> <strong class="no"><%=amount%></strong> <br/>
+                    <%
+                      end
+                    }
+                    %>
+                  </div>
+
+
+                  <div class="total pdLR10 bge sold">
+                    <strong><%=_("TOTAL AMOUNT")%>:</strong>
+                    <%=@order.currency_symbol%> <var><%="%.2f" % @order.amount%></var> 
+                    <% if @order.available_currencies.size > 1
+                      currencies = @order.available_currencies
+                      currencies.delete(@order.currency)
+                    %>
+                      <%=_("使用其它货币支付")%> : <%currencies.each{|currency|%>
+											<%=link_to currency, new_pay_path(:order_id=>@order, :currency=>currency), :class=>"btn28 radius3 bc"%> <%}%>
+                    <% end %>
+                  </div>
+
+                  <!--total end-->
+                  
+                  
+
+<%=form_for @payment, :url=>pay_path(@payment),:html=>{:method=>:put,:id=>"payment_form",:target=>"_blank"} do |form|%>
+
+
+
+                  <!--select payment by banker begin-->
+                  <div class="payment mgt10 bgf">
+
+                  <%if @order.currency == 'RMB'%>
+                	<%=radio_button_tag :pay_method, "alipay",{},:id=>"pay_method_payBank" , :style=>"display:none"%>
+                	<h5><%=_("请选择以下支付平台支付")%>:</h5>
+                	<ol>
+                  	<li>
+                  	  <%=radio_button_tag :pay_method, "alipay",{},:id=>"pay_method_alipay", :class=>"alipay_input"%>
+                  	  <label for="pay_method_alipay" class="alpay"><span><%=_("支付宝")%></span></label>
+                    </li>    
+                  </ol>
+                	<h5><%=_("请选择银行或机构支付")%>:</h5>
+                	<ol>
+                	  <%Alipay::BANKS.each{|bank|%>
+                	    <li>
+	                      <input type="radio" name="payBank" value="<%=bank%>" id="pay_bank_<%=bank%>" class="bank_input">
+	                      <label for="pay_bank_<%=bank%>" class="bank_button <%=bank.downcase%>"></label>
+                	    </li>
+	                  <%}%>
+                  </ol>
+
+                  <%else%>
+ 
+                       <h5><%=_("请选择以下支付平台支付")%>：</h5>
+                       <ol>
+                       <li>
+                         <%=radio_button_tag :pay_method, "paypal",{},:id=>"pay_method_paypal", :class=>"paypal_input"%>
+                         <label for="pay_method_paypal" class="paypal"><span><%=_("贝宝")%></span></label>
+                    </li>    
+                  </ol>
+                  <%end%>
+
+
+
+
+
+                    <div class="clear">&nbsp;</div>
+                  </div>
+                  <!--select payment by banker begin-->            
+									<div class=" pdLR17 mgb10">
+									  <input type="submit" value="<%=_("Confirm")%>" name="" class="btn30 radius3 fr w75 a_center"/>
+                  	<div class="clear">&nbsp;</div>
+                  </div>										
+	<%end%>
+
+
+
+
+                  <div class="clear">&nbsp;</div>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--pay_unit end-->
+              
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--pay form end-->
+            
+            
+						<div class="clear">&nbsp;</div>	
+          </div>
+          <!--Detail Events end-->
+
+          <div class="clear">&nbsp;</div>	
+        </div>
+        <!--content end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--pop begin-->
+  <div style="display:none">
+    <div class="pay_pop backg_cf" id="pay_pop">
+    	<div class="title38 bc_botttom1">
+				<strong><%=_('登录网上银行付款')%></strong>
+			</div>
+    	<div class="pay_pop_content">
+      	<strong><%=_('请您在新打开的网上银行页面完成付款')%></strong>
+      	<p><%=_('付款完成前请不要关闭此窗口')%></p>
+        <p><%=_('完成付款后请根据您的情况点击一下按钮')%></p>
+        <div class="pay_affirm">
+        	<input type="submit" id="pay_success_btn" value="<%=_('已完成付款')%>"/>
+          <input type="submit" id="pay_failed_btn" value="<%=_('重新支付')%>"/>
+        </div>
+      </div>
+    	<div class="clear">&nbsp;</div>
+    </div> 
+  </div>
+  <!--pop end--> 
+  <a href="#pay_pop" id="pay_pop_link" class="inline"></a>
+
+
+
+
+
+
+
+<script>
+$(function(){
+
+  $("#pay_pop_link").fancybox({type:"inline"});
+
+  $("#payment_form").submit(function(){
+    $("#pay_pop_link").click();
+  });
+
+
+  // if click bank icons, select "payBank"
+  $("input[type=radio]").click(function(){
+    if($(this).hasClass("bank_input")){
+      $("#pay_method_payBank").click();
+    }
+    if($(this).hasClass("alipay_input")){
+      $("input.bank_input").attr("checked", false);
+    }
+    if($(this).hasClass("paypal_input")){
+      $("input.bank_input").attr("checked", false);
+    }
+  });
+
+
+  $("#modify_payment").click(function(){
+    $("#modify_payment_save").show();
+    $("#pay_amount_input").show();
+    $("#pay_amount").hide();
+  });
+  $("#modify_payment_save").click(function(){
+    $("#modify_payment_save").hide();
+    $("#pay_amount_input").hide();
+    $("#pay_amount").show();
+  });
+  $("#pay_amount_input").change(function(){
+    $("#pay_amount").text($(this).val());
+  });
+
+  $("#pay_success_btn").click(function(){
+    window.location.reload();
+  });
+
+  $("#pay_failed_btn").click(function(){
+    window.location.href="/pay/new?order_id=<%=@order.id%>";
+  });
+
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

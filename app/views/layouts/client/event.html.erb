@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client_tmp"%>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+</head>
+
+
+<body class="bgf5">
+<%=render "common/header"%>
+<!--main start-->
+
+<%=yield%>
+<%=render :partial=>"/client/business_cards/my_business_card" %>
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var a1Divs=$('a#interested_company').parent().siblings('div.user_change');
+    a1Divs.eq(0).show();
+    $('a#interested_company').click(function(){
+        change_num(this)
+    });
+    function change_num(obj) {
+	         var obja = $(obj);
+	         var Divs = obja.parent().siblings('div.user_change');
+	         var nDiv = Divs.filter(':visible');
+             var idx= Divs.index(nDiv);
+             idx++;
+             if (idx >= Divs.length) {
+	              idx = 0;
+              }
+             Divs.hide();
+             Divs.eq(idx).show();
+             return false;
+	    }
+  });
+</script>
+<script type="text/javascript">
+  $(function(){
+    // create a convenient toggleLoading function
+    var toggleLoading = function() { $("#loading").toggle() };
+     $("#new_private_message_link").fancybox({
+        ajax : {
+          dataType : "html"
+        },
+        onComplete : function(){user_choice_autocomplete()}
+      })
+   });
+</script>
+</body>
+</html>
+

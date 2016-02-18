@@ -1,0 +1,76 @@
+<div class="bg690_270">
+	<!--left670 begin-->
+  <div class="left670">
+    <!--title begin-->
+    <div class="title32">
+      <%if @news.industry%>
+      <strong><%=_('所属行业')%>:    <%=@news.industry.name%></strong>
+      <%end%>
+      <%#=link_to _('返回新闻列表')+">>",list_client_industry_news_index_path(@news.industry)%>
+      <%=link_to _("返回")+">>", request.env['HTTP_REFERER']%>
+    </div>
+    <!--title end-->
+    <div class="news_header">
+      <span><%= l(@news.online_time, :format=>:all) unless @news.online_time.blank?%></span>
+      <%if @news.article_source%>
+      <span>&nbsp;&nbsp;<%=_("来源：")%><%=link_to @news.article_source,@news.article_source_url %></span>
+      <%end%>
+      <em><%=@news.views%> <%=_('次点击')%></em>
+    </div>
+    <div class="news_d_title"><%=@news.title%></div>
+    <!--news pic begin-->
+    <%if @news.image %>
+		  <div class="news_discription">
+      	<%= image_tag(@news.image.attachment.url(:thumb)) %>
+      </div>
+    <%end%>
+  	<!--news pic end-->
+    
+    <!--news detail begin-->
+		<div class="news_detail">
+      <%= @news.content.html_safe %>
+    	<div class="clear">&nbsp;</div>
+    </div>
+  	<!--news detail end-->
+    
+    <div class="collection_share">
+      <%if current_user%>
+    	<%if current_user.favorited?(@news)%>                    
+                  <a class="ce_favorite_news_followed"><%=_("已收藏")%></a>
+                  <%else%>
+                  <%=link_to _("收藏"),client_favorites_follow_path(:content_type=>@news.type,:content_id=>@news.id),:class=>"ce_favorite_news"%>
+                  <%end%>
+      <%else%>
+        <%=link_to _("收藏"),login_path%>
+      <%end%>
+    	<%=link_to _("分享"), share_path(@news), :class=>"share_link"%>
+    </div>
+		<!--comment begin-->
+      <%#=render :partial=>"comment"%>
+    <!--comment end-->         
+    <div class="clear">&nbsp;</div>	
+	</div>
+	<!--left left670 end-->
+	<!--right255 begin-->
+  <div class="right255">
+		<!--industry news update begin-->	
+       <%=render :partial=>"industry_news_update"%>
+    <!--industry news update end-->
+
+		<!--industry news begin-->	
+       <%=render :partial=>"industry_news"%>
+    <!--industry news end-->   
+
+		<!--hot news begin-->	
+       <%=render :partial=>"hot_news"%>
+    <!--hot news end-->  
+                	  
+		<div class="clear">&nbsp;</div>	
+	</div>
+	<!--right255 end-->
+
+  <div class="clear">&nbsp;</div>
+</div>
+<script type="text/javascript">
+$(".news_detail p").css({"margin":"0px"});
+</script>

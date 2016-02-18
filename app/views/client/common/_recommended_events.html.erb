@@ -1,0 +1,29 @@
+
+			<!--Events Recommended begin-->	
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30"><strong><%=_('CE180线下活动推荐')%></strong><%=link_to _('更多'), client_events_path, :class=>"color_f6"%></div>
+        <!--title end-->
+        <div class="event_recom_box">
+        <% recommended_events = Event.includes(:locales).available.where("events.start_time > now()").recommend_events(current_user)
+		   if recommended_events.blank?
+				recommended_events= Event.includes(:locales).available.recommended.order("end_time desc")
+		   end	
+		   recommended_events.limit(4).each{|event|%>
+		      <%= render :partial => "/client/common/event_common_unit", :locals => {:event => event} %>   
+        <%}%>
+  
+        </div>
+        <div class="clear">&nbsp;</div>         
+      </div>
+      <!--Events Recommended end-->
+
+
+
+<script>
+	//dashboard
+	$(function() {
+		$(".even_able").scrollable().navigator();
+		$(".event_scroll").scrollable();
+	});		
+</script>

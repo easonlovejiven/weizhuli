@@ -1,0 +1,35 @@
+<% unless @attachments.empty? %>
+<ul class="attachment_list">
+<% @attachments.each do |p| %>
+<li id="<%= p.id %>" class="attachment_list">
+   <%if params[ :media ] == 'print'%>
+	<div class="thumbs">
+    <%= _('Insert') %>:
+		    <br/>
+		    <%= link_to _("High definition"), p.image.url( :detail_preview ), :onclick => "select_thumb(this);return false;"%>
+		    <br/>
+		    <%= link_to _("Large"), p.image.url( :large_thumb ), :onclick => "select_thumb(this);return false;"%>
+		    <br/>
+		    <%= link_to _("Medium"), p.image.url( :medium_thumb ), :onclick => "select_thumb(this);return false;"%>
+		    <br/>
+		    <%= link_to _("Small"), p.image.url( :small_thumb ), :onclick => "select_thumb(this);return false;"%>
+		    <br/>
+		    <%#= link_to 'Delete', delete_attachments_path(@channel.brand_name, params[:feature], :id => p.id, :media => 'print' ), :onclick => "delete_attachment(this);"%>
+		    <br/>
+		    <%= link_to _("Cancel"), 'javascript:void(0)', :onclick => "cancel_image();return false;"%>
+	  </div>
+	    <%= link_to_function( image_tag( p.image.url( :small_thumb ), :alt => p.image.name ), "select_image(this)" )%>
+    <% else%>
+	    <%= link_to p.original_file_name, p.original.url, :onclick => "select_thumb(this);return false;"%>&nbsp;&nbsp;&nbsp;
+    <% end%>
+</li>
+<% end %>
+</ul>
+<br style="clear:both;" />
+<div style="float:right;margin-bottom:10px;">
+<%= will_paginate @attachments, :class => "pagination", :previous_label => "&laquo; previous",  :next_label => "next &raquo;", :renderer => 'RemoteLinkRenderer' %>
+</div>
+<% else %>
+<%= _('No Images Uploaded Yet.') %>
+<% end %>
+

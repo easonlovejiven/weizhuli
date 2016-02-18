@@ -1,0 +1,226 @@
+<%content_for(:special_js) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+
+  </script>
+
+<%end%>
+
+
+
+
+
+
+
+
+			<!--title begin-->
+      <div class="title32">
+        <%= render :partial => "edit_header" %>
+
+
+        <!--basic info box begin-->
+     		<div class="change_info">
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	  </div>
+							<%=nested_form_for @user,:url=>client_user_path, :remote=>true,:html=>{:id=>"basic_info_edit_form",:"data-type"=>:json} do |form|%>
+
+													
+  						<div class="edit_button">
+							<%if @user.profiles.size==1
+									if @user.profile.locale=="en"
+							%>
+									<button class="add_profile_language_btn btop_basic1" data-language='zh_CN' data-profile-type='profile'><%=_('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_basic2" style="display:none"><%=_('删除中文PROFILE')%></button>
+							<%
+									end
+									if @user.profile.locale=="zh_CN"
+							%>
+									<button class="add_profile_language_btn btop_basic1" data-language='en' data-profile-type='profile'><%=_('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn btop_basic2" style="display:none"><%=_('删除English PROFILE')%></button>
+							<%  
+									end
+								end
+							%>
+  						</div>
+            <%=form.fields_for :profiles do |profile_form|%>
+            <div class="profile_fields" data-locale="<%=profile_form.object.locale%>">
+            <div class="language"><span><%=Const::value(:languages, profile_form.object.locale)%></span></div>
+          	<div class="edit_f zh_CN_name_fields">
+          	<label><%=_('姓名')%></label>
+          	<%=profile_form.text_field :name%>
+          	<span class="error"><%=profile_form.error_message_on :name%></span>
+          	</div>
+          	<div class="edit_f en_name_fields">
+          	<label><%=_('名')%></label>
+          	<%=profile_form.text_field :first_name%>
+          	<span class="error"><%=profile_form.error_message_on :first_name%></span>
+          	</div>
+          	<div class="edit_f en_name_fields">
+          	<label><%=_('姓')%></label>
+          	<%=profile_form.text_field :last_name%>
+          	<span class="error"><%=profile_form.error_message_on :last_name%></span>
+          	</div>
+            <div class="edit_f w_d13">
+            	<label><%=_('性别')%></label>
+              <%=profile_form.radio_button :gender,1, :checked=>profile_form.object.gender == true%><%=profile_form.label :gender,_("男"),:class=>'w_auto'%>
+              <%=profile_form.radio_button :gender,0, :checked=>profile_form.object.gender == false%><%=profile_form.label :gender,_("女"),:class=>'w_auto'%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('生日')%></label>
+              <%=profile_form.date_select :birthday, :start_year=>1960%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('邮箱')%></label>
+            	<%=profile_form.text_field :email%>
+            	<span></span>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('所在地')%></label>
+            	<%=profile_form.select :country_id, Country.includes(:locales).order("location_locales.name asc").all.map{|c|[c.name,c.id]}, {},:class=>"w_155"%>
+            	<%=profile_form.select :city_id, City.includes(:locales).order("location_locales.name asc").all.map{|c|[c.name,c.id]}, {},:class=>"w_155"%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('QQ')%></label>
+              <%=profile_form.text_field :qq%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('MSN')%></label>
+            	<%=profile_form.text_field :msn%>
+            </div>
+             <div class="edit_f text_area345">
+              	 <label><%=_('简介')%>:</label>
+              	 <%=profile_form.text_area :description%>
+          	 </div>
+             <div class="edit_f text_area345 mg_t10">
+                 <label><%=_('成就')%>:</label>
+                 <%=profile_form.text_area :achievement%>
+             </div>
+             
+            </div>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+
+
+            <div class="edit_b">
+            <input value="<%=_('保存')%>" type="submit"/>
+            <span class="notice"></span>
+            </div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--basic info  box end-->
+                                        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+  
+      <div class="clear">&nbsp;</div>
+    
+<script type="text/javascript">
+
+
+  function hide_locale_names(){
+		$("form div[data-locale=en] .zh_CN_name_fields").hide();
+		$("form div[data-locale=zh_CN] .en_name_fields").hide();
+  }
+
+
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+		hide_locale_names();
+	});
+	
+	
+
+  // for activity comment post form
+  $("#basic_info_edit_form, #edu_edit_form, #company_edit_form, #password_edit_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.errors){
+        for(var key in data.errors){
+          var msg = data.errors[key];
+          $("."+key+"_error", this).text(msg.join(","));
+        }
+      }else{
+        $(".notice",this).addClass("success").text("<%=_("更新成功")%>");
+      }
+
+    });
+  
+	
+	//
+	$(".add_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	    // add profile form
+  	  form.find(".add_more_profiles_btn").click();
+	    var type = $(this).attr("data-profile-type");
+	    switch(type){
+	      case  "profile":{
+	        break;
+	      }
+	      case  "edu":{
+	        form.find(".add_more_edu_btn:last").click();
+	        break;
+	      }
+	      case  "company":{
+	        form.find(".add_more_company_btn:last").click();
+	        break;
+	      }
+	      case  "addition":{
+	        form.find(".add_nested_fields:last").click();
+	        break;
+	      }
+	    }
+	    $("form div[data-locale]:last").attr("data-locale","<%=another_locale(@user.profiles.first.locale)%>");
+      form.find(".profile_fields:last .language>span").text("<%=Const::value(:languages, another_locale(@user.profiles.first.locale).to_s)%>");
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").show();
+	    form.find(".profile_fields:last input[name*=destroy]").val("0");
+	  }
+	  
+	  // hide ADD  button, show remove button
+	  $(this).hide();
+	  form.find(".remove_profile_language_btn").show();
+
+    hide_locale_names();	  
+	  
+	  return false;
+	});
+	
+	// 
+	$(".remove_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").hide();
+	    form.find(".profile_fields:last input[name*=destroy]").val("1");
+	  }
+	  
+	  // hide REMOVE  button, show ADD button
+	  $(this).hide();
+	  form.find(".add_profile_language_btn").show();
+    hide_locale_names();	  
+	  return false;
+	});
+	
+	
+	
+	
+	
+	
+</script>
+

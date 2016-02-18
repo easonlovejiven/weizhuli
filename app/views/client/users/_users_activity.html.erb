@@ -1,0 +1,51 @@
+      <!--user trends begin-->
+          <div class="user_trends_unit border_dashed w705 user_activity_name">
+          	<div class="u_avatar35">
+              <%=link_to user_path(activity.user) do%>
+                <%=user_avatar_tag(activity.user, :thumb,:size=>"35x35",:scaling=>true, :alt=>"")%>
+              <%end%>
+            </div>
+            <!--user_trends_right begin-->
+            <div class="user_trends_right">
+							<div class="speakers_name">
+                <%=link_to activity.user.displayable_name+":", user_path(activity.user),:"data-dynamic-user-card"=>activity.user.id %>
+                <%=render "/client/users/users_activity_content", :activity=>activity%>
+              </div>            
+              <div class="bar_fcc">
+               <strong><%= activity_time(activity.created_at.to_datetime)%></strong>
+               <div class="share_operate">
+                 <%if activity.user_id == current_user.id && current_user%>
+                <%=link_to _('删除'), client_activity_path(activity), :method => "DELETE",:class=>"remote_activity_destroy",:'data-remote'=>true %> | 
+                <%end%>
+                <%=link_to raw(_('分享')+"(<var>#{activity.forwarded}</var>)"), new_client_activity_path(:forward=>activity), :"data-forwards"=>activity.forwarded,:class=>"fancybox"%> &nbsp;|&nbsp; 
+                <%=link_to (_('评论')+"(<var>#{activity.commented}</var>)").html_safe,client_activity_activity_comments_path(activity),:"data-comments"=>activity.commented, :class=>"user-activity-replies-link"%>
+                </div>
+              </div>
+            </div>
+            <!--user_trends_right end-->
+            
+            <!--comment hide layer begin-->
+            <div class="w690 mg_t10 comment_hide_layer backg_cf user_activity_replies" style="display:none;">
+            	<!--comment_form  begin-->
+              <div class="bor_top comment_form back_eee">
+              	<%=form_for [:client,activity,ActivityComment.new(:activity=>activity)],:remote=>true, :"date-type"=>"json", :html=>{:'data-type'=>'html', :id=>"user_post_activity_comment_form"} do |form|%>
+                      <%=hidden_field_tag :from, "user_activity"%>
+                      <%=form.text_area :content, :rows=>5,:placeholder=>_("说两句，评论一下..."),:class=>"user_active_textarea"%>
+                      <%=form.error_message_on :content%>
+                      <%=form.hidden_field  :activity_id%>
+                      <div class="btn_95 mg_t10"><%=form.submit _("评论"),:class=>"f_right"%></div>
+                    <%end%>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--comment_form  end-->
+              <div class="comment mg_t10 activity_replies_list"></div>
+
+              <div class="clear">&nbsp;</div>     
+            </div>
+            <!--comment hide layer end-->
+            
+            
+    </div>
+  <!--user trends end-->    
+
+

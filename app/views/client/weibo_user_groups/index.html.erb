@@ -1,0 +1,31 @@
+  <div class="info_name">
+    粉丝分组名称管理
+  </div>
+<%- model_class = WeiboUserGroup -%>
+<%= simple_form_for [:client,@weibo_user_group], :html => { :class => 'form-inline' } do |f| %>
+    <label>添加粉丝分组名称 <%= f.input_field :name, :placeholder=>"粉丝分组名称"%></label>
+    <%= f.button  :submit, :value=>"添加",:class => 'btn btn-primary' %>
+<% end %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @weibo_user_groups.each do |weibo_user_group| %>
+      <tr>
+        <td><%= weibo_user_group.name %></td>
+        <td>
+          <%= link_to "删除",
+                      client_weibo_user_group_path(weibo_user_group),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

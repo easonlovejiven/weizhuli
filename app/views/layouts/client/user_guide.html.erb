@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+</head>
+<body class="back_eee">
+<%=render "common/header"%>
+<!--main start-->
+<div class="main">
+  <%=yield%>
+  <div class="clear">&nbsp;</div>
+</div><!--main end-->
+
+<script type="text/javascript">
+	$(".new_people a").hover(
+		function () {
+			$(this).addClass("hover");
+		},
+		function () {
+			$(this).removeClass("hover");
+		}
+	);
+
+	//complete profile step last background none
+	$(".process ul li").last().css("background","none");
+
+</script>
+<%=render "common/bottom_js"%>
+</body>
+</html>
+

@@ -1,0 +1,110 @@
+<!--step begin-->
+<div class="nav-step step1">
+    <span class="current">1、选购</span>
+    <span>2、上传照片</span>
+    <span class="w195">3、填写核对信息，提交订单</span>
+</div>
+<!--step end-->
+<div class="conBg380 mgT20">
+  <div class="main">
+		<div class="title40">您的iphone壳，从未如此特别</div>
+		<div>
+		  <%Product.all.each{|product|%>
+		  
+		    <%=link_to product.name,  new_client_order_path(:product_id=>product.id)%> </br>
+		    
+		  
+		  <%}%>
+		</div>
+    
+    
+    
+    
+
+
+  <!--order_process begin-->
+  <div class="">
+    <div class="title960">
+      <div class="title_280">
+        <h4>订单流程</h4>
+        <div class="bg1">&nbsp;</div>
+      </div>
+    </div>
+    <div class="order_process mgT15">
+      <ul>
+        <li class="bgleft">&nbsp;</li>
+        <li class="or_01"><var>购买</var></li>
+        <li><span>&nbsp;</span></li>
+        <li class="or_02"><var>上传</var></li>
+        <li><span>&nbsp;</span></li>
+        <li class="or_03"><var>审核</var></li>
+        <li><span>&nbsp;</span></li>
+        <li class="or_04"><var>设计师处理</var></li>
+        <li><span>&nbsp;</span></li>
+        <li class="or_05"><var>制作</var></li>
+        <li><span>&nbsp;</span></li>
+        <li class="or_06"><var>收货</var></li>
+        <li class="bgright">&nbsp;</li>
+      </ul>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--order_process end-->
+
+  <!--img begin-->
+  <div class="pdT15">
+    <div class="title960">
+      <div class="title_280">
+        <h4>图片上传说明</h4>
+        <div class="bg1">&nbsp;</div>
+      </div>
+    </div>
+    <div class="explain pdT15 bold">
+      <p>1. 图片支持的格式有: jpg,jpeg,png,bmp</p>
+      <p>2. 上传图片的大小不超过10M,不小于1M,尺寸在1080*2160以上为佳</p>
+      <p>3. 上传图片无明显的模糊感，以数码相机拍摄的照片为佳</p>
+      <p>4. 用户上传的照片一律不做水印处理和压缩，质量不会有任何损失</p>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--img end-->
+  <!--service begin-->
+  <div class="pdT15 pdB80">
+    <div class="title960">
+      <div class="title_280">
+        <h4>售后服务</h4>
+        <div class="bg1">&nbsp;</div>
+      </div>
+    </div>
+    <div class="a_service mgT15">
+      <div class="color_op"></div>
+      <p>
+      定制后壳为特殊商品，订单在付款后不可以取消。如果非质量问题，暂不支持退换货和拒收。如有质量问题(手<br/>机壳和手机扣合不紧,定制图案有明显的留白，手机壳表明不平整)<br/>，自您签收商品7日内可以享受退货，换货服务。您可以通过邮件，微薄和我们及时取得联系。
+      </p>
+    </div>
+    <div class="explain pdT15">
+      <p><strong>常见问题</strong></p>
+      <p class="mgT15">1.色差问题</p>
+      <p>
+      显示器原因，印刷工艺限制. 目前的印刷转印技术，对于某些特殊颜色，很难做到像数码相机拍出的效果那样百分百保真，但我们保证工艺上做到色彩逼真，贴近图片的真实效果。
+      </p>
+      <p class="mgT15">2.清晰度</p>
+      <p>清晰度会受到上传图片的大小和分辨率的影响，请尽量上传分辨率在200dpi以上的图片.以达到更好的产品效果。</p>
+      <p class="mgT15">3.发货时间</p>
+      <p>您的图片上传成功之后，我们的设计师会根据您图片的色彩,大小裁切成适合手机壳打印的图片，交由我们的工厂制作，大概在7－10天左右您可以收到心爱的手机壳.为了保证产品的制作品质，请您耐心等待，谢谢您的配合。您可以通过我们的官方微薄来查询您的订单状态。</p>
+      <p class="mgT15">4.退换货方式</p>
+      <p>如您因质量问题办理退换货服务时，您需要将商品以及发票一并寄回。我们会对商品进行质检确认，并根据结果以及您的需求进行退货操作。</p>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--service end-->
+    
+    <div class="clear">&nbsp;</div>
+  </div>
+  <div class="clear">&nbsp;</div>
+	<div class="h60">&nbsp;</div>
+</div>
+

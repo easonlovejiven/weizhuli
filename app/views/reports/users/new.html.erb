@@ -1,0 +1,187 @@
+<%content_for :title, "注册用户"%>
+
+<%if false%>
+<div class="row-fluid">
+  <div class="span12 title">
+    您正在申请开通的是魔丽游微日报
+  </div>
+  <div class="span12 title">
+    <div class="conlock title">您的资料将采用加密技术传输，请放心填写。</div>  
+  </div>
+
+</div>
+
+<div class="span12">
+  <%=form_for [:reports,@user] do|form| %>
+    <%=form.hidden_field :login%>
+    
+    <table class="table">
+
+      <%=form.fields_for :profile do |pf|%>
+      <tr>
+        <td>
+          <span>
+            <%=pf.hidden_field :weixin_openid%>
+            <i>*</i> <%=pf.label :realname, "姓名"%> :
+          </span>
+          <div>
+            <%=pf.text_field :realname%>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <span><i>*</i> <%=form.label :email, "邮箱"%> :</span>
+          <div>
+            <%=form.text_field :email%>
+          </div>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <span>
+            <i>*</i> <%=pf.label :mobile, "手机号"%> :
+          </span>
+          <div>
+            <%=pf.text_field :mobile,:class=>"mobile"%>
+          </div>
+            <%=@user.errors[:mobile]*","%>
+              <button type='button' id='mobile_validate_btn' class='btn'>获取验证码</button>
+        </td>
+      </tr>
+      <%end%>
+      
+      <tr>
+        <td>
+          <span>
+            <i>*</i> <%=label_tag :sms_code,"短信验证码"%> :
+          </span>
+          <div>
+            <%=text_field_tag :sms_code, "",:type=>"number",:placeholder=>"输入短信4位验证码"%>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+        <%if !@user.errors.blank?%>
+        <ul>
+          <%@user.errors.full_messages.each{|m|%>
+          <li>
+            <%=m%>
+          </li>
+          <%}%>
+        </ul>
+        <%end%>
+        
+        <div class="row-fluid agreements">
+          <div class='checkbox'></div>我已阅读并清楚知晓《<a href="agreements">魔丽游©微助力使用章程</a>》的相关信息，并愿意遵守各项规则。
+        </div>        
+
+        <div class="row-fluid">
+        <%=form.submit "提交",:class=>"btn btn-danger btn-large"%>
+        </div>
+
+  <%end%>
+
+</div>
+<%end%>
+
+
+<%if true%>
+<!--form begin-->
+<div style="margin:7px 1px 0; font-size:14px; text-align:center;display:;">您正在申请开通的是魔丽游微日报</div>
+<div class="conlock">您的资料将采用加密技术传输，请放心填写。</div>
+<%=form_for [:reports,@user] do|form| %>
+  <%=form.hidden_field :login%>
+  <%=form.fields_for :profile do |pf|%>
+    
+
+<section class="consection">
+
+    
+    <div class="incondiv cardid">
+        <span><i>* </i>姓名：</span>
+        <div> <%=pf.text_field :realname%></div>
+    </div>
+    <div class="incondiv cardid">
+        <span><i>* </i>邮箱：</span>
+        <div> <%=form.text_field :email, :autocomplete=>"off" %></div>
+    </div>
+    <div class="incondiv cardid" id="NotNewDiv" style="display:none;">
+        <div class="conmsg"><em>!</em>抱歉，您是已持卡客户，暂不能通过手机申请，请使用电脑登陆我行官网办理。</div>
+    </div>
+    <div class="incondiv cardid">
+        <span><i>* </i>手机号：</span>
+        <div> <%=pf.text_field :mobile,:class=>"mobile",:maxlength=>"11",:pattern=>"[0-9]*"%> </div>
+        <div style="padding-right:5px;-webkit-box-flex: 0; width:90px;" id="DivSMSBtn"><input type="button" id="mobile_validate_btn" value="获取验证码"  style="font-size:14px;" /></div>
+    </div>
+    <div id="ctl00_ContentPlaceHolder1_DivSMSCode" class="incondiv cardid">
+        <span><i>* </i>短信验证码：</span>
+        <div> <%=text_field_tag :sms_code, "",:type=>"number",:placeholder=>"输入短信4位验证码",:maxlength=>"11",:pattern=>"[0-9]*"%></div>
+    </div>
+</section>
+
+
+<section class="agreement">
+   <div>我已阅读并清楚知晓<a href="agreements" target="_self">《魔丽游&copy;微助力使用章程》</a>及该产品的相关信息，并愿意遵守各项规则。</div>
+   <div class="sel" id="ckAgree"></div>
+</section>
+
+<%if !@user.errors.blank?%>
+  <div class="conmsg" id="errmsg" style=""><em>!</em>
+    <ul>
+      <%@user.errors.full_messages.each{|m|%>
+      <li>
+        <%=m%>
+      </li>
+      <%}%>
+    </ul>
+
+  </div>
+<%end%>
+<section class="newapplybtn" style="margin-top:10px;">
+    <div class="bottombtn">
+        <div><input type="submit" name="ctl00$ContentPlaceHolder1$btnQuery" value="立即提交" id="ctl00_ContentPlaceHolder1_btnQuery" /></div>
+    </div>
+</section>
+
+  <%end%>
+<%end%>
+<!--form end-->
+
+<%end%>
+
+
+
+
+
+
+
+
+<script>
+
+  $("#mobile_validate_btn").click(function() {
+    var btn = $(this);
+    // body...
+    var mobile = $("#user_profile_attributes_mobile").val().trim();
+    if(mobile == ""){
+      alert("手机号不能为空!")
+      return false;
+    }
+    if(!(/^1[3|5|8][0-9]\d{4,8}$/.test(mobile))){
+      alert("手机号不正确");
+      return false;
+    }
+    $.post("/sms_codes", {sms_code:{mobile:mobile}}, function(data){
+      console.debug(data);
+
+      btn.prop("disabled",true);
+      btn.text("验证码短信已发送");
+    })
+    return false;
+  })
+
+</script>

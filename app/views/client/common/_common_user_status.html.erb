@@ -1,0 +1,25 @@
+<ol class="rightbar_120">
+                <li><%=render :partial=>"common/card_exchange_status",:locals=>{:user=>user}%></li>
+                <%if current_user%>
+                <%
+                    case Follow::follow_status(current_user, user)
+                    when Follow::STATUS_FOLLOW_EACH_OTHER
+                %>
+                    <li><a class="mutual">&nbsp;</a></li>
+                    <li><%=link_to _('取消关注'),client_unfollow_path(user),{:class=>"cancel ce_unfollow_user",:data_follow_url=>client_follow_path(user),:data_unfollow_url=>client_unfollow_path(user),:data_from_dashboard=>"yes"}%></li>
+                <%
+                  when Follow::STATUS_FOLLOWING
+                %>
+                     <li><%=link_to _('取消关注'),client_unfollow_path(user),{:class=>"cancel ce_unfollow_user",:data_follow_url=>client_follow_path(user),:data_unfollow_url=>client_unfollow_path(user),:data_from_dashboard=>"yes"}%></li>
+                <%
+                  when Follow::STATUS_CAN_NOT_FOLLOW
+                %>
+               <% else %>
+                     <li><%=link_to _('关注'),client_follow_path(user),{:class=>"ce_follow_user",:data_follow_url=>client_follow_path(user),:data_unfollow_url=>client_unfollow_path(user),:data_from_dashboard=>"yes"}%></li>
+                <%end%>
+                <%else%>
+                   <li><%=link_to _('关注'),login_path%>
+                <%end%>
+
+              <li><%=link_to(_('发私信'), new_client_private_message_path(:private_message=>{:to_user_id=>user.id,:to_user_name=>user.displayable_name}), :class=>"msg fancybox") if current_user.id != user.id%></li>
+            </ol>

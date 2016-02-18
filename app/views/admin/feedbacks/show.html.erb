@@ -1,0 +1,38 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_feedbacks_path  %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_feedback_path %></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="inner">
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_feedback.email", :default => t("activerecord.labels.email", :default => "Email")) %>:</b>
+          <%= @feedback.email %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_feedback.content", :default => t("activerecord.labels.content", :default => "Details")) %>:</b>
+          <%= @feedback.details %>
+        </p>
+
+        <p>
+          <b><%= _('来源') %>:</b>
+          <%= @feedback.http_referer %>
+        </p>
+        <p>
+          <b><%= _('状态') %>:</b>
+          <%= @feedback.status_text %>
+        </p>
+        <p>
+          <b><%= _('处理方法') %>:</b>
+          <%= @feedback.comment %>
+        </p>
+    </div>
+  </div>
+</div>
+
+<%# content_for :sidebar, render(:partial => 'sidebar') -%>
+

@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="<%=@user.displayable_name if @user.displayable_name%>"/>
+<title><%=@user.displayable_name if @user.displayable_name%> <%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<script>
+	// tabs dashboard
+	$(function() {
+		$(".share_ques_tab").tabs(".share_ques_box");
+	});
+
+</script>
+</head>
+<body>
+<!--header begin-->
+<%=render "common/header"%>
+<!--header end-->
+<!--main begin-->
+<div class="main bg_160_580_220">
+    <!--left 160 begin-->
+    <div class="left160">
+    		<!--follow_info begin-->
+        <div class="follow_info">
+        	<h5>
+        	  <%=link_to user_avatar_tag(@user, :medium, :alt=>"",:size=>"140x140", :scaling=>false), user_path %>
+          </h5>
+          <div class="follow_info_bar">
+            <%=link_to user_followings_path do%>
+              <strong><%=_("关注  ")%></strong><var><%=@user.get_microblog_info.followings%></var>
+            <%end%>
+          </div>
+					<div class="follow_info_bar">
+            <%=link_to user_followers_path do%>
+              <strong><%=_("粉丝")%></strong><var><%=@user.get_microblog_info.followers%></var>
+            <%end%>
+        	</div>
+        </div>
+        <!--follow_info end-->
+        <!--Menu begin-->
+        <div class="left_menu">
+          <%= link_to user_salutation(@user)+_('的公共主页'), user_path(@user),:class=>controller_name == "user" ? "current" : ""%>
+	        <%if @user.roles.map(&:name).include?("industry_icon")%>
+	          <%= link_to user_salutation(@user)+_('的动态更新'), client_icon_updates_path, :class=>controller_name == "icon_updates" ? "current" : ""%>
+          <%else%>
+	          <%= link_to user_salutation(@user)+_('的动态更新'), user_activities_path(@user),:class=>controller_name == "activities" ? "current" : ""%>
+          <%end%>
+          <%= link_to user_salutation(@user)+_('的活动中心'), user_events_path(@user),:class=>controller_name == "events" ? "current" : ""%>
+          <%= link_to user_salutation(@user)+_('关注的公司'), user_companies_path(@user),:class=>controller_name == "organizations" ? "current" : ""%>
+        </div>
+        <!--Menu end-->
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left 160 end-->
+
+		<!--center 580 begin-->
+    <div class="center580">
+     <%=yield%>
+    <div class="clear">&nbsp;</div>
+    </div>
+   <!--center 580 end-->
+
+    <!--right 220 begin-->
+    <div class="right220">
+			<!--User Recommended begin-->
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30"><strong><%=user_salutation(@user)+_('关注的人')%></strong><a href="#"><%=link_to _('更多'),user_followings_path%></a></div>
+        <!--title end-->
+        <!--user_recom begin-->
+        <div class="user_recom_box">
+
+          <%@user.following_users.profile_complished.limit(2).each do |user| %>
+           <%= render :partial => "/client/common/ce_user_card",:locals=>{:user=>user} %>
+          <%end%>
+        </div>
+        <!--user_recom end-->
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--User Recommended end-->
+
+			<!--Ta industry begin-->
+      <div class="industry_tag mg_t10">
+        <%@user.industries.each{|industry|%>
+        <%=link_to client_industry_path(industry) do%><strong><%=industry.name%></strong>
+        <var><%=industry.news.count%></var><%end%>
+        <%}%>
+      </div>
+      <!--Ta industry end-->
+
+			<!--Companies Recommended begin-->
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30"><strong><%=user_salutation(@user)+_('关注的公司')%></strong><%=link_to _('更多'),user_companies_path%></div>
+        <!--title end-->
+        <!--reco_comp_box begin-->
+
+        <div class="reco_comp_box">
+         <%@user.organizations.limit(2).each{|company|%>
+            <%= render :partial => "/client/common/ce_company",:locals=>{:company=>company} %>
+          <%}%>
+        </div>
+        <!--reco_comp_box-->
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--Companies Recommended end-->
+
+			<!--Companies Recommended begin-->
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30"><strong><%=user_salutation(@user)+_('的活动')%></strong><%=link_to _('更多'),user_events_path%></div>
+        <!--title end-->
+        <div class="event_recom_box">
+           <%@user.events.available.order("start_time").limit(2).each{|event|%>
+             <%= render :partial => "/client/common/event_common_unit", :locals => {:event => event} %>
+           <%}%>
+
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--Companies Recommended end-->
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--right 220 end-->
+    <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<%=render :partial=>"/client/business_cards/my_business_card" %>
+<!--footer begin-->
+<%=render "common/bottom"%>
+<!--footer end-->
+<script type="text/javascript">
+	$(document).ready(function(){$('.ind_tab span:first').addClass('active');$('.indu_list:first').css('display','block');autoroll();hookThumb();});
+	var i=-1;var offset = 2500;var timer = null;
+	function autoroll(){n = $('.ind_tab span').length-1;i++;if(i > n){i = 0;}slide(i);timer = window.setTimeout(autoroll, offset);}
+	function slide(i){
+		$('.ind_tab span').eq(i).addClass('active').siblings().removeClass('active');
+		$('.indu_list').eq(i).css('display','block').siblings('.indu_list').css('display','none');
+	}
+	function hookThumb(){
+		$('.ind_tab span').hover(
+			function () {if (timer) {clearTimeout(timer);i = $(this).prevAll().length;slide(i);}},
+			function () {timer = window.setTimeout(autoroll, offset);this.blur();return false;}
+		);
+	}
+</script>
+<script type="text/javascript">
+  $(function(){
+    // create a convenient toggleLoading function
+    var toggleLoading = function() { $("#loading").toggle() };
+     $("#new_private_message_link").fancybox({
+        ajax : {
+          dataType : "html"
+        },
+        onComplete : function(){user_choice_autocomplete()}
+      })
+   });
+</script>
+<%=render "common/bottom_js"%>
+</body>
+</html>
+

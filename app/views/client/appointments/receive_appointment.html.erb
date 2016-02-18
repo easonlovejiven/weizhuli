@@ -1,0 +1,129 @@
+  	<div class="card_tab pad_left10">
+  	  <%=link_to _('全部'), receive_appointment_client_appointments_path, :class=>params[:s].to_s == "" ? "current" : ""%>
+      <%=link_to _('已处理的邀请')+" ("+@user.receive_appointments.deal_done_appointment.size.to_s+")", receive_appointment_client_appointments_path+"?s=done", :class=>params[:s].to_s == "done" ? "current" : ""%>
+      <%=link_to _('未处理的邀请')+" ("+@user.receive_appointments.deal_new_appointment.size.to_s+")", receive_appointment_client_appointments_path+"?s=new", :class=>params[:s].to_s == "new" ? "current" : ""%>  
+   </div> 
+ <!--received invite begin-->
+    <div class="mg_t10">
+    <div class="card_num" style="padding:0px 0px 0px 10px;"><em><%=@appointments.total_entries%></em><%=_("个邀请")%></div>
+      	<!--received invite list begin-->
+        <div class="invite_meeting mg_t10">
+         <% @appointments.each do |appointment| %>
+        	<!--invite_meeting unit begin-->	
+          <div class="invite_m_unit">
+          	<!--i begin-->
+            <div class="invite_m_layer">
+              <div class="invite_m_l">              
+                <dl>
+                  <dt><%=user_avatar_tag(current_user,:thumb,:size=>"40x40", :scaling=>true)%></dt>
+                  <dd class="name"><%=current_user.displayable_name if current_user.displayable_name %></dd>
+                  <dd>
+      <%=current_user.business_card.company if current_user.business_card && current_user.business_card.company%>
+      </dd>
+      <dd><%=current_user.business_card.title if current_user.business_card && current_user.business_card.title%></dd>
+                </dl>
+                
+                <div class="invite_button_left">
+                 <span><em><%=_("邀请")%></em></span>
+                </div>
+
+                <dl>
+                  <dt class="t_image"><%=user_avatar_tag(appointment.send_user,:thumb,:size=>"40x40", :scaling=>true)%></dt>
+                  <dd class="t_name"><%=appointment.send_user.displayable_name if appointment.send_user.displayable_name%></dd>
+                  <dd class="company_name">
+                  <%=appointment.send_user.business_card.company if appointment.send_user.business_card && appointment.send_user.business_card.company%>
+                  </dd>
+                  <dd class="company_position">
+                  <%=appointment.send_user.business_card.title if appointment.send_user.business_card && appointment.send_user.business_card.title%>
+                  </dd>
+                </dl>
+                
+                <div class="clear">&nbsp;</div>              
+              </div>
+              <!--status begin-->
+              <%=render :partial=>"sent_appointment_status",:locals=>{:appointment=>appointment}%>
+              <!--status end-->
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--i end-->
+            <!--pop begin-->            
+            <div class="popup_layer porleft_125">
+            	<div class="upward_a poright_75"><span>◆</span></div>
+             <div class="up_hide"><%=_("收起")%></div>
+              <div class="popup_layer_content">
+                <div class="popup_l_unit">
+                  <strong><%=_("时间")%>：</strong>
+                  <span><%= (appointment.time.blank?) ? l(appointment.created_at, :format=>:all_date) : l(appointment.time, :format=>:all_date) %></span>
+                </div>
+                <div class="popup_l_unit">
+                  <strong><%=_("地点")%>：</strong>
+                  <span><%=appointment.address if appointment.address%></span>
+                </div> 
+                <div class="popup_l_unit">
+                  <strong><%=_("会议详情")%>：</strong>
+                  <span><%=appointment.content if appointment.content%></span>
+                </div> 
+                 <div class="popup_l_unit">
+                  <h4><%=_("我的回复")%></h4>
+                  <%if appointment.status && appointment.status < 3 %>
+                    <%url = client_appointment_path(appointment)%> 
+                    <%= form_for appointment ,:url => client_appointment_path(appointment) do |f| %>
+                    <div class="i_operate">
+                      <%=f.radio_button :status,  3, :checked=> true%>
+                      <label><%=_("接受")%></label>
+                      <%=f.radio_button :status,  4, :checked=> false%>
+                    	<label><%=_("拒绝")%></label>
+                      <%=f.radio_button :status,  5, :checked=> false%>                                      
+                    	<label><%=_("忽略")%></label>	
+                    </div>
+                    <div class="popup_meeting_for">
+                    	<%=f.text_area :reply_content%>
+                      <div class="invite_pal_submit">
+                      <%=f.submit _('确定') %>
+                      <%#=f.submit _('确定'),:onclick=>"return user_appointment_reply('#{appointment.id}','#{url}')"%>
+                      </div>
+                    </div>                  
+                    <% end %>
+                <% else %>
+                   <p><%=appointment.reply_content if appointment.reply_content%></p>
+                <% end %>                                          
+                </div>
+                <div class="clear">&nbsp;</div>  
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div> 
+            <!--pop end-->            
+            <div class="clear">&nbsp;</div>
+          </div>
+        	<!--invite_meeting unit end-->
+        	<% end %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--received invite list end-->
+        <!--pagination begin-->
+        <%=will_paginate @appointments%>     
+      <!--pagination end-->  
+        <div class="clear">&nbsp;</div>  
+      </div>
+      <!--received invite end-->
+      
+   <script type="text/javascript">
+     $('input[name*="status"]').click(function (){
+		  var str = this;
+		  if(this.value == 5){
+		    $('textarea[name*="reply_content"]').hide();
+		  }else{
+		    $('textarea[name*="reply_content"]').show();
+		  }
+	  });
+      //change card to the different group  
+      function user_appointment_reply(id,url){
+         return false;  
+         $.post(url,{"_method":"put","appointment[id]":id},
+           function(data) {
+               //display status of response from server
+               $.fancybox('<p class="show_fancybox_message"><%= image_tag("ok_21.gif") %></p>');
+	         }
+	       );
+      }
+   </script>

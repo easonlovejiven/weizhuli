@@ -1,0 +1,115 @@
+// 这里的 class name 必须与表单中的 Class Name 相同, 否则无法调用 
+var tqqWeiboDataHelper  = function(){ 
+} 
+
+
+EWeiboDataHelper.prototype.run = function(){ 
+
+  (function($){ 
+    // 放你的代码在这里 ... 
+
+    var router = function(url){ 
+      // 数据助手
+      tqq_list_helper();
+
+    };
+    
+    // 提取微博列表中 赞，阅读 量 等功能
+    var tqq_list_helper = function(){
+
+      var collection_weibo_attributes = function(){
+
+        var attrs = [];
+          $("div.main ul li[from =1]").each(function(){
+
+          var weibo_id = $(this).attr("id");
+          var url = "http://t.qq.com/p/t/" + $(this).attr("id");
+          var time = $("div.msgBox .pubInfo.c_tx5 .left.c_tx5 .time",this).attr('title');
+          var reads =  $("div.msgBox .pubInfo.c_tx5 .left.c_tx5 .cNote",this).attr('title');
+          reads = parseInt(reads.replace("该广播已被阅读",""));
+          var forwards = $(".relay",this).attr('num');
+           
+          var comments = $(".comt",this).attr('num');
+       
+	        var like =  $("div.msgBox div div.funBox a span",this).html()
+
+          attrs.push( [weibo_id,url,time,like,reads,forwards,comments]);
+        });
+        return attrs;
+      }
+
+
+      setTimeout(function(){
+
+        if($("div.main ul li[from =1]").size()>0){
+          var button = $("<input style='position:fixed;left:0px;top:300px;' type='button' value='收集微博列表阅读数'/>");
+          console.debug(button)
+          $("body").append(button);
+          button.click(function(){
+            var attrs = collection_weibo_attributes();
+            //console.debug(attrs.size())
+            $(attrs).each(function(index,row){
+              console.debug(row.join("|"));
+            })
+            alert("数据已输出到 console 中！ 'Ctil + Shift + C' 开启console");
+          });
+        }else{
+          console.debug("没有找到微博列表");
+        }
+
+      },1000);
+
+    }
+    
+    
+    
+    router(window.location.href);
+
+  })(__jQuery);  
+  
+
+}
+
+
+
+
+ // 提取腾讯微博列表中 赞，阅读 量 等功能
+    
+
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ###
+    //微薄id url 微博时间 赞 阅读 转发 评论
+    var attrs = [];
+        __jQuery("div.main ul li[from =1]").each(function(){
+
+          var weibo_id = __jQuery(this).attr("id");
+          var url = "http://t.qq.com/p/t/" + __jQuery(this).attr("id");
+          var time = __jQuery("div.msgBox .pubInfo.c_tx5 .left.c_tx5 .time",this).attr('title');
+          var reads =  __jQuery("div.msgBox .pubInfo.c_tx5 .left.c_tx5 .cNote",this).attr('title');
+          reads = parseInt(reads.replace("该广播已被阅读",""));
+          var forwards = __jQuery(".relay",this).attr('num');
+           
+          var comments = __jQuery(".comt",this).attr('num');
+       
+	        var like =  __jQuery("div.msgBox div div.funBox a span",this).html()
+
+          attrs.push( [weibo_id,url,time,like,reads,forwards,comments]);
+        });
+        __jQuery(attrs).each(function(index,row){ console.debug(row.join(" | ")); });

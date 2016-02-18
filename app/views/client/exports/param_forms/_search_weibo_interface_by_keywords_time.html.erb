@@ -1,0 +1,39 @@
+      <div style="float:left">
+        <p  border = "1"  ><a >列属性：</a><font color="red" size="4"> ["UID", "昵称", "位置", "性别", "粉丝", "关注", "微博", "注册时间", "认证信息", "认证原因", "keyword", "微博url", "发布时间", "内容", "来源", "转发数", "评论数"]</font></p>
+      </div>
+
+      <div class="span4" style = "clear:both;float:left">
+        输入关键词 如：(<ul>
+         <li>固态硬盘</li>
+         <li> SSD </li>
+         <li>硬盘速度</li>
+        )<每行一个></ul>
+        <%=text_area_tag "params[keywords]", "", :rows=>"10"%>
+      </div>
+      <div class="span4" >
+       <br><br><br><br><br>
+        选择日期条件: <br/>
+
+        <%=text_field_tag "params[start_time]",nil, :placeholder=>"起始日期,如：2014-01-08"%>
+        <%=text_field_tag "params[end_time]", nil, :placeholder=>"结束日期,如：2014-01-09"%>
+
+        
+      </div>
+      <br/>
+      <div class="span4" >
+        输入最大输出行数: <br/>
+
+        <%=text_field_tag "params[sum]",nil, :placeholder=>"例如：10000"%>
+
+        <br/>
+      </div>
+ 
+      <div class="span4" >
+        省份: 北京(11), <a href="http://open.weibo.com/wiki/%E7%9C%81%E4%BB%BD%E5%9F%8E%E5%B8%82%E7%BC%96%E7%A0%81%E8%A1%A8" target="_blank">查看更多</a><br/>
+
+        <%=text_field_tag "params[province]",nil, :placeholder=>"例如：11"%>
+
+        <br/>
+      </div>
+
+

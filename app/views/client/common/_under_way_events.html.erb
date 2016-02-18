@@ -1,0 +1,41 @@
+
+			<!--Companies Recommended begin-->	
+      <div class="mg_t10">
+      	<!--title begin-->
+      	<div class="title30"><strong><%=_('正在进行的活动')%></strong>
+        <%=link_to _('更多'), client_events_path(:type=>"under_way"), :class=>"color_f6"%>
+        </div>
+        <!--title end-->
+        <div class="event_recom_box">
+        <%Event.available.under_way.limit(4).each{|event|%>
+          <!--Companies rec begin-->
+          <div class="reco_comp">
+            <dl>
+              <dt class="e_pic"><%=link_to ce_image(event, :image, :thumb, :size=>"60x60", :scaling=>true), client_event_path(event),:class=>"evnet_img"%></dt>
+              <!--
+              <dd><a href="#"><span>22,588,963</span>喜欢</a></dd>
+              -->
+              <dd><%=link_to client_event_path(event) do%> <span><%=event.joins%></span><%=_("参加")%><%end%></dd>
+              <dd class="add_follow"><%=link_to _("了解详情 "), client_event_path(event) %></dd>
+            </dl>
+            <h4><%=link_to  event.title, client_event_path(event)%></h4>
+            <div class="a_time"><%=l event.start_time%> -- <%=l event.start_time%></div>  
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--Companies rec end-->
+        <%}%>
+  
+        </div>
+        <div class="clear">&nbsp;</div>         
+      </div>
+      <!--Companies Recommended end-->
+
+
+
+<script>
+	//dashboard
+	$(function() {
+		$(".even_able").scrollable().navigator();
+		$(".event_scroll").scrollable();
+	});		
+</script>

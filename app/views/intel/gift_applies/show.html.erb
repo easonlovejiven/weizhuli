@@ -1,0 +1,90 @@
+  <div class="info_name">
+    查看礼品使用申请
+  </div>
+
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+
+    <table class='table table-bordered table-hover post-list'>
+      <tr>
+        <td width=30%>申请人：</td>
+        <td><%=@intel_gift_apply.applyer.login%></td>
+      </tr>
+      <tr>
+        <td><%=_('活动')%>: </td>
+        <td>
+        <%=@intel_gift_apply.campaign%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用时间')%>: </td>
+        <td>
+        <%=@intel_gift_apply.use_time%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('费用')%>: </td>
+        <td>
+        <%=@intel_gift_apply.total_price%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用礼品及数量')%>: </td>
+        <td>
+          <%@intel_gift_apply.items.each{|item|%>
+            <%=item.intel_gift.name%> / <%=item.number%>个 (库存: <%=item.intel_gift.number%>) <br/>
+          <%}%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('状态')%></td>
+        <td><%=@intel_gift_apply.human_status%></td>
+      </tr>
+      <tr>
+        <td><%=_('备注')%></td>
+        <td><%=@intel_gift_apply.apply_description%></td>
+      </tr>
+      <%if @intel_gift_apply.status > 0%>
+      <tr>
+        <td><%=_('审核人')%></td>
+        <td><%=@intel_gift_apply.approver%></td>
+      </tr>
+      <tr>
+        <td><%=_('审核备注')%></td>
+        <td><%=@intel_gift_apply.approve_description%></td>
+      </tr>
+      <%end%>
+
+    </table>
+    <div class="form-buttom">
+      <%if current_user.roles.include? :gift_admin%>
+      <%=link_to "通过", intel_gift_apply_path(@intel_gift_apply,:ac=>:approve),:method=>:put, :class=>"btn btn-primary",:confirm=>"确认通过申请吗"%>
+      <%=link_to "拒绝", intel_gift_apply_path(@intel_gift_apply,:ac=>:reject),:method=>:put, :class=>"btn btn-warning",:confirm=>"确认拒绝该请求吗"%>
+      <%end%>
+      <%=link_to "返回", intel_gift_applies_path, :class=>"btn"%>
+    </div>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+
+<%end%>

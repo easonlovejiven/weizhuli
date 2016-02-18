@@ -1,0 +1,151 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<div style="width:650px;margin:0px auto; background-color:#fff;padding:0px 75px;font-size:12px;font-family:tahoma,Arial,sans-serif;">
+	
+<!--logo begin-->
+  <div style="width:650px;padding-right:10px;line-height:40px;height:50px;background-color:#333;">
+  		<a href="http://www.ce180.com/" style="float:left;width:211px;margin-left:25px;margin-top:5px;display:inline;height:39px;"><img src="http://www.ce180.com/images/ce180_cnbeta.jpg" width="242" height="39"  border="0" alt="" /></a>
+  </div>	
+  <!--logo end-->
+  <!--content box begin-->
+	<div style="width:650px;margin:0px;line-height:30px;">
+  	<!--title begin-->
+    <div style="width:610px;padding:30px 20px 10px 20px;margin:0px; line-height:24px;">
+    	<div style="color:#333;font-size:14px;line-height:24px;">欢迎来到
+      <a style="color:#ff6600;font-size:12px;line-height:24px; text-decoration:none;">www.ce180.com</a>
+      <span style="color:#ff6600;font-size:14px;line-height:24px; font-weight:bold;">思易网</span>，全新的O2O中国第一家线上线下融合的商业资讯人际平台。
+			</div>
+      <div style="color:#ff6600;font-size:14px;line-height:24px;font-weight:bold;">一切为你，一切不只停留在互联网上<span style="color:#ff6600;font-size:12px;line-height:24px; font-weight:normail;"> ——Real people. Real world. Real business!</span></div>
+    </div>
+<!--title end-->
+  <!--content box begin-->
+	<div style="width:650px;margin:0px;line-height:30px;">
+  	<!--title begin-->
+    <div style="width:610px;padding:10px 20px 10px 20px;overflow:hidden; margin:0px; line-height:24px;">
+    	<div style="color:#333;font-size:14px;line-height:24px;">WELCOME to
+			<span style="color:#ff6600;font-size:12px;line-height:24px;">www.ce180.com</span>, China’s first comprehensive event-social network integrating the online and offline worlds. <span style="color:#ff6600;font-size:14px;line-height:24px;font-weight:bold;">Real People, Real World, Real Business!</span>
+			</div>
+    </div>
+  	<!--title end-->
+
+
+
+  	<!--text 1 begin-->
+    <div style="width:610px;margin:0px;line-height:24px;background-color:#eee;padding-left:20px;padding-right:20px;padding-top:0px;padding-bottom:15px;">
+    	<div style="width:610px;line-height:20px;">
+    	  <div style="height:30px; line-height:30px;color:#333;"><span style="color:#333;font-size:18px; font-weight:bold;line-height:30px;"><%=@user.displayable_name%></span>邀请您(You have been invited by <span style="color:#333;font-size:18px; font-weight:bold;line-height:30px;"><%= @user.displayable_name%></span> to join the exclusive CE180 community):</div>
+    	  <div style="height:10px;line-height:10px;">&nbsp;</div>
+    	  <%if !@description.blank?%>
+    	  <div style="line-height:20px;coloar:#333;font-size:14px;border:1px solid #ccc;background-color:#fff;padding:10px;"><%=@description%></div>
+        <div style="height:10px;line-height:10px;">&nbsp;</div>
+        <%end%>
+				<div style="line-height:30px;font-size:12px;color:#333;">点击以下链接开始您的CE180之旅(Click <%=link_to 'HERE', @regist_url ,:style=>"color:#3366ff;line-height:30px;"%> to get started with CE180)!</div>
+				<div style="line-height:30px;font-size:12px;color:#333;">
+				  <%=link_to @regist_url, @regist_url ,:style=>"color:#3366ff;line-height:30px;"%>
+        </div>
+    	</div>
+      <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+    </div>
+  	<!--text 1 end-->
+  		
+  	<div style="height:25px;line-height:25px;">&nbsp;</div>
+		<!--text 2 begin-->
+    <div style="width:610px;padding:0px 20px 10px 20px;overflow:hidden; margin:0px; line-height:24px;">
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				<a style="color:#ff6600;font-size:12px;line-height:24px; text-decoration:none;">www.ce180.com</a>
+				<span style="color:#ff6600;font-size:12px;line-height:18px; font-weight:bold;">思易网</span>所特有的4大功能： 
+			</div>
+      <div style="color:#666;font-size:12px;line-height:24px;">
+				1)简单注册您便能拥有自己的<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">电子名片（My E-Name Card）；</span>
+      </div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				2)简单选择关注行业，您便能拥个人化的<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">商业资讯面板 （My Dashboard）；</span>
+      </div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				3)简单<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">交换电子名片，</span>您便能结识新的商业伙伴，拥有您的CE180商业伙伴网络；
+      </div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				4)更棒的是，<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">选择参加CE180在您的城市举办的线下活动，</span>一切就不只停留在互联网上！
+      </div>
+    </div>
+  	<!--text 2 end-->  	
+
+  	<!--text 3 begin-->
+    <div style="width:610px;padding:0px 20px 0px 20px;overflow:hidden; margin:0px; line-height:18px;color:#666;">
+    	<div style="font-size:12px;line-height:18px;">再次感谢您加入
+      	<a style="color:#ff6600;font-size:12px;line-height:24px; text-decoration:none;">www.ce180.com</a>
+      	<span style="color:#ff6600;font-size:14px;line-height:24px;font-weight:bold;">思易网</span>测试版
+      </div>
+      <div style="font-size:12px;line-height:18px;">您是我们宝贵的初期用户，我们期望与您一同建设一个更优秀、更全面、更专业的社交网络。</div>
+    </div>
+  	<!--text 3 end--> 
+     	    
+  	<!--text 4 begin-->
+    <div style="width:610px;padding:10px 20px 10px 20px;overflow:hidden; margin:0px; line-height:18px;color:#666;">
+    	<div style="font-size:12px;line-height:18px;">由衷的感谢！</div>
+      <div style="font-size:12px;line-height:18px;">CE180团队</div>
+    </div>
+  	<!--text 4 end-->      
+
+    <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+  </div>
+  <!--content box end-->
+
+
+
+  	<div style="height:10px;line-height:10px;">&nbsp;</div>
+		<!--text 2 begin-->
+    <div style="width:610px;padding:0px 20px 10px 20px;overflow:hidden; margin:0px; line-height:24px;">
+    	<div style="color:#666;font-size:12px;line-height:24px;">
+				Want to learn the four key features of 
+				<span style="color:#ff6600;font-size:12px;line-height:24px;">www.ce180.com</span>? 
+			</div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">1) E-Name Card:</span> get a personal E-Name Card simply by completing your registration;
+      </div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">2) Professional Dashboard:</span> set up your personalized dashboard by joining the industries you like;
+			</div>
+      <div style="color:#666;font-size:12px;line-height:24px;">
+				<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">3) Exchange E-Name Cards:</span> make connections with new contacts and expand your business network on CE180 &nbsp;&nbsp;&nbsp;&nbsp;by exchanging E-Name Cards;
+			</div>
+			<div style="color:#666;font-size:12px;line-height:24px;">
+				<span style="color:#333;font-size:12px;line-height:18px;font-weight:bold;">4) Choose your CE180 Offline Events:</span> move your business connections beyond the online world by attending &nbsp;&nbsp;&nbsp;&nbsp;events in your city
+      </div>
+    </div>
+  	<!--text 2 end-->  	
+
+  	<!--text 3 begin-->
+    <div style="width:610px;padding:0px 20px 0px 20px;overflow:hidden; margin:0px; line-height:18px;color:#666;">
+      <div style="font-size:12px;line-height:18px;">As one of our early users, we look forward to working with you to build a better, more comprehensive, professional social network. Thanks again for joining CE180 beta!</div>
+    </div>
+  	<!--text 3 end--> 
+     	    
+  	<!--text 4 begin-->
+    <div style="width:610px;padding:0px 20px 0px 20px;overflow:hidden; margin:0px; line-height:18px;color:#666;">
+    	<div style="font-size:12px;line-height:18px;padding-bottom:10px;">Sincerely,</div>
+      <div style="font-size:12px;line-height:18px;">THE CE180 TEAM</div>
+    </div>
+  	<!--text 4 end-->    
+
+    <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+  </div>
+  <!--content box end-->
+
+
+  
+	<!--copyright begin-->
+  <div style="width:610px;padding:0px 20px 0px 20px; line-height:30px;height:50px;border-top:1px solid #333;">
+  	<span style="font-family:Arial;line-height:18px;color:#333;">Copyright 2012-2015 <a href="http://www.ce180.com" style="line-height:18px;color:#333; text-decoration:none;">ce180.com</a>, All Rights Reserved 京ICP备12001621</span>
+  </div>	
+  <!--copyright end-->	  	
+		
+  <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>

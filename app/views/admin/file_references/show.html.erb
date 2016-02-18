@@ -1,0 +1,33 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_file_references_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_file_reference_path %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_file_reference_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      
+        <p>
+          <b><%= t("activerecord.attributes.admin_file_reference.reference_id", :default => t("activerecord.labels.reference_id", :default => "Reference")) %>:</b>
+          <%= @file_reference.reference_id %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_file_reference.reference_type", :default => t("activerecord.labels.reference_type", :default => "Reference type")) %>:</b>
+          <%= @file_reference.reference_type %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_file_reference.upload_id", :default => t("activerecord.labels.document_id", :default => "Upload")) %>:</b>
+          <%= @file_reference.upload_id %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_file_reference_path(@file_reference), :class => "button" %> 
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_file_reference_path(@file_reference), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+      </div>      
+    </div>
+  </div>
+</div>
+

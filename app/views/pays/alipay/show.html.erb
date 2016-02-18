@@ -1,0 +1,23 @@
+	<h1><%=_("支付确认")%></h1>
+
+	<form method="post" target="_blank" name="form1" action="<%=Alipay::PAY_URL%>">
+	  <%@pay_params.each{|key,value|%>
+		<input type="hidden" name="<%=key%>" value="<%=value%>">
+	  <%}%>
+		<table width="90%" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#CCCCCC">
+			<tr>
+			  <td height="30" width="160" align="center" bgcolor="#FFFFFF"><%=_("支付项目")%></td>
+			  <td height="30" align="left" style="padding-left:10px" bgcolor="#FFFFFF"><%=@order.event.title%></td>
+			</tr>
+			<tr>
+			  <td height="30" width="160" align="center" bgcolor="#FFFFFF"><%=_("您的支付金额")%></td>
+			  <td height="30" align="left" style="padding-left:10px" bgcolor="#FFFFFF"><%=@pay_params['price']%> 元</td>
+			</tr>
+			<tr>
+				<td colspan="2" height="30" align="center" bgcolor="#FFFFFF" colspan="2" style="padding:8px">
+					<input type="submit" value="支付宝支付" /> <input id="review_btn" type="button" value="<%=_("查看状态")%>" onclick="location.reload();"/> <input id="cancel_btn" type="button" value="取消" onclick="if(confirm('确定要取消吗?'))location.href='/'">
+				</td>
+			</tr>
+		</table>
+
+	</form>

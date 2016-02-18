@@ -1,0 +1,149 @@
+  <div class="info_name">
+    微博传播分析
+  </div>
+
+
+  <div class='row-fluid'>
+
+    <div class='row-fluid'>
+      <div class='class12'>
+        <span>转发次数: <%=@weibo_detail.reposts_count%></span>
+        <span>评论次数: <%=@weibo_detail.comments_count%></span>
+        <span>参与用户数: <%=@pure_forward_users%></span>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span6'>
+        <h5>传播图</h5>
+        <div id='spread_chart' style='width:100%;height:500px;'>
+          正在加载传播图...
+        </div>
+      </div>
+      <div class='span6'>
+        
+      </div>
+    </div>
+
+
+    <div class='row-fluid'>
+      <div class='span6'>
+        其它1
+      </div>
+      <div class='span6'>
+        其它2
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="text/javascript" src='/assets/sigma.min.js'></script>
+  <script type="text/javascript" src='/assets/sigma.parseGexf.js'></script>
+  <script type="text/javascript" src='/assets/sigma.forceatlas2.js'></script>
+  <script type="text/javascript" src='/assets/sigma.fisheye.js'></script>
+  <script type="text/javascript">
+
+var weibo_id = '<%=@weibo_id%>';
+
+
+
+function init_sigma(gexf_url) {
+  // Instanciate sigma.js and customize rendering :
+  $("#spread_chart").html('');
+        var sigInst = sigma.init(document.getElementById('spread_chart')).drawingProperties({
+                defaultLabelColor: 'black',
+                defaultLabelSize: 12,
+                defaultLabelBGColor: '#ccc',
+                defaultLabelHoverColor: '#000',
+                labelThreshold: 5,
+                defaultEdgeType: 'curve'
+            }).graphProperties({
+                minNodeSize: 0.5,
+                maxNodeSize: 5,
+                minEdgeSize: 1,
+                maxEdgeSize: 1
+            }).mouseProperties({
+                maxRatio: 32
+            });
+
+  // Parse a GEXF encoded file to fill the graph
+  // (requires "sigma.parseGexf.js" to be included)
+  sigInst.parseGexf(gexf_url);
+
+
+
+  // Bind events :
+  var greyColor = '#666';
+  sigInst.bind('overnodes',function(event){
+    var nodes = event.content;
+    var neighbors = {};
+    sigInst.iterEdges(function(e){
+      if(nodes.indexOf(e.source)<0 && nodes.indexOf(e.target)<0){
+        if(!e.attr['grey']){
+          e.attr['true_color'] = e.color;
+          e.color = greyColor;
+          e.attr['grey'] = 1;
+        }
+      }else{
+        e.color = e.attr['grey'] ? e.attr['true_color'] : e.color;
+        e.attr['grey'] = 0;
+ 
+        neighbors[e.source] = 1;
+        neighbors[e.target] = 1;
+      }
+    }).iterNodes(function(n){
+      if(!neighbors[n.id]){
+        if(!n.attr['grey']){
+          n.attr['true_color'] = n.color;
+          n.color = greyColor;
+          n.attr['grey'] = 1;
+        }
+      }else{
+        n.color = n.attr['grey'] ? n.attr['true_color'] : n.color;
+        n.attr['grey'] = 0;
+      }
+    }).draw(2,2,2);
+  }).bind('outnodes',function(){
+    sigInst.iterEdges(function(e){
+      e.color = e.attr['grey'] ? e.attr['true_color'] : e.color;
+      e.attr['grey'] = 0;
+    }).iterNodes(function(n){
+      n.color = n.attr['grey'] ? n.attr['true_color'] : n.color;
+      n.attr['grey'] = 0;
+    }).draw(2,2,2);
+  });
+ 
+
+
+  sigInst.draw();
+ 
+}
+
+
+
+
+function load_gexf(){
+  $.getJSON("/client/weibo_spreads/get_gexf_url/"+weibo_id,function(data){
+    if(data.status == 'success'){
+      init_sigma("/gexfs/"+weibo_id+".gexf");
+    }else{
+      setTimeout(load_gexf,5*1000);
+    }
+  })
+}
+
+
+</script>
+
+
+
+<%content_for :tail do%>
+
+  <script type="text/javascript">
+$(function(){
+  load_gexf();
+});
+  </script>
+
+<%end%>
+

@@ -1,0 +1,22 @@
+<%industry_news.each{|news|%>
+<!--list begin-->
+<div class="favorate">
+  <%if news.image%>
+  <div class="industry_pic90">
+    <%=link_to ce_image(news, :image, :thumb, :size=>"90x90", :scaling=>true), client_news_path(news)%>
+  </div>           
+  <%end%> 
+  <div class="news_title"><%=link_to news.title, client_news_path(news),:title=>news.title%></div>
+  <div class="industry_des">
+    <%=link_to truncate_u(strip_tags(news.content), :length=>100).html_safe, client_news_path(news)%>
+  </div>
+  <div class="i_bottom">   
+    <div class="bottom_bar1"></div>
+    <div class="bar_fcc">
+      <strong class="color9"><%=activity_time(news.online_time)%></strong>
+    </div>
+  </div>   
+  <div class="clear">&nbsp;</div>
+</div>
+<!--list end-->
+<%}%>

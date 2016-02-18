@@ -1,0 +1,66 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first active"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_uploads_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_upload_path %></li>
+    </ul>
+  </div>          
+  <div class="content">          
+    <h2 class="title"><%= t("web-app-theme.all", :default => "All")  %> Uploads</h2>
+    <div class="inner">
+      <div>
+      <table class="table">
+        <tr>             
+          <th class="first"></th>
+          <th>ID</th>
+          <th>
+            <%= t("activerecord.attributes.admin_upload.type", :default => t("activerecord.labels.type", :default => "Type")) %>
+          </th>
+          <th>Icon</th>
+          <th>Alt</th>
+          <th><%= t("web-app-theme.created_at", :default => "Created at")  %></th>
+          
+          <th>File References</th>
+          <th class="last">&nbsp;</th>
+        </tr>
+        <% @uploads.each do |upload| -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%=check_box_tag "uploads[]",upload.id%></td>
+          <td>
+            <%=link_to upload.id, admin_upload_path(upload)  %>
+          </td>
+          <td><%=link_to image_tag(upload.attachment.url(:thumb),:size=>upload.get_scale_size_for_paperclip(:attachment,100,100)[0]), admin_upload_path(upload) if upload.type=="Image"%></td>
+          <td>
+            <%= upload.type%>
+          </td>
+          <td>
+            <%= upload.alt_info%>
+          </td>
+          <td>
+            <%= upload.created_at %>
+          </td>
+          <td><%=upload.file_references.size%></td>
+          <td class="last">
+            <%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_upload_path(upload) %> |
+            <%= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_upload_path(upload) %> |
+            <%= link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_upload_path(upload), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+          </td>
+        </tr>          
+        <% end -%>
+      </table>
+      </div>
+      <div>
+      <%=will_paginate @uploads%>
+      </div>
+      <div class="actions-bar wat-cf">
+        <div class="actions">
+          <%=check_box_tag nil,nil,false,:onchange=>"$('.content table input[type=checkbox]').attr('checked',$(this).attr('checked'))"%>
+          <%=hidden_field_tag :operation%>
+          <button type="submit" onclick="$('#operation').val('destroy_all');">删除</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,70 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      
+        <p>
+          <b><%= _("用户名") %>:</b>
+          <%= @user.login %>
+        </p>
+        
+        <p>
+          <b> <%=_("角色")%> </b>
+          <%=@user.roles.map(&:name)*","%>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_user.email", :default => t("activerecord.labels.email", :default => "Email")) %>:</b>
+          <%= @user.email %>
+        </p>
+
+
+
+
+
+
+
+
+
+
+        <p>
+          <b><%= _("登录次数") %>:</b>
+          <%= @user.login_count %>
+        </p>
+
+        <p>
+          <b><%= _("登录失败次数")%>:</b>
+          <%= @user.failed_login_count %>
+        </p>
+
+        <p>
+          <b><%= _("最近一次请求时间") %>:</b>
+          <%= l @user.last_request_at if @user.last_request_at%>
+        </p>
+
+        <p>
+          <b><%= _("本次登录")%>:</b>
+          <%= l @user.current_login_at if @user.current_login_at %> , IP : <%= @user.current_login_ip %>
+        </p>
+
+        <p>
+          <b><%= _("上次登录") %>:</b>
+          <%= l @user.last_login_at if @user.last_login_at%>, IP : <%= @user.last_login_ip %>
+        </p>
+
+      <div class="wat-cf">
+        <%= link_to _("Edit"), edit_admin_user_path(@user), :class => "button" %> 
+        <%#= link_to _("Delete"), admin_user_path(@user), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+        <%= link_to _("修改权限"), change_roles_admin_user_path(@user), :class => "button" %>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<% content_for :sidebar, render(:partial => 'sidebar') -%>

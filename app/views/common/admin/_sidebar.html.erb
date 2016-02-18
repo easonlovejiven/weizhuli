@@ -1,0 +1,51 @@
+<!--
+<div class="block">
+  <h3><%= t("web-app-theme.notice", :default => "block") %></h3>
+  <div class="content">
+    <p>Coupon Management moved to the Event edit page</p>
+  </div>
+</div>
+-->
+<div class="block">
+  <h3><%= t("web-app-theme.nav", :default => "nav") %></h3>
+  <ul class="navigation">
+<!--
+    <li>
+      <%= link_to _('标签管理'), admin_tags_url %>
+    </li>
+-->
+<!--
+    <li>
+      <%#= link_to _('公司新闻管理'), admin_organization_news_index_url %>
+    </li>
+    <li>
+      <%#= link_to _('公司产品管理'), admin_organization_products_url %>
+    </li>
+     <li>
+      <%#= link_to _('公司里程碑管理'), admin_organization_milestones_url %>
+    </li>
+  	<li>
+      <%= link_to _('新闻管理'), admin_news_index_url %>
+    </li>
+    <li>
+      <%= link_to _('新闻类别管理'), admin_news_categories_url %>
+    </li>
+-->
+    <li class="<%= 'current' if controller_name == 'users' %>">
+      <%= link_to _('用户管理'), admin_users_url %>
+    </li>
+    <li>
+      <%= link_to _('上传管理'), admin_uploads_url %>
+    </li>
+    <li>
+      <%= link_to _('文件关联管理'), admin_file_references_url %>
+    </li>
+    <li>
+      <%= link_to _('位置管理'), admin_locations_url %>
+    </li>
+    <li class="<%= 'current' if controller_name == 'feedbacks' %>">
+      <%= link_to _('意见反馈管理'), admin_feedbacks_url %>
+    </li>
+  </ul>
+</div>
+

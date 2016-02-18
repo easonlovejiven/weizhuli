@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<script>
+	// tabs dashboard
+	$(function() {
+		$(".share_ques_tab").tabs(".share_ques_box");
+	});
+
+</script>
+</head>
+
+
+<body>
+
+<%=render "common/header"%>
+<!--main start-->
+<!--main begin-->
+<div class="main_lcr">
+
+
+    <!--left begin-->
+    <div class="list_left">
+
+        <%=render "/client/common/user_pane", :user=>@user%>
+
+
+        <!--tab cutover begin-->
+        <div class="tav_cutover">
+        	<%=link_to _('最新动态'), client_root_path, :class=>controller_name == "activities" ? "current" : ""%>
+        	<!--
+          <a href="#"><%=_('我的评论')%></a>
+          -->
+          <%=link_to _('我的私信'), client_private_messages_path, :class=>controller_name == "private_messages" ? "current" : ""%>
+            <!--<a href="#"><%=_('我喜欢的')%></a>-->
+        </div>
+        <!--tab cutover end-->
+
+        <%=render "/client/common/recommended_events"%>
+        <%=render "/client/common/a_jok"%>
+        <%=render "/client/common/recommended_companies"%>
+
+    </div>
+    <!--left end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--center begin-->
+    <div class="list_center">
+
+
+        <!--dashboard content begin-->
+        <div class="dashboard_content">
+<%=yield%>
+        </div>
+        <!--dashboard content end-->
+
+    </div>
+    <!--center end-->
+
+
+    <!--right begin-->
+    <div class="list_right mg_t20">
+		<!--search begin-->
+		<div class="event_search rounded">
+		<%=form_for :search, :url=>search_path,:html=>{:method=>:get} do |form|%>
+		  <%=form.text_field :q%>
+		  <%=form.submit "", :class=>"news_sub"%>
+		<%end%>
+		</div>
+		<!--search end-->
+        <!--sort_list begin-->
+        <div class="sort_list">
+          <%@user.industries.each{|industry|%>
+        	<%=link_to client_industry_path(industry) do%><strong><%=industry.name%></strong><em><%=industry.news.count < 100 ? industry.news.count : "100+"%></em><%end%>
+        	<%}%>
+        </div>
+        <!--sort_list end-->
+
+        <!--tip question begin-->
+        <div class="tip_question" style="display:none">
+        	<!--tip begin-->
+            <div class="tip_top1 rounded2">
+            	<span>&nbsp;</span>
+            	<p><%=_('我要在哪里找到Axure的教程啊？谁有，方便给我发到邮箱，我的邮箱')%></p>
+                <div class="bottom_bar3">
+                	<a href="#"><em><%=_('回答')%></em>(88)</a>&nbsp;|&nbsp;
+                    <a href="#" class="color_f9"><%=_('我来回答')%></a>
+                </div>
+            </div>
+        	<!--tip end-->
+        	<h5>
+            	<a href="#"><img src="images/avatar_01.jpg" width="35" height="35"alt=""/></a>
+                <div class="t_name">
+                    <strong>张三</strong>
+                    <strong><var>1</var> 小时前</strong>
+                </div>
+            </h5>
+        </div>
+        <!--tip question end-->
+        <div class="clear">&nbsp;</div>
+    </div>
+    <!--right end-->
+
+
+
+
+</div>
+<!--main end-->
+
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+</body>
+</html>
+

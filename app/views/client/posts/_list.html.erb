@@ -1,0 +1,63 @@
+<table class="table table-bordered table-hover post-list">
+
+  <thead>
+    <th width="10%">创建时间</th>
+    <th>内容</th>
+    <th width="10%">微博类型</th>
+    <%if with_geo%>
+    <th width="10%">位置信息</th>
+    <%end%>
+
+    <th width="10%">发布时间</th>
+    <th width="8%">操作</th>
+  </thead>
+  <tbody>
+    <%@posts.each{|post|%>
+    <tr style="height:120px">
+      <td><%=l post.created_at%></td>
+      <td class="post-content">
+        <span style="float:left;width:80%">
+          <%=post.content%>
+        </span>
+        <%if post.image_id?
+          image = Image.find post.image_id
+          size, scaling_ratio = image.get_scale_size_for_paperclip(:attachment,100,100)
+          %>
+          <%=image_tag image.attachment.url(:thumb),size:size%>
+        <%end%>
+      </td>
+      <td> <%=([post.category, post[:tag1], post[:tag2], post[:tag3], post[:tag4]].compact * "<br/>").html_safe%> </td>
+      <%if with_geo%>
+      <td> <%=post.geo%> </td>
+      <%end%>
+      <td><%=l post.post_at%></td>
+      <td>
+        <%if !post.published?%>
+          <%=link_to "删除", client_post_path(post,:format=>:json), :remote=>true,:confirm=>"您确定要删除吗?",:method=>:delete, :class=>"destroy-link" %>
+          <br/>
+          <%=link_to "编辑", client_posts_path(post_id:post.id), :class=>"edit-link",:'data-post-id'=>post.id%>
+        <%else%>
+          <%=link_to "查看", post.url,:target=>"_blank" if post.url%>
+        <%end%>
+        <br/>
+
+      </td>
+    </tr>
+    <%}%>
+    <%if !@posts.any?%>
+    <tr>
+      <td colspan=6 class='text-center'>没有内容</td>
+    </tr>
+    <%else%>
+    <tr>
+      <td colspan=6 class='text-right'>
+        <div class="span8 pull-right">
+          <%=will_paginate(@posts)%>
+        </div>
+      </td>
+    </tr>
+    <%end%>
+  </tbody>
+  
+
+</table>

@@ -1,0 +1,37 @@
+     <div style="float:left">
+         
+        <p  border = "1"  ><a >列属性：</a><font color="red" size="3"> uid 转发 评论 互动数</font></p>
+      </div>
+      
+      
+      <div class="span4" style="clear:both;float:left">
+        输入 UID 列表(每行一个):
+        <%=text_area_tag "params[uids]", "", :rows=>"10"%>
+      </div>
+      <br>
+      
+     <br>
+
+      <div class="span4">
+        输入互动主号UID 
+        例如：(<ul>
+         <li>金融街：192453194</li>
+         <li>商用频道：2295615873</li>
+         <li>中国： 2637370927</li>
+         <li>超级本：2637370247</li>
+        )</ul> 
+        <%=text_field_tag "params[target_uid]",""%>
+      </div>
+        <br/>
+      <div class="span4">
+
+
+        选择日期条件: <br/>
+
+       <%=text_field_tag "params[start_time]",nil, :placeholder=>"起始日期"%>
+        <%=text_field_tag "params[end_time]", nil, :placeholder=>"结束日期"%>
+
+        <br/>
+      </div>
+
+

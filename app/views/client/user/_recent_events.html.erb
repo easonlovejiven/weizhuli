@@ -1,0 +1,195 @@
+ <!--ce 180 belowtheline begin-->
+    <div class="mg_top20 backg_cf w_760">
+      <div class="">
+        <!--title 39 begin-->
+        <div class="bg39">
+          <div class="bg39_left">
+            <div class="bg39_right">
+        				<strong><%=_("商业活动动态")%></strong>
+                <div class="search180 f_right">
+                <%=form_for :search,:url=>client_events_path , :html=>{:method=>"get"} do |form|%>
+			            <% params[:search] ||= {} %>
+				          <%= form.text_field :key_words,:value=>params[:search][:key_words],:placeholder=>_("搜索热门活动")%>	
+                  <%= form.submit '',:class=>"submit"%>
+                <% end %> 
+                </div>
+            </div>
+          </div>
+        </div>
+        <!--title 39 end-->       
+      
+        <!--below list begin-->
+        <div class="belowtheline">
+          <!--m_title30 begin-->
+          <div class="m_title30">
+            <strong><%=_("商业影响力人物及伙伴都关注什么活动?")%></strong>
+          </div>
+         
+          <!--m_title30 end-->  
+          <% @icon_upcoming_events.each do |event| %>
+            <%speakers = event.multipal_speakers[0..5] %>
+             <!--below trends_unit begin-->
+              <div class="below_trends_unit">
+                <div class="u_avatar35">
+                <%speakers[0..5].each do |speaker|%>
+                    <% unless speaker.person.blank? %>
+                      <%
+				            		if speaker.person.user_id
+				            			path = user_path(speaker.person.user_id)
+				            		else
+				            			path = client_event_path(event)+'#speakers'
+				            		end
+				            	%>
+                    <%end%>
+                    <% unless speaker.person.image.nil? %>
+                      <%= link_to ce_image(speaker.person, :image, :thumb, :size=>"35x35",:scaling=>true), path,:title=>speaker.person.name%>
+                    <%end%>
+                <%end%>
+                  <span>&nbsp;</span>
+                </div>
+                
+                <div class="cp_trends_right">
+						       <div class="speakers_name">
+		                <% speakers[0..3].each do | speaker | %>
+			                <% unless speaker.person.blank? %>
+			                  <%if speaker == speakers[3] && speakers.count>1%>
+			                      <%=_('和')%>
+			                  <%end%>
+				                <%
+                      		if speaker.person.user_id
+                      			path = user_path(speaker.person.user_id)
+                      		else
+                      			path = client_event_path(event)+'#speakers'
+                      		end
+                      	%>
+				                <%= link_to speaker.person.name, path %>
+			                <% end %>
+		                <%  end %>
+                      <span>
+                        <% if event.end_time<Time.now
+                      			concat _('出席了该会')
+                      		else
+                        		concat _('即将出席')
+                      		 end
+                    		%>
+                      </span>
+                      <%= link_to truncate_u(event.title, :length => 30), client_event_path(event) ,:class=>"color333"%>
+                  </div>        
+                </div>
+              </div> 
+              <!--below trends_unit end-->
+          <%end%>
+          
+            <!--m_title30 end-->  
+          <%@icon_finished_events.each do |event| %>
+            <%speakers = event.multipal_speakers[0..5] %>
+             <!--below trends_unit begin-->
+              <div class="below_trends_unit">
+                <div class="u_avatar35">
+                <%speakers[0..5].each do |speaker|%>
+                    <% unless speaker.person.blank? %>
+                      <%
+				            		if speaker.person.user_id
+				            			path = user_path(speaker.person.user_id)
+				            		else
+				            			path = client_event_path(event)+'#speakers'
+				            		end
+				            	%>
+                    <%end%>
+                     <% unless speaker.person.image.nil? %>
+                      <%= link_to ce_image(speaker.person, :image, :thumb, :size=>"35x35",:scaling=>true), path,:title=>speaker.person.name%>
+                     <%end%>
+                <%end%>
+                  <span>&nbsp;</span>
+                </div>
+                
+                <div class="cp_trends_right">
+						       <div class="speakers_name">
+		                <% speakers[0..3].each do | speaker | %>
+			                <% unless speaker.person.blank? %>
+			                  <%if speaker == speakers[3] && speakers.count>1%>
+			                      <%=_('和')%>
+			                  <%end%>
+				                <%
+                      		if speaker.person.user_id
+                      			path = user_path(speaker.person.user_id)
+                      		else
+                      			path = client_event_path(event)+'#speakers'
+                      		end
+                      	%>
+				                <%= link_to speaker.person.name, path %>
+			                <% end %>
+		                <%  end %>
+                      <span>
+                        <% if event.end_time<Time.now
+                      			concat _('出席了该会')
+                      		else
+                        		concat _('即将出席')
+                      		 end
+                    		%>
+                      </span>
+                      <%= link_to truncate_u(event.title, :length => 30), client_event_path(event) ,:class=>"color333"%>
+                  </div>        
+                </div>
+              </div> 
+              <!--below trends_unit end-->
+          <%end%>
+          
+          <div class="clear">&nbsp;</div>          
+        </div>
+      	<!--below list end-->
+      	
+        <!--hot event begin-->
+        <div class="belowtheline">
+
+          <!--tab title begin-->
+          <div class="hot_event_title">
+            <strong><%=_("热门活动")%></strong>
+            <div class="hot_event_tab tab_hot_event">
+            	<% @tags.each_with_index do |tag, index| %>
+		            <a href="#" class="<%= 'current' if index==0 %>"><%= tag.name  %></a>
+            	<% end %>
+						</div>
+          </div>
+          <!--tab title end-->
+
+          <!--event list begin-->
+          <% @tags.each_with_index do |tag, index| %>
+          <div class="hot_event_list tab_hot_event_show">
+            <div class="more_event_tag"><%=link_to _('更多'), client_events_path(:search=>{:with_tag_id=>tag.id }),:class=>"round" %></div>
+		        <div>
+					    <% @recommended_events[index][0,4].in_groups_of(2,false) do |group| %>
+					      <div>
+					      <% group.each{|event|%>
+							    <%= render :partial => "hot_event", :locals => {:event => event} %>    
+							  <%}%>
+								<div class="clear">&nbsp;</div>
+							 </div>
+						  <%end%>
+				      <div class="clear">&nbsp;</div>
+		        </div>
+		        <ul class="event_rend_list">
+		        	<% if @recommended_events[index].size > 4 %>
+				      	<% @recommended_events[index][4,4].each do |event|%>
+		          		<li><%= link_to event.title, client_event_path(event) %></li>
+		          	<% end %>
+		          <% end %>
+            </ul>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <%end%>
+          <!--event list end-->
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--hot event end-->
+ 
+        <div class="bottom2"><span><em>&nbsp;</em></span></div>      	
+      	<div class="clear">&nbsp;</div>
+      </div>   
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--ce 180 belowtheline end--> 
+    <script>
+    $('.tab_hot_event').tabs('.tab_hot_event_show')
+    
+    </script>

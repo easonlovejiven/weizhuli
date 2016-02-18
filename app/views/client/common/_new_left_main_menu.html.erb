@@ -1,0 +1,26 @@
+   <!--Menu begin-->
+      <div class="menu mg_t10">
+        <%=link_to _('我的首页'), user_path(@user), :class=>"" %>
+        <%=link_to _('我的名片'), exchanged_invites_client_user_business_cards_path,:class=>controller_name == "business_cards" ? "current" : "" %>
+        <%=link_to _('我的活动'), client_user_events_path, :class=>controller_name == "my_events" ? "current" : ""%>
+        <%if current_user && current_user.is_industry_icon? %>
+          <%=link_to _('我的动态'), client_icon_updates_path, :class=>controller_name == "icon_updates" ? "current" : ""%>
+        <%else%>
+          <%=link_to _('我的动态'), client_activities_path, :class=>controller_name == "activities" ? "current" : ""%>
+        <%end%>
+        <%=link_to _("我的粉丝"), client_followers_path, :class=>(controller_name == "follows" && action_name == "followers" ) ? "current" : "" %>
+        <%=link_to _("我的关注"), client_followings_path,:class=>(controller_name == "follows" && action_name == "index" ) ? "current" : "" %>
+        <div class="hide_show">
+        	<h4><span><%=_('隐藏部分标签')%></span><em>&nbsp;</em></h4>
+          <div class="hide">
+            <%=link_to _('我的订单'), client_orders_path, :class=>controller_name == "my_orders" ? "current" : ""%>
+            <% link_to client_user_comments_path, :class=>controller_name == "my_comments" ? "current" : "" do %>
+              <%=_('我的评论')%><var class="new_activity_comments_notice new_activity_comments_number"></var>
+            <% end %>
+          </div>
+        </div>
+
+				<div class="clear">&nbsp;</div>
+      </div>
+      <!--Menu end-->
+      

@@ -1,0 +1,125 @@
+<%
+@order = Order.new
+@order.type = "ChargeOrder"
+
+%>
+
+<div style="display:none">
+<div id="buy_now_pane">
+	<div class="title38 bc_botttom1 dialog_header">
+		<strong><%= _("立刻购买")%></strong>
+	</div>	
+
+<!--
+<%=nested_form_for [:client,@order] do |form|%>
+
+	<div class="forward_form">
+		<div class="forward_unit tips">
+			<strong><%= _("1元100积分")%></strong>
+		</div>
+		<div class="forward_unit">
+			<label style="width:auto;"><%= _("请输入要购买的积分")%> 
+		</div>	
+		<div class="forward_unit">
+			<%=form.text_field :number ,:class=>"w390 bc fl"%>
+			<%=form.hidden_field :type%>
+		</div>
+		<div class="forward_unit">
+			<%=form.submit _("下一步"),:class=>"btn30 radius3 w75 fr"%>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+<%end%>
+-->
+
+
+
+<%
+buy_now_contents = yield :buy_now_contents
+
+if buy_now_contents.blank?
+  @buying_events ||= Event.available.upcoming.order('events.start_time').limit(20)
+%>
+
+<%form_for :order, :url=>pay_all_client_events_path,:html => {:method=>:get, :id=>"buy_now_form"} do%>
+
+
+
+      <!--title return begin-->
+      <div class="bc_botttom1">
+				<div class="page_title"><%=_("选择您想购买的活动")%></div>
+        <div class="clear">&nbsp;</div>	
+      </div>
+      <!--title return end-->
+      
+
+
+      <!--buy_list begin-->
+      <div class="buy_list">
+
+
+      <%@buying_events.each{|event|%>
+
+
+      	<!--repeat begin-->
+      	<div class="buy_unit">
+          
+        	<%=check_box_tag "ids[]", event.id, false, :id=>"event_id_#{event.id}"%>
+        	<label for="event_id_<%=event.id%>">
+          <div class="infor" title="<%=event.description%>">
+          	<p><%=event.title %></p>
+            <span><%=l event.start_time.to_date, :format=>:dot%>  <%=event.location_name%></span>
+          </div>
+          </label>
+        </div>
+        <!--repeat end-->
+
+      <%}%>
+
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--buy_list end-->
+      
+
+
+<div class='mgt10 a_center'>
+<%=submit_tag _("Submit") ,:class=>"btn30 radius3 w120 a_center"%>
+</div>
+<%end%>
+
+
+
+<%
+end
+%>
+
+
+
+</div>
+</div>
+
+
+
+<script>
+
+
+$("#buy_now_pane input:[type=checkbox]").click(function(){
+  if($(this).is(":checked")){
+    $(this).parents(".buy_unit").addClass("add");
+  }else{
+    $(this).parents(".buy_unit").removeClass("add");
+  }
+  
+});
+
+$("#buy_now_form").submit(function(){
+  if($("#buy_now_pane input:checked").size() == 0){
+    alert("<%=_("请选择要购买的活动")%>");
+    return false;
+  }
+  return true;
+});
+
+
+</script>
+

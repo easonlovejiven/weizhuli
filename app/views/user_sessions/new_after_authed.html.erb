@@ -1,0 +1,152 @@
+    <!--register notice begin-->
+    <div class="sign_login">
+      <div class="sign_msg w610">
+        <%=image_tag @omniauth.info.image, :size=>"60x60"%>
+        <strong class="f_left"><%=_("您好")%>！<%=@omniauth.info.name%> ,<%=_("欢迎来到思易网")%>！</strong>
+      </div>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--register notice end-->
+    
+    <!--begin-->
+    <div class="sign mg_t30">
+      <!--left -->
+      <div class="f_left w_430">
+        
+        <!-- ce180 begin-->
+        <div class="join_bind pad_b15">
+          <h4 class="current"><%=_("快速加入思易网")%></h4>
+          <!--a begin-->
+          <div class="show">
+          
+          	<%=form_for @user||User.new , :remote=>true, :html=>{:"data-type"=>:json} do |form|%>
+
+          
+            <div class="s_unit">
+              <%=form.label :email, raw(_('邮箱')+"<var>*</var>") %>
+              <%=form.text_field  :email, :title=>"如: example@example.com"%>
+            </div>
+            <div class="s_unit">
+              <span class="error email_error"></span>
+            </div>      
+            <div class="s_unit">
+              <%=form.label :password, raw(_('密码')+"<var>*</var>") %>
+              <%=form.password_field  :password, :title=>"密码长度在 6～20之间"%>
+            </div>
+            <div class="s_unit">
+              <span class="error password_error"></span>
+            </div>       
+            <div class="s_unit">
+              <%=form.label :password_confirmation, raw(_('确认密码')+"<var>*</var>") %>
+              <%=form.password_field  :password_confirmation, :title=>""%>
+            </div> 
+            <div class="s_unit">
+              <span class="error password_confirmation_error"></span>
+            </div>                        
+            <div class="btn_120">
+              <%= form.submit _('加入') %>
+            </div>          
+            <%end%>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--a end-->
+          
+          <h4 class="mg_top20"><%=_("已经有思易帐号")%>?</h4>       
+          <!--b begin-->
+          <div class="show">
+            <% form_for @user_session || UserSession.new , :remote=>true, :html=>{:"data-type"=>:json} do |f| %>
+            <%=hidden_field_tag :return,params[:return]%>
+            <div class="s_unit">
+              <label><%=_("邮箱")%><var>*</var></label>
+              <%=f.text_field :login,:placeholder=>"",:class =>"required" %>
+            </div>
+            <div class="s_unit">
+              <span class="error login_error"><%=f.error_message_on :login%></span>
+            </div>      
+            <div class="s_unit">
+              <label><%=_("密码")%><var>*</var></label>
+              <%=f.password_field :password,:placeholder=>"",:class =>"required" %>
+            </div>
+            <div class="s_unit">
+              <span class="error password_error"></span>
+            </div>                      
+            <div class="s_unit checkbox">
+              <label>&nbsp;</label>
+              <%= f.check_box :check,{:checked=>true},"", "user_session" %>
+              <em><%=_("记住登录状态")%></em>
+              <%=link_to _('忘记密码?'),'/password_resets/new',:class=>"c069"%>
+            </div>       
+            <div class="btn_120 mg_t10">
+              <%= f.submit _('快速绑定') %>
+            </div>          
+            <%end%>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--b end-->
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!-- ce180 end-->
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--left-->
+      <!--right-->
+      <div class="f_right">
+        <div class="change_login"><%=image_tag "change_sina_ce180.jpg", :size=>"365x52"%></div>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--right-->
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--end-->
+  
+
+<script type="text/javascript">
+	$(".join_bind").tabs(".join_bind div.show", {tabs: 'h4', effect: 'slide'});
+
+  // global forward form handler
+  $("#new_user")
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.status == "success"){
+        location.href= "/success";
+      }else{
+        if(data.errors){
+          for(var key in data.errors){
+            if ($("#new_user").find("[name='user["+key+"]']").size() == 0) continue;
+            var msg = data.errors[key];
+            var errors = {};
+            errors["user["+key+"]"] = msg.join(",");
+            $("#new_user").validate().showErrors(errors);
+          }
+        } 
+      }
+    }); 
+
+  $("#new_user_session")
+    .live("ajax:success", function(xhr, data, status) {
+      if(data.status == "success"){
+        location.href= "/after_login";
+      }else{
+        if(data.errors){
+          for(var key in data.errors){
+            var msg = data.errors[key];
+            if(key=="base") {
+              key = "login";
+            }
+            if ($("#new_user_session").find("[name='user_session["+key+"]']").size() == 0) continue;
+            var errors = {};
+            errors["user_session["+key+"]"] = msg.join(",");
+            $("#new_user_session").validate().showErrors(errors);
+          }
+        } 
+      }
+    });
+
+	
+	
+</script>
+
+
+
+
+
+

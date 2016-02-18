@@ -1,0 +1,25 @@
+<div class="mg_t10">
+    	<!--title begin-->
+      <div class="title30 m_left10"><strong>
+      <%if params[:industry_id] %>
+        <%=@industry.name%>
+      <% else %>
+        <%=@news.industry.name if @news.industry%>
+      <% end %>
+       <%=_('行业新闻')%></strong>
+      <%if params[:industry_id]%>
+      <% elsif @news.industry %>
+        <%=link_to _('更多'),list_client_industry_news_index_path(@news.industry)%>
+      <% end %>
+      </div>
+      <!--title end-->
+			<ul class="i_news">
+        <% @related_news.each do |news| %>
+				<li>
+					<%= link_to truncate_u(strip_tags(news.title), :length=>30), client_news_path(news),:title=>news.title%>
+					
+				</li>
+				<% end %>
+      </ul>
+     	<div class="clear">&nbsp;</div>         
+    </div>

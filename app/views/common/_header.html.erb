@@ -1,0 +1,33 @@
+<div id="ruan_top">
+  <div id="ruan_top_width">
+    <h3><%=link_to image_tag("logo.jpg", :size=>"233x108"),"/"%></h3>
+    <h4>
+      <div id="ruan_top_litmenu">
+        <ul>
+          <%if current_user%>
+          	<li><a href="/client">我的账户 <%=current_user.nickname || current_user.login%></a></li>
+            <li><%=link_to "退出", "/logout"%></li>
+          <%else%>
+        
+            <li class="bu"><a href="/signin"><img src="images/button_01.jpg" width="48" height="22" /></a></li>
+            <li class="bu"><a href="login"><img src="images/button_02.jpg" width="48" height="22" /></a></li>
+            <li><img src="images/sina_ico.jpg" width="20" height="21" align="absmiddle" />微博登录</li>
+            <li><img src="images/qq_ico.jpg" width="20" height="21" align="absmiddle" />QQ登录</li>
+          <%end%>
+          
+        </ul>
+      </div>
+
+      <div id="ruan_top_menu">
+        <ul>
+          <li class="<%=controller_name=='general' && action_name=='index' ? 'fouces' : ''%>"><a href="/">首页</a></li>
+          <li class="line">|</li>
+        </ul>
+      </div>
+      <!----主导航栏end----->
+    </h4>
+    <div class="clear"></div><!----清除浮动层----->
+  </div>
+</div>
+<div class="blue_line"></div>
+

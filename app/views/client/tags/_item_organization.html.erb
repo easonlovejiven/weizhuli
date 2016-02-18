@@ -1,0 +1,23 @@
+					<!--list begin-->
+					<div class="search_list">
+						<h5>
+						<%=link_to  client_organization_path(organization) do %>
+						<img src="images/news_pic01.jpg" width="75" height="75" alt="">
+						<%end%>
+						</h5>
+						<div class="search_text">
+							<div class="search_title">
+								<h3><%=link_to organization.name,client_organization_path(organization)%></h3>
+								<div class="search_bar">
+								<%=link_to client_organization_path(organization) do %>
+								<em><%=organization.followed%></em><%=_('人关注')%>
+								<%end%>
+								</div>
+							</div>
+							<h4><%=_('企业')%></h4>
+							<p><%=organization.description%></p>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<!--list end-->
+

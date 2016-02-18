@@ -1,0 +1,12 @@
+    <!--event tag begin-->
+    <div class="f_right w355">
+    	<div class="mtitle"><%=_('行业标签')%></div>
+      <ul class="event_tag w355">
+         <% @industry_tags[0,12].each_with_index do |industry_tag, index| %>
+              <li><%=link_to industry_tag.name,list_client_users_path(:search=>{:with=>{:industry_id=>industry_tag.id}}), :target=>"_blank"%></li>
+         <% end %>
+      </ul>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--event tag end-->
+

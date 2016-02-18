@@ -1,0 +1,73 @@
+      <div style="float:left">
+        <p  border = "1"  ><a >列属性：</a><font color="red" size="4"> ["UID", "昵称", "位置", "性别", "粉丝", "关注", "微博", "注册时间", "认证信息", "认证原因", "keyword", "微博url", "发布时间", "内容", "来源", "转发数", "评论数"]</font></p>
+      </div>
+
+      <div class="span4" style = "clear:both;float:left">
+        输入关键词 如：(<ul>
+         <li>固态硬盘</li>
+         <li> SSD </li>
+         <li>硬盘速度</li>
+        )<每行一个></ul>
+        <%=text_area_tag "params[keywords]", "", :rows=>"10"%>
+      </div>
+      
+      <div class="span4">
+        输入过滤的微薄来源 如：(<ul>
+         <li>皮皮时光机</li>
+         <li>一加手机</li>
+         <li>云中小鸟</li>
+        )<每行一个></ul>
+        <%=text_area_tag "params[no_sources]", "", :rows=>"10"%>
+      </div>
+      
+      <div class="span4" >
+       <br><br><br><br><br>
+        选择日期条件: <br/>
+        <%=text_field_tag "params[start_time]",nil, :placeholder=>"起始日期,如：2014-11-11"%>
+        <%=text_field_tag "params[end_time]", nil, :placeholder=>"结束日期,如：2014-12-12"%>
+      </div>
+      
+      <br/>
+      
+      <div class="span4" >
+        输入最大输出行数: <br/>
+
+        <%=text_field_tag "params[sum]",nil, :placeholder=>"例如：10000"%>
+
+        <br/>
+      </div>
+      
+      <br/>
+      
+      <div class="span4" >
+        微薄上限: <br/>
+        <%=text_field_tag "params[filter_max_status]",nil, :placeholder=>"例如：90000"%>
+        <br/>
+      </div>
+      
+      <br/>
+      
+      <div class="span4" >
+        微薄下限: <br/>
+
+        <%=text_field_tag "params[filter_min_status]",nil, :placeholder=>"例如：100"%>
+
+        <br/>
+      </div>
+      
+      <br/>
+      
+      <div class="span4" >
+        粉丝上限: <br/>
+        <%=text_field_tag "params[filter_max_fans]",nil, :placeholder=>"例如：30000"%>
+        <br/>
+      </div>
+      
+      <br/>
+      
+      <div class="span4" >
+        粉丝下限: <br/>
+        <%=text_field_tag "params[filter_min_fans]",nil, :placeholder=>"例如：300"%>
+        <br/>
+      </div>
+ 

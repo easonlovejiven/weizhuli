@@ -1,0 +1,42 @@
+
+  <!--content begin-->
+  <div class="content mgt10 bc_top1">
+    <div style="height:5px;line-height:5px;font-size:5px;">&nbsp;</div>
+		<!--list begin-->
+    <% if @documents.blank? %>
+      <div class="date pdLR17 mgt20">
+        <span> <%= _('您还没有下载文档') %> </span>
+				<%= link_to _('去下载文档'), client_all_events_documents_path ,:class=>"btn28 bc radius3"%>
+      </div>
+    <% else %>
+      <% @documents.each do |document|
+        file_reference = document.file_reference
+        next if file_reference.nil?
+        file = file_reference.upload
+        event = Event.find file_reference.reference_id
+      %>
+
+			<!--my documents unit begin-->
+			<div class="my_document_unit">
+				<%= link_to  client_events_download_file_path(:id=>event.id,:file_id=>file_reference.id) do%>
+					<em class="but40_1">&nbsp;</em>
+					<var><%= file.attachment_file_name%></var>
+				<% end %>
+				<span class="w105 fl a_center"><var><%= file_reference.downloads %></var> <%= _('Downloads') %></span>
+				<span class="w220 fl"><%= _('来自活动') %> : <strong><%= event.title %></strong></span>
+				<span class="w120 fr a_right"><%= l(event.start_time.to_date, :format=>:full_month) %></span>
+				<div class="clear">&nbsp;</div>
+			</div>
+			<!--my documents unit end-->	  
+
+
+    	<% end %>
+     	<%= will_paginate @documents, :param_name=>'page' %>
+  	<% end %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--list end-->
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--content end-->
+

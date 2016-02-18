@@ -1,0 +1,50 @@
+
+        <!--content begin-->
+        <div class="main mgt10">
+
+          <!--change begin-->
+          <div class="bc_top1">
+            <%form_for @user, :url=>password_reset_path(@user.perishable_token),:html=>{:id=>"pass_reset_edit_form"} do |form|%>
+            <!--Reset Password begin-->
+            <div class=" pdT15 join_login mg0a">
+              <!--form_unit begin-->
+              <div class="form_unit">
+                <div class="s_unit">
+                  <label><%=_('New Password')%> <var>*</var></label>
+                   <%=form.password_field :password,:class=>"w225"%>
+                </div>
+                <div class="error_msg mgL110 radius2"><%=form.error_message_on :password%></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->
+              
+              <!--form_unit begin-->
+              <div class="form_unit">
+                <div class="s_unit">
+                  <label><%=_('Repeat Password')%> <var>*</var></label>
+                  <%=form.password_field :password_confirmation,:class=>"w225"%>
+                </div>
+                <div class="error_msg mgL110 radius2"><%=form.error_message_on :password_confirmation%></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->            
+ 
+              <!--form_unit begin-->
+              <div class="mgt10 mgL135">
+                 <%=form.submit _('Submit'),:class=>"btn30 radius3 bc w105"%>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->               
+  
+              <div class="clear">&nbsp;</div>	
+            </div>
+            <!--Reset Password end-->
+           <%end%>
+            <div class="clear">&nbsp;</div>	
+          </div>
+          <!--change end-->
+          
+          <div class="clear">&nbsp;</div>	
+        </div>
+        <!--content end-->
+

@@ -1,0 +1,44 @@
+<%# if current_user %>
+
+     <div class='oForm left '>	
+      <!--title 38 begin-->
+      <div class="title38 radius3 bc w790 mgLR3">
+        <strong>
+        <% if flash[:notice] %>
+        <%=_('Thanks your registration')%>
+        <% else %>
+          <% if current_user.blank? %>
+            <%=link_to _("Please Login In"),login_path,:class=>""%>
+          <% end %>
+        <% end %>
+        </strong>
+      </div>
+      <!--title 38 end-->      
+
+        <!--content begin-->
+        <div class="content mgt10">
+        
+        	<%# if flash[:notice] %>
+        	<!--reset succeed begin-->
+          <div class="operation_return mg0a">
+          	<div class=""><a href="<%=client_events_path%>" class="radius3 btn30"><%=_('Start to use andy1985')%> </a></div>
+          	<div class="msg_des pdt10"><%=flash[:notice]%> <%=_('Please check your email')%>. <span class="cf60 user_register_email"><%=flash[:user_mail]%></span></div>
+						
+            <div class="msg mgt20">
+            	<strong><%=_('Nothing in your inbox?')%></strong>
+              <p>1.<%=_('Check your junk or spam folder.')%></p>
+              <p>2.<%=_('Wrong email address? Please  register again.')%></p>
+              <p>3.<%=_('Check your email after a while')%>, <%=_('or Click')%> <%=link_to _('here'),"javascript:void(0);"%> <%=_('to resent a confirmation email')%></p>
+            </div>
+
+          	<div class="clear">&nbsp;</div>	
+          </div>
+          <!--reset succeed end-->
+        	<%# end %>
+
+          <div class="clear">&nbsp;</div>	
+        </div>
+        <!--content end-->
+	</div>
+  
+   <%# end %>

@@ -1,0 +1,12 @@
+  <div class="info_name">
+    微博位置设置
+  </div>
+
+<%- model_class = PostCategory -%>
+<%= simple_form_for :post_geo, :html => { :class => 'form-inline' } do |f| %>
+  <p>
+    <%=text_area_tag :post_geos, @post_geos*"\n",:placeholder=>"请输入位置列表，每行一个", :rows=>5%>
+  </p>
+    <%= f.button  :submit, :value=>"保存",:class => 'btn btn-primary' %>
+<% end %>
+

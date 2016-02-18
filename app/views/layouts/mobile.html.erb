@@ -1,0 +1,41 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<title>微日报注册</title>
+<link href="/assets/mobile.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/assets/jquery.js"></script>
+</head>
+
+<body>
+<header>
+  <div class="nav_in">
+            <section id="headnav">
+                <div class="nav_back">
+                    <span><em></em></span>
+                    <a href="#" class="prepage" onclick="history.go(-1);return false;">返 回</a>
+        </div>
+            </section>
+            <section>
+                <span><%=yield :title%></span>
+      </section>
+        <section><img alt='' width='31px' height='31px' border='0' src='/assets/logo_31x31.png' /></section>
+  </div>
+</header>
+
+<%=yield%>
+     <footer>
+        <div>
+            魔丽游&nbsp;微助力&nbsp;创建于二零一零年<br /><span style="font-family:Times New Roman;">&copy;</span> 2013&nbsp;魔丽游、微助力&nbsp;版权所有<br />ICP许可证号&nbsp;京ICP备13028567号
+        </div>
+    </footer>
+
+<script type="text/javascript" src="/assets/twitter/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/highcharts.js"></script>
+<script type="text/javascript" src="/assets/highcharts/highcharts-more.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+
+<div class="dashboard_box" style="display: block; ">
+  <div class="q_news" style="display:none">
+  	<a href="#"><%=_('你有 ')%>2 <%=_('新闻...')%></a>
+  </div>
+  
+  <%@news.each{|news|%>
+    <!--1 begin-->
+    <div class="board">
+        <%if news.image%>
+        <h5>
+            <%=link_to ce_image(news,:image),client_news_path(news), :target=>"_blank"%>
+        </h5>
+        <%end%>
+        <div class="board_right">
+            <h2><%=link_to news.title,client_news_path(news), :target=>"_blank"%></h2>
+            <p><%=truncate(strip_tags(news.content),:length=>50)%></p>
+  
+            <div class="bottom_bar">
+            	<strong><%=activity_time(news.online_time)%> </strong>
+                <h4>
+                    <%=link_to _('分享'), share_path(news),  :class=>"share_link" %>(<%=news.shared%>)
+            	</h4>
+            </div>
+        </div>
+    </div>
+    <!--1 end-->            
+
+
+  <%}%>
+  
+</div>
+

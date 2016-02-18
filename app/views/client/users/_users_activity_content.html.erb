@@ -1,0 +1,87 @@
+<% cache("activity_#{activity.id}_content_#{I18n.locale}") do%>
+  	<%
+  	case activity.activity_type
+  	
+  	  #
+  	  # SHARE activity
+  	  #
+    	when Activity::ACTIVITY_SHARE then
+    	# share
+    	share = activity.relative
+    	content = share.content
+  	%>
+  	  <span><%=_("分享了")%></span>
+  	  <%
+  	  case content.class.to_s
+  	  when "News"
+  	  %>
+  	  
+  	  [<%=link_to content.title, client_news_path(content), :class=>"color333",:target=>"_blank"%>]
+  	  <%=activity.content%>
+  	  
+  	  <%
+  	  end
+  	  %>
+  	  
+  	<%
+  	  #
+  	  # SHARE activity
+  	  #
+    	when Activity::ACTIVITY_JOIN_EVENT then
+    	# join a event
+  	%>
+  	  <span><%=_("参加了活动")%></span> <<<%=link_to activity.relative.title, client_event_path(activity.relative),:class=>"color333" %>>>
+
+  	<%
+  	  #
+  	  # SHARE activity
+  	  #
+    	when Activity::ACTIVITY_EXCHANGE_CARD then
+    	# exchange business card
+    	card_relation = activity.get_relative
+    	receiver = card_relation.reiceived_user
+    	# merge activity and linked activities
+    	grouped_activities = [activity].concat(activity.links)
+  	%>
+  	
+    	<% 
+    	
+    	if receiver.id == activity.user_id
+    	
+    	  # get all senders of linked activities
+    	  user_links = grouped_activities.map{|ac|
+        	sender = ac.get_relative.sent_user
+      	  name = (current_user && current_user.id == sender.id) ? _("我 ") : sender.displayable_name
+    	    link_to(name,user_path(sender))
+    	  }
+    	%>
+    	  
+    	  <%=raw(_("收到了%s发送的名片")%[user_links*","])%>
+    	<% 
+    	else
+    	  # get all receivers of linked activities
+    	  user_links = grouped_activities.map{|ac|
+    	    receiver = ac.get_relative.reiceived_user
+      	  name = (current_user && current_user.id == receiver.id) ? _(" 我") : receiver.displayable_name
+    	    link_to(name,user_path(receiver))
+    	  }
+    	  
+    	%>
+    	  <%=raw(_("发送了名片给%s")%[user_links*","])%>
+    	<%end%>
+    
+    
+    <%
+    	when Activity::ACTIVITY_UPDATE_CARD then
+    %>
+  	  <%=raw(_("更新了名片"))%>
+  	<%
+  	  else
+    	#when Activity::ACTIVITY_MICROBLOG then
+    	# microblog
+  	%>
+    	<%=truncate_u(raw(activity_content(activity.content)),:length=>100)%>
+  	<%end%>
+
+
+<%end%>

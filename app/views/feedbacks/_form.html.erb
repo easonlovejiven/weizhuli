@@ -1,0 +1,92 @@
+<%= form_for(@feedback,:html=>{:'data-type'=>:json}, :remote=>request.xhr?) do |f| %>
+  <div class="email_phone mgt10">
+    <%= f.text_field  :email, "placeholder"=>_("您的联系方式, 邮箱或者电话")%>
+  </div>
+  <div class="a_textatea">
+    <%= f.text_area :details, "placeholder"=>_("您需要什么帮助, 或者有什么建议") %>
+  </div>
+	<div class="mgt10">
+		<div style="display:none;" id="div_valid_code" class="valid_code fl">
+			<%= label_tag :valid_code,_("验证码 :")%>
+			<%= text_field_tag :valid_code ,''%>
+			<img src="" id="img_valid_code">
+		</div>
+		<span class="error fl"><%= notice %></span>
+		<%= f.hidden_field :http_referer, :value=>request.env['HTTP_REFERER'] %>
+		<div class="fr">
+			<%= f.submit :value => _('提交建议'),:class=>"fr btn30 bc"%>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+  
+  <% if @feedback.errors.any? %>
+    <div id="error_explanation" class="mg_t10">
+      <% @feedback.errors.each do |msg| %>
+        <span class="error"><%= msg.second %></span>
+      <% end %>
+    </div>
+  <% end %>
+
+<% end %>
+
+<script>
+  if ($('#feedback_details').attr("value") != ''){
+    show_valid_code();
+  }
+  show_valid_code = function(){
+    $("#div_valid_code").css("display","");
+    $("#img_valid_code").attr("src",'/proof_image');
+  }
+  check_detail = function(){
+    if ($('#feedback_email').attr("value") == ''){
+      alert("<%= _('请您填写您的手机或者Email') %>");
+      $('#feedback_email').focus();
+      return false;
+      
+    }
+    if(
+      !/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test($('#feedback_email').val()) &&
+      !/[0-9]{6,}/.test($('#feedback_email').val())
+    ){
+      alert("<%= _('请您正确填写您的手机或者Email') %>");
+      $('#feedback_email').focus();
+      return false;
+    }
+    if ($('#feedback_details').attr("value") == ''){
+      alert("<%= _('请您填写您的问题或反馈内容') %>")
+      $('#feedback_details').focus();
+      return false;
+    }
+    if ($('#valid_code').attr("value") == ''){
+      alert("<%= _('请您填写您验证码') %>")
+      $('#valid_code').focus();
+      return false;
+    }
+    return true;
+  }
+
+
+  $("#new_feedback").submit(function (e) {
+    e.preventDefault();
+    if (check_detail(this))
+    {
+      $(this).callRemote();
+    } 
+    else 
+    {
+      return false;
+    }
+  });
+
+$(function(){
+
+  $(function(){
+    $('#feedback_details').focus(function(){
+      show_valid_code();
+    })
+  })
+
+
+});
+</script>
+

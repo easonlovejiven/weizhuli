@@ -1,0 +1,41 @@
+<%@user.events.available.limit(4).each{|event|%>
+  <!--list begin-->
+  <div class="follow_list">
+    <div class="e_pic">
+      <%=link_to ce_image(event,"image",:medium,{:size=>"60x60", :scaling=>false}), client_events_show_path(event) %>
+    </div> 
+    <!--follow_485 begin-->           
+    <div class="follow_485">
+      <!--center user_c begin-->
+      <div class="follow_c">
+        <div class="i_title"><%=link_to event.title, client_events_show_path(event)%></div>
+        <% if event.start_time.strftime("%y")==event.start_time.strftime("%y")%>
+          <div class="a_time"><%= event.start_time.strftime("%y.%m.%d") %>-<%= event.end_time.strftime("%m.%d")%><span><%= event.location_name %></span></div>
+        <% else %>
+          <div class="a_time"><%= event.start_time.strftime("%y.%m.%d") %>-<%= event.end_time.strftime("%y.%m.%d")%><span><%= event.location_name %></span></div>
+<% end %>
+        <div class="description"><%= truncate_u(strip_tags(event.description), :length=>100).html_safe%>
+        </div>
+      </div>
+      <!--center user_c end-->
+					
+					<!--right bar 120 begin-->
+					<ol class="rightbar_120">
+						<li>
+							<% if !current_user.blank? && !event.user_join?(current_user) %>
+							<%= link_to _("看看去"), client_event_path(event), :class=>"go_see" %>
+							<% else %>
+							<%= link_to _("已参加"), client_event_path(event), :class=>"ce_event_followed" %>
+							<% end %>
+						</li>
+					</ol>
+					<!--right bar 120 end-->							
+      <div class="clear">&nbsp;</div>
+    </div>            
+    <!--follow_485 end-->
+    <div class="clear">&nbsp;</div>
+  </div>
+  <!--list end-->        
+    <%}%> 						
+		
+

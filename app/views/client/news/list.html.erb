@@ -1,0 +1,74 @@
+<div class="bg690_270">
+
+	<!--left begin-->
+  <div class="left670">
+    <!--title begin-->
+    <div class="title32">
+      <strong><%=_('所属行业')%>:    <%=@industry.name%></strong>
+      <%=link_to _('返回行业详情')+">>",client_industry_path(@industry)%>
+    </div>
+    <!--title end-->  
+		<!--industry_news begin-->
+    <div class="industry_news">
+    	<!--unit begin-->
+    	<% @news.each do |news|%>
+			<div class="unit">
+			  <% if news.image %>
+				<div class="industry_pic90">
+            <%= link_to ce_image(news,"image",:medium,{:size=>"90x90", :scaling=>false}), client_news_path(news) %>  
+        </div>
+        <% end %>
+        <div class="n_title"><%=link_to news.title, client_news_path(news) %></div>
+        <div class="description"><%= truncate_u(strip_html(news.content), :length=>145) %>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="bar_fcc">
+        	<strong>
+          	<% if news.online_time %>
+		<%= activity_time(news.online_time.to_datetime)%>  
+            <% end %>
+          </strong>
+        	<h5><span><%=news.views%><%=_(' 次点击')%></span>&nbsp;|&nbsp;<%=link_to _(' 转发')+'('+news.shared.to_s+')', share_path(news), :class=>"share_link"%>&nbsp;|&nbsp;                
+                  <%if current_user%>
+                  <%if current_user.favorited?(news)%>                    
+                  <a class="ce_favorite_news_followed"><%=_("已收藏")%></a>
+                  <%else%>
+                  <%=link_to _("收藏"),client_favorites_follow_path(:content_type=>news.type,:content_id=>news.id),:class=>"ce_favorite_news"%>
+                  <%end%>
+                  <%else%>
+                    <%=link_to _("收藏"),login_path%>
+                  <%end%></h5>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <% end %>
+    	<!--unit end-->
+      <!--pagination begin-->
+      <%= will_paginate @news %>    
+      <!--pagination begin-->        
+      <div class="clear">&nbsp;</div>
+    </div>  
+  	<!--industry_news end-->
+  	<div class="clear">&nbsp;</div>
+  </div>
+  <!--left end-->
+	<!--right255 begin-->
+  <div class="right255">
+		<!--industry news update begin-->	
+       <%=render :partial=>"industry_news_update"%>
+    <!--industry news update end-->
+
+		<!--industry news begin-->	
+       <%=render :partial=>"industry_news"%>
+    <!--industry news end-->   
+
+		<!--hot news begin-->	
+       <%=render :partial=>"hot_news"%>
+    <!--hot news end-->   
+                	  
+		<div class="clear">&nbsp;</div>	
+	</div>
+	<!--right255 end-->  
+  
+  <div class="clear">&nbsp;</div>
+</div>

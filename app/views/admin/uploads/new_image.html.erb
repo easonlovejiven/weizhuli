@@ -1,0 +1,96 @@
+<%content_for(:special_head) do%>
+  <%= javascript_include_tag 'swfobject',"uploadify/jquery.uploadify.v2.1.0.min" %>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+  var after_upload = null;
+    $(function(){
+      /*
+      $("#uploader").uploadify($.extend(website.uploadify_global_config,{
+        onOpen : function(){
+          
+        },
+        onComplete: function(event,queueId,fileObj,response,data){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").enable();
+          
+          try{
+            if(after_upload!=null) after_upload($.parseJSON(response));
+          }catch(e){}
+          window.close();
+
+        },
+        onError : function(event,queueId,fileObj,errorObj){
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          $("#new_image_upload_form button[name=submit]").enable();
+        },
+        
+        onProgress : function(event,queueId,fileObj,response,data){
+          console.log("========== starting upload ===========");
+          console.log(event);
+          console.log(queueId);
+          console.log(fileObj);
+          console.log(response);
+          console.log(data);
+          $("#new_image_upload_form button[name=submit]").disable();
+        
+        },
+        onAllComplete : function(){
+        
+        }
+      }));
+
+      $("#new_image_upload_form button").click(function(){
+        var alt = $("#new_image_upload_form input[name=alt]").val();
+        var desc = $("#new_image_upload_form textarea[name=description]").val();
+        post_data = {
+          alt : alt,
+          desc : desc
+        }
+        $('#uploader').uploadifySettings('scriptData', post_data)
+        $('#uploader').uploadifyUpload();
+      });
+      */
+
+    });
+
+
+
+  </script>
+
+<%end%>
+
+<div class="block">
+    <div class="inner">
+      <%form_for @upload,:html => { :multipart => true }  do |f| -%>
+      <%=f.hidden_field :tmp_content_type%>
+      <%=hidden_field_tag :callback%>
+      <%=f.label :attachment%> : <%=f.file_field :attachment%>
+      <div id="uploader">
+      </div>
+      <div>
+      <p>
+        Alt Information : <%=f.text_field :alt_info%>
+      </p>
+      <p>
+        New File Name: <%=f.text_field :new_file_name, :maxlength=>50, :size=>30%>
+      </p>
+      <p>
+        Description : <%=f.text_area :description,:cols=>40,:rows=>5%>
+      </p>
+      <%=hidden_field_tag :callback,params[:callback]%>
+      <p>
+        <button type="submit" name="submit"><%=_('上传')%></button>
+      </p>
+      </div>
+      <%end -%>
+    </div>
+  </div>
+</div>
+

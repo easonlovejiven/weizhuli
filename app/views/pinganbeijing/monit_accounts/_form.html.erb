@@ -1,0 +1,28 @@
+        <p>
+          <label>
+            <span>站点：</span><%=form.hidden_field :site%>
+            <%={"sohu"=>"搜狐微博","renmin"=>"人民微博"}[@site]%>
+            <%#=image_tag "#{@site}.png",size:"80x20"%>
+          </label>
+        </p>
+        <p>
+          <label><span>日期：</span><%=form.text_field :date, :value=>form.object.date.to_s,:class=>"datepicker"%></label>
+        </p>
+        <p>
+          <label><span>粉丝数：</span><%=form.text_field :followers_count%></label>
+        </p>
+        <p>
+          <label><span>关注数：</span><%=form.text_field :friends_count%></label>
+        </p>
+        <p>
+          <label><span>微博数：</span><%=form.text_field :statuses_count%></label>
+        </p>
+        <p>
+          <label><span>被转发数：</span><%=form.text_field :forwards_count%></label>
+        </p>
+        <p>
+          <label><span>被评论数：</span><%=form.text_field :comments_count%></label>
+        </p>
+        <p>
+          <label><span>被@数：</span><%=form.text_field :mentions_count%></label>
+        </p>

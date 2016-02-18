@@ -1,0 +1,22 @@
+	<!--user basic begin-->
+      <div>
+        <div class="user_basic_name line_height30">
+          <%=link_to user.displayable_name, user_path(user)%>
+        </div>
+        <div class="user_basic pad_right10">
+          	<%=link_to (user_avatar_tag(user, :index_thumb, :alt=>"",:size=>"60x60", :scaling=>false)), user_path(user)%>
+          <span>
+            <%=link_to _('个人设置'),client_profiles_path%>
+            <%=link_to _('修改头像'),upload_avatar_client_user_path%>	
+          </span>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="user_basic_follow pad_right10 mg_t10">
+         
+             <a><strong><%=_('关注')%></strong><var><%=user.get_microblog_info.followings%></var></a>
+             <a><strong><%=_('粉丝')%></strong><var><%=user.get_microblog_info.followers%></var></a>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div> 
+      <!--user basic end-->

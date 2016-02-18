@@ -1,0 +1,100 @@
+  <div class="info_name">
+    各部门监控帐号
+  </div>
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong>
+        转发评论
+      </strong>
+      <div class="btn-right">
+        <div class="btn-group">
+          <a class="btn <%=@range=="1" ? "btn-primary" : ""%>" href="?range=1">昨日</a>
+          <a class="btn <%=@range=="7" ? "btn-primary" : ""%>" href="?range=7">7天</a>
+          <a class="btn <%=@range=="30" ? "btn-primary" : ""%>" href="?range=30">30天</a>
+          <a class="btn <%=@range=="0" ? "btn-primary" : ""%>" href="?range=0">全部</a>
+        </div>
+      </div>
+
+
+    </div>
+
+        <!--
+    <div class='nav'>
+      <ul class="nav nav-tabs">
+        <li class="<%= @account_type.blank? ? "active" : ""%>"><a href="<%=pinganbeijing_interaction_monits_path()%>">全部</a></li>
+        <li class="<%= @account_type == "1" ? "active" : ""%>"><a href="<%=pinganbeijing_interaction_monits_path(account_type:"1",accounts_sort:@accounts_sort)%>">部门1</a></li>
+        <li class="<%= @account_type == "2" ? "active" : ""%>"><a href="<%=pinganbeijing_interaction_monits_path(account_type:"2",accounts_sort:@accounts_sort)%>">部门2</a></li>
+        <li class="<%= @account_type == "3" ? "active" : ""%>"><a href="<%=pinganbeijing_interaction_monits_path(account_type:"3",accounts_sort:@accounts_sort)%>">部门3</a></li>
+        <li class="<%= @account_type == "4" ? "active" : ""%>"><a href="<%=pinganbeijing_interaction_monits_path(account_type:"4",accounts_sort:@accounts_sort)%>">部门4</a></li>
+      </ul>
+    </div>
+      -->
+
+
+
+
+    <div class="list">
+      <table class='table'>
+        <tr>
+
+          <th width="10%">头像</th>
+          <th width="10%">昵称</th>
+          <th width="8%">粉丝数</th>
+          <th width="8%">发博数</th>
+
+
+
+          <%
+          s1 = sort_type(@sort_col,"interactions_count",@sort_type)
+          s2 = sort_type(@sort_col,"forwards_count",@sort_type)
+          s3 = sort_type(@sort_col,"comments_count",@sort_type)
+
+          l1 = sort_label(@sort_col,"interactions_count",@sort_type)
+          l2 = sort_label(@sort_col,"forwards_count",@sort_type)
+          l3 = sort_label(@sort_col,"comments_count",@sort_type)
+          %>
+          <th><%=link_to "转发官微#{l2}",pinganbeijing_interaction_monits_path(account_type:@account_type,sort_type:s2,sort_col:"forwards_count",range:@range)%></th>
+          <th><%=link_to "评论官微#{l3}",pinganbeijing_interaction_monits_path(account_type:@account_type,sort_type:s3,sort_col:"comments_count",range:@range)%></th>
+          <th><%=link_to "互动#{l1}",pinganbeijing_interaction_monits_path(account_type:@account_type,sort_type:s1,sort_col:"interactions_count",range:@range)%></th>
+
+
+        </tr>
+
+
+        <%@accounts.each{|account|
+          u = WeiboAccount.find_by_uid(account.uid)
+
+
+          forwards,comments,interactions = case @range
+
+          when "0"
+            [account.forwards_count,account.comments_count,account.interactions_count]
+          when "1"
+            [account.forwards_count_yesterday,account.comments_count_yesterday,account.interactions_count_yesterday]
+          when "7"
+            [account.forwards_count_7day,account.comments_count_7day,account.interactions_count_7day]
+          when "30"
+            [account.forwards_count_30day,account.comments_count_30day,account.interactions_count_30day]
+          end
+
+        %>
+
+
+        <tr>
+          <td><%=image_tag(u.profile_image_url)%></td>
+          <td><%=link_to account.screen_name, "http://weibo.com/#{u.uid}", :target=>"_blank"%></td>
+          <td><%=account.followers_count%></td>
+          <td><%=link_to account.statuses_count, pinganbeijing_weibos_path(:uid=>account.uid)%></td>
+          <td><%=forwards%></td>
+          <td><%=comments%></td>
+          <td><%=interactions%></td>
+        </tr>
+
+        <%}%>
+      </table>
+    </div>
+
+  </div>
+
+

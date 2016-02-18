@@ -1,0 +1,39 @@
+<div class="fl w110" id="left_nav_bar">
+	<div class="tool_bar" id="left_crl_bar">
+		<a href="/home" class="<%= 'current' if params[:controller]=='general' && action_name == 'home' %>">
+			<var class="home">&nbsp;</var>
+			<span><%= _('Home') %></span>
+		</a>
+		<a href="/" class="<%= 'current' if (params[:controller]=='general' && action_name=='index' ) || (params[:controller]=='client/events' && (action_name == 'index'||action_name == 'show'|| action_name == 'customize' ||action_name == 'past'||action_name == 'sort'||action_name == 'search'||action_name == 'sponsors'||action_name == 'speakers'||action_name == 'agenda'||action_name == 'attendees'||action_name == 'saved_users'||action_name == 'documents'||action_name == 'similar'||action_name=='contact')) %>">
+			<var class="event">&nbsp;</var>
+			<span><%= _('Events') %></span>
+		</a>
+    <a href="<%= client_organizations_path %>" class="<%= 'current' if controller_name=='organizations' %>">
+			<var class="sp_pa">&nbsp;</var>
+			<span><%= _('Sponsors and Partners') %></span>
+		</a>
+    <a href="<%=client_user_business_cards_path%>" class="<%='current' if controller_name == 'business_cards' && (action_name == 'index' || action_name == 'search') %>">
+			<var class="contacts">&nbsp;</var>
+			<span><%= _('Contacts') %></span>
+		</a>
+    <a href="<%= client_all_events_documents_path %>" class="<%= 'current' if params[:controller]=='client/events' && (action_name == 'all_documents') %>">
+			<var class="e_doc">&nbsp;</var>
+			<span><%= _('Event Documents') %></span>
+		</a>
+		<%if current_user && current_user.is_organization?%>
+		<a href="<%= new_partner_event_path %>" class="<%= 'current' if params[:controller]=='partner/events' && action_name == 'new' %>">
+			<var class="create">&nbsp;</var>
+			<span><%= _('Create My Event') %></span>
+		</a>
+		<%end%>
+    <a href="<%=modify_password_client_user_path%>" class="<%= 'current' if ((params[:controller]=='client/user' && (action_name=='modify_password' || action_name=='active_mail')) || params[:controller]=='client/my_orders' || (params[:controller]=='partner/events' && (['index','draft','manage','edit'].include?(action_name) ))||(params[:controller]=='client/events' && action_name == 'promote')||(params[:controller]=='client/my_events') || (controller_name == 'business_cards' && action_name == 'exchanged_invites') || action_name == 'receive_invites' || action_name == 'send_invites' || action_name == 'my_card' ||action_name=='my_en_card') %>">
+			<var class="myacc">&nbsp;</var>
+			<span><%= _('My Account') %></span>
+		</a>
+  	<div class="clear">&nbsp;</div>
+  </div>
+	<div class="sidebar">
+		<var>&nbsp;</var>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>

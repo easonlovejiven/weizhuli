@@ -1,0 +1,101 @@
+<script>
+$(function() {
+  show_valid_code = function(){
+    $("#img_valid_code").attr("src",'/proof_image');
+  }
+  show_valid_code();
+});
+</script>
+
+
+<div class="main">
+
+      <!--title 38 begin-->
+      <div class="title38 radius3 bc w790 mgLR3">
+        <strong><%=_('不用着急, 请输入您的注册邮箱')%></strong>
+      </div>
+      <!--title 38 end-->      
+
+        <!--content begin-->
+        <div class="content mgt10">
+        
+          <!--join ce180 begin-->
+          <div class="pdt10 join_login mg0a">
+           <% if !flash[:notice].blank? %>  
+			      <div class="e_send mg_top20">
+            	<img src="images/check_email.gif" width="20" height="30" alt=""/>
+              <em style="color:#191919;font-size:16px;"><%=flash[:notice]%></em>
+            </div>
+          <% end %>
+           <% if !flash[:error].blank? %>  
+              <div class="e_send mg_top20">
+              	<img src="images/check_er.gif" width="20" height="30" alt=""/>
+              	<em style="color:#069;font-size:16px;"><%=flash[:error]%></em>
+              </div>
+           <% end %>
+           <%form_for :password_reset, :url=>password_resets_path, :html=>{:id=>"pass_reset_form",:onsubmit=>"return check_fields(this);"} do |f|%>
+              <!--form_unit begin-->
+              <div class="form_unit">
+              	<div class="s_unit">
+                  <label><%=_('邮箱')%> <var>*</var></label>
+                   <%=f.text_field :email,:class =>"w225 required" %>
+                </div>
+                 <div class="error_msg mgL110 radius2"> 
+                  <%=f.error_message_on :email%>
+		              <%=f.error_message_on :base%>
+		              </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+            	<!--form_unit end-->
+
+              <!--form_unit begin-->
+              <div class="form_unit img_code">
+              	<div class="s_unit">
+                  <label><%=_('Visual Code')%> <var>*</var></label>
+                  <% if !flash[:valid_code].blank? %>
+                    <%= text_field_tag :valid_code ,'',:class=>"w110 error required"%>
+                  <% else %>
+                    <%= text_field_tag :valid_code ,'',:class=>"w110 required"%>
+                  <% end %>
+			            <img src="" id="img_valid_code">
+									<div class="clear">&nbsp;</div>
+								</div>
+                <div class="error_msg mgL110 radius2 <%='error' if !flash[:valid_code].blank? %>">
+                  <%=flash[:valid_code] if !flash[:valid_code].blank? %>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+            	<!--form_unit end-->
+
+              <!--form_unit begin-->
+              <div class="mgt10 mgL135">
+                <%= f.submit _('获取密码'), :class=>"btn028 radius3 bc w85"%>
+                <div class="clear">&nbsp;</div>
+              </div>
+            	<!--form_unit end-->               
+              <% end %>
+						<div class="clear">&nbsp;</div>	
+          </div>
+          <!--join ce180 end-->
+
+          <div class="clear">&nbsp;</div>	
+        </div>
+        <!--content end-->
+</div>
+
+<script>
+  function	check_fields(form){
+
+		mail = $("#password_reset_email").val();
+    var re= /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.|\-]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+    if(mail!='' && !re.test(mail))
+    {
+      alert("<%=_('邮箱地址格式不正确。')%>");
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+</script>
+

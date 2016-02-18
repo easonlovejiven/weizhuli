@@ -1,0 +1,20 @@
+<h1>User Profile</h1>
+<div>
+<%=@user.login%>
+<div>
+  <%
+  
+  case Follow::follow_status(current_user, @user)
+  
+    when Follow::STATUS_FOLLOW_EACH_OTHER
+  %>
+    <%=link_to "Following each other",client_unfollow_path(@user)%>
+  <%when Follow::STATUS_FOLLOWING%>
+    <%=link_to "Followed",client_unfollow_path(@user)%>
+  <% when Follow::STATUS_CAN_NOT_FOLLOW %>
+  <% else %>
+    <%=link_to "Follow",client_follow_path(@user)%>
+  <%end%>
+
+</div>
+</div>

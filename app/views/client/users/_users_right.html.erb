@@ -1,0 +1,47 @@
+<div class="right240">
+    	<!--wb link begin-->
+      <div class="w_blog mg_top20">
+   			<%= render 'client/events/weibo' %>
+      </div>
+    	<!--wb link end-->
+      
+      <!--The latest to join the leader begin-->
+			<div class="w236 mg_top20">
+      	<!--title 38 begin-->
+        <div class="title38">
+        	<strong><%=_('最新加入的行业领袖')%></strong>
+        </div>
+        <!--title 38 end-->
+        <!--org begin-->
+        <div class="">
+					<% @icon_users.each do |user| %>
+					   <%= render :partial => "/client/common/ce_user_and_card",:locals=>{:user=>user} %>
+					<% end %>
+        	<div class="clear">&nbsp;</div>
+        </div>
+        <!--org end-->
+        <div class="clear">&nbsp;</div>
+      </div>      
+      <!--The latest to join the leader end-->
+      
+      <!--The latest to join the user begin-->
+			<div class="w236 mg_t10">
+      	<!--title 38 begin-->
+        <div class="title38">
+        	<strong><%=_('最新加入的用户')%></strong>
+        </div>
+        <!--title 38 end-->
+        <!--org begin-->
+        <div class="">
+					<% @latest_users.each do |user| %>
+				    <%= render :partial => "/client/common/ce_user_and_card",:locals=>{:user=>user} %>
+					<% end %>
+        	<div class="clear">&nbsp;</div>
+        </div>
+        <!--org end-->
+        <div class="clear">&nbsp;</div>
+      </div>      
+      <!--The latest to join the user end-->      
+      
+      <div class="clear">&nbsp;</div>
+    </div>

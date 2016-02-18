@@ -1,0 +1,30 @@
+<%content_for(:special_head) do%>
+  <%= javascript_include_tag 'swfobject',"uploadify/jquery.uploadify.v2.1.0.min" %>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+<%end%>
+
+<div class="block">
+    <h2 class="title"><%= t("web-app-theme.new", :default => "New")%>  Upload</h2>
+    <div class="inner">
+      <%form_for @upload,:html => { :multipart => true }  do |f| -%>
+      <%=f.hidden_field :tmp_content_type%>
+      <%=hidden_field_tag :callback%>
+      <%=f.label :attachment%> : <%=f.file_field :attachment%>
+      <div id="uploader">
+      </div>
+      <div>
+      <p>
+        New File Name: <%=f.text_field :new_file_name%>
+      </p>
+      <p>
+        Description : <%=f.text_area :description,:cols=>40,:rows=>5%>
+      </p>
+      <%=hidden_field_tag :callback,params[:callback]%>
+      <p>
+        <button type="submit" name="submit"><%=_('上传')%></button>
+      </p>
+      </div>
+      <%end -%>
+    </div>
+  </div>
+</div>

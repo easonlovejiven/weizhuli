@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<script>
+	// tabs dashboard
+	$(function() {
+		$(".share_ques_tab").tabs(".share_ques_box");
+	});
+
+</script>
+</head>
+<body>
+<%=render "common/header"%>
+<!--main begin-->
+<div class="main bg_160_580_220">
+    <!--left 160 begin-->
+    <div class="left160">
+        <%=render "/client/common/user_pane", :user=>@user%>
+        <%=render "/client/common/left_main_menu"%>
+        <!--Daily jokes begin-->
+        <%#=render "/client/common/a_jok"%>
+        <!--Daily jokes end-->
+        <%# disable invite function for now%>
+        <!--invite friend begin-->
+        <div class="invite_friend">
+        	<strong><%=raw(_("You have %s invitations left")%[content_tag :var, @user.property.limit_invites-@user.property.used_invites, :id=>"invitation_count"])%></strong>
+        	<%=link_to _("邀请商业伙伴"), new_client_invite_path, :class=>"fancybox"%>
+        </div>
+        <!--invite friend end-->
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--left 160 end-->
+    <!--center 580 begin-->
+    <div class="center580">
+      <%=yield%>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--center 580 end-->
+
+    <!--right 220 begin-->
+    <div class="right220">
+      <%= render :partial => "/client/common/recommended_users" %>
+
+      <!--idustry li begin-->
+      <div class="mg_t10">
+        <!--title begin-->
+        <div class="title30"><strong><%=_("推荐行业")%></strong></div>
+        <!--title end-->
+      <div class="industry_tag">
+        <%@user.industries.publish.each{|industry|%>
+            <%=link_to client_industry_path(industry), :title=>industry.name do%>
+              <strong><%=truncate_u(industry.name, :length=>19)%></strong>
+              <var><%=industry.news.count%></var>
+            <%end%>
+          <%}%>
+        <%=link_to _("更多行业"), client_industries_path, :class=>"find_industry"%>
+      </div>
+      <div class="e_notice mg_t10">
+         <span><%=_("即将上线行业：旅游、教育、医疗、金融、建筑、物流、电子商务、财富管理...")%></span>
+      </div>
+     </div>
+    <!--idustry li end-->
+
+      <%=render "/client/common/recommended_events"%>
+    	<div class="clear">&nbsp;</div>
+    </div>
+    <!--right 220 end-->
+    <div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<%=render :partial=>"/client/business_cards/my_business_card" %>
+
+<%=render "common/bottom"%>
+<script type="text/javascript">
+	$(document).ready(function(){$('.ind_tab span:first').addClass('active');$('.indu_list:first').css('display','block');autoroll();hookThumb();});
+	var i=-1;var offset = 2500;var timer = null;
+	function autoroll(){n = $('.ind_tab span').length-1;i++;if(i > n){i = 0;}slide(i);timer = window.setTimeout(autoroll, offset);}
+	function slide(i){
+		$('.ind_tab span').eq(i).addClass('active').siblings().removeClass('active');
+		$('.indu_list').eq(i).css('display','block').siblings('.indu_list').css('display','none');
+	}
+	function hookThumb(){
+		$('.ind_tab span').hover(
+			function () {if (timer) {clearTimeout(timer);i = $(this).prevAll().length;slide(i);}},
+			function () {timer = window.setTimeout(autoroll, offset);this.blur();return false;}
+		);
+	}
+</script>
+<script type="text/javascript">
+  $(function(){
+    // create a convenient toggleLoading function
+    var toggleLoading = function() { $("#loading").toggle() };
+     $("#new_private_message_link").fancybox({
+        ajax : {
+          dataType : "html"
+        },
+        onComplete : function(){user_choice_autocomplete()}
+      })
+   });
+</script>
+<!--main end-->
+<%=render "common/bottom_js"%>
+</body>
+</html>
+

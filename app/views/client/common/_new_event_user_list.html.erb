@@ -1,0 +1,29 @@
+                  <!--unit begin-->
+                  <div class="member_basic">
+                    <div class="u_avatar35">
+                     <%= link_to user_avatar_tag(user, :thumb, :size=>"35x35",:scaling=>true,:vertical_align=>true, :alt=>user.displayable_name), user_path(user) %>
+                    </div>
+                    <div class="member_basic_c">
+                      <div class="user_name"><%= link_to user.displayable_name, user_path(user),:"data-dynamic-user-card"=>user.id%></div>
+                      <div class="user_position">
+                      <span><%=user.business_card.title if !user.business_card.blank? && !user.business_card.title.blank? %></span>
+                      <span><%=user.business_card.company if !user.business_card.blank? && !user.business_card.company.blank? %></span></div>
+                      <div class="description">
+                      <%=render(:partial => "/client/activities/activity_content", :locals => {:activity=>user.activities.last}) unless user.activities.blank? %>
+                      </div>
+                       <div class="follow_btn">
+                        <span><var id="user-<%= user.id %>"><%=user.get_microblog_info.followers%></var><%=_("粉丝")%></span>
+
+                       <%=render :partial=>"common/follow_user_status",:locals=>{:user=>user}%>
+
+                       </div>
+                      <div class="clear">&nbsp;</div>
+                    </div>
+                    <ol class="op_btn">
+                      <li><%=link_to(_('发私信'), new_client_private_message_path(:private_message=>{:to_user_id=>user.id,:to_user_name=>user.displayable_name}), :class=>"send_msg msg fancybox round") if current_user && current_user.id != user.id%></li>
+                      <li><%=render :partial=>"common/card_exchange_status",:locals=>{:user=>user}%></li>
+                    </ol>
+                    <div class="clear">&nbsp;</div>
+                  </div>
+                  <!--unit end-->
+

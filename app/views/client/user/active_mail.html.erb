@@ -1,0 +1,156 @@
+        <%=render "/common/right_buttons/my_accounts", :action=>"active_mail"%>
+
+
+        <!--content begin-->
+        <div class="content mgt10">
+
+          <!--change begin-->
+          <div class="">
+            <% if !flash[:notice].blank? %>
+              <%=flash[:notice]%>
+            <% end %>
+            <% if current_user && current_user.status == 2 %>
+              <!--actived begin-->
+              <div class="verify_email change_bg bc w575 a_center">
+							  <%=form_for :user_activates, :url=>user_activates_path, :method=>:post, :remote=>true,:html=>{:id=>"new_user_active", :'data-type'=>"json"} do |form|%>
+							    <span><%=_('Your email is not actived, click here to')%></span>
+							    <%=form.hidden_field :email, {:value=>current_user.login}%>
+							    <%=form.submit _('Active'), :class=>"gm18 radius3 bc cf60 link_italic_mail link_italic"%>
+							  <%end%>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--actived end-->
+            <% end %>
+
+						<div class="title24 pdLR10 mgt10 bc radius3 ">
+            	<strong><%=_('Your email')%></strong>
+            </div>
+            <div class="pdT15 pdL15 change_email">
+							<span class="user_register_email"><%=current_user.email%></span>
+              <a href="#" class="btn20 radius3 bc edit_mail"><%=_('Change')%></a>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="user_edit_form_mail" style="display:none">
+           <%=form_for @user,:url=>client_update_email_path, :remote=>true, :html=>{:id=>"email_edit_form",:"data-type"=>:json} do |form|%>
+            <!--Your email begin-->
+            <div class="verify_email change_bg bc w575">
+              <!--form_unit begin-->
+              <div class="form_unit">
+                <div class="s_unit">
+                  <label><%=_('New email address')%> <var>*</var></label>
+                  <%=form.text_field :email,:class=>"w225"%>
+                </div>
+                <div class="error_msg radius2 email_error"><%=form.error_message_on :email%></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->
+
+              <!--form_unit begin-->
+              <div class="form_unit">
+                <div class="s_unit">
+                  <label><%=_('Your current password')%> <var>*</var></label>
+                   <%=password_field_tag :old_password,'',:class=>"w225"%>
+                </div>
+                <div class="error_msg radius2 base_error">
+                <% if !form.error_message_on(:old_password).blank?%>
+                  <div class="error">
+                    <%=form.error_message_on :old_password%>
+                  </div>
+                <% end %>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->
+
+              <!--form_unit begin-->
+              <div class="mgt10 mgL135">
+                <input type="submit" class="btn30 radius3 bc w105" value="<%=_('Submit')%>" name=""/>
+                <span class="notice"></span>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <!--form_unit end-->
+
+              <div class="clear">&nbsp;</div>
+            </div>
+            <!--Your email end-->
+            <% end %>
+            </div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <!--change end-->
+
+
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--content end-->
+
+
+  <script type="text/javascript">
+   $(function(){
+	  $("#email_edit_form")
+      .live("ajax:loading",  toggleLoading)
+      .live("ajax:complete", toggleLoading)
+      .live("ajax:success", function(xhr, data, status) {
+        if(data.errors){
+          for(var key in data.errors){
+            var msg = data.errors[key];
+            $("."+key+"_error", this).html('<div class="error">'+msg.join(",")+'</div>');
+          }
+        }else{
+          $(".error_msg").text('');
+          $(".notice",this).addClass("success").text(ce_edit_success);
+          location.reload();
+        }
+
+      });
+
+      $(".edit_mail").click(function(){
+            $(".user_edit_form_mail").slideToggle();
+      });
+
+      //The email redirect start
+      var hash={
+              'qq.com': 'http://mail.qq.com',
+              'gmail.com': 'http://mail.google.com',
+              'sina.com': 'http://mail.sina.com.cn',
+              'sina.cn': 'http://mail.sina.com.cn',
+              '163.com': 'http://mail.163.com',
+              '126.com': 'http://mail.126.com',
+              'yeah.net': 'http://www.yeah.net/',
+              'sohu.com': 'http://mail.sohu.com/',
+              'tom.com': 'http://mail.tom.com/',
+              'sogou.com': 'http://mail.sogou.com/',
+              '139.com': 'http://mail.10086.cn/',
+              'hotmail.com': 'http://www.hotmail.com',
+              'live.com': 'http://login.live.com/',
+              'live.cn': 'http://login.live.cn/',
+              'live.com.cn': 'http://login.live.com.cn',
+              '189.com': 'http://webmail16.189.cn/webmail/',
+              'yahoo.com.cn': 'http://mail.cn.yahoo.com/',
+              'yahoo.cn': 'http://mail.cn.yahoo.com/',
+              'yahoo.com': 'http://mail.yahoo.com/',
+              'eyou.com': 'http://www.eyou.com/',
+              '21cn.com': 'http://mail.21cn.com/',
+              '188.com': 'http://www.188.com/',
+              'foxmail.coom': 'http://www.foxmail.com'
+      };
+
+
+
+      $("#new_user_active")
+        .live("ajax:loading", function(){$("input:submit", this).attr("disabled","")})
+        .live("ajax:complete", function(){$("input:submit", this).attr("disabled",null)})
+        .live("ajax:success", function(xhr, data, status){
+          var url = $(".user_register_email").text().split('@')[1];
+          if (hash[url] == undefined){
+            $(this).html(ce_link_mail_text);
+          } else {
+            $(this).html(ce_link_mail_text);
+          }
+        });
+
+
+
+  });
+  </script>
+

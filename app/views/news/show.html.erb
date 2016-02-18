@@ -1,0 +1,32 @@
+<%content_for :title, @news.title%>
+        	<!--list begin-->
+            <div class="news_block">           
+            	<!--repeat begin-->
+                <div class="news_list">
+                    <div class="news_title">
+                        <%= @news.title %>
+                    </div>
+                    <div class="date">
+                        <var><%=l @news.online_time %></var>
+                    </div>
+		    <div class="article_source_url">
+                        <a href="#"><%=l @news.article_source_url, %></a>
+                    </div>
+		     <div class="article_source">
+                        <%=l @news.article_source, %>
+                    </div>
+                    <div class="introduction_details">
+                        <%=raw @news.content %>
+                    </div>
+                </div>
+                <!--repeat end-->
+
+                <!--Page begin-->
+                <div class="page_turning">
+                  <span class="previous"><%=content_tag("em","上一篇")%> <%=@previous ? link_to(content_tag("span",@previous.title), @previous) : "无"%></span>
+                  <span class="next"><%=content_tag("em","下一篇")%> <%=@next ? link_to(content_tag("span",@next.title), @next) : "无" %></span>
+                </div>
+                <!--Page end-->                
+            </div>
+            <!--list end-->
+

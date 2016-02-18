@@ -1,0 +1,194 @@
+  <div class="info_name">
+    礼品入库
+  </div>
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+      <%=form_for @intel_gift_purchase, :url=>intel_gift_purchases_path do |form|%>
+      <%=form.hidden_field :intel_gift_id%>
+    <ul class="form-unit">
+      <table>
+      <tr>
+        <td><%=_('名称')%>: </td>
+        <td>
+          <%=@intel_gift_purchase.intel_gift.name%>
+        </td>
+      </tr>
+      <!--
+      <tr>
+        <td><%=_('价格')%>: </td>
+        <td>
+          <%=form.text_field  :price%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :price%></span>
+        </td>
+      </tr>
+    -->
+      <tr>
+        <td><%=_('数量')%>: </td>
+        <td>
+          <%=form.text_field  :number%>
+          <em>*</em>
+          <span class="errors"><%=raw form.error_message_on :number%></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan=2>
+          <input type="submit" name="" value="<%=_('保存')%>" class="btn btn-primary"/>
+          |
+          <%=link_to "返回",intel_gift_path(params[:intel_gift_id])%>
+        </td>
+      </tr>
+    </table>
+
+    </ul>
+    <div class="form-buttom">
+    </div>
+    <%end%>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+<script type="text/javascript" src="/assets/jquery_validate/jquery.validate.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+  
+    $(".new_intel_gift_purchase").validate({
+      rules: {
+        "intel_gift_purchase[number]": "required"
+      },
+      messages: {
+        "intel_gift_purchase[number]": "此项不能为空"
+      },
+
+      errorElement:"span",
+      errorClass:"alert",
+      errorPlacement: function(error, element) {
+        error.appendTo( element.parent().find("span.errors").first() );
+      }
+    });
+  })
+
+</script>
+
+
+<script type="text/javascript">
+$(function(){
+  $("#kol_purchase_use_time").datepicker({dateFormat: "yy-mm-dd"});
+
+  $("#kol_purchase_kol_attributes_uid").change(function(){
+    $.getJSON("/intel/kols?uid="+$(this).val(),function(data){
+      if(data.object == null){
+        $("#kol_purchase_kol_attributes_name").val("");
+        $("#kol_purchase_kol_attributes_id").val("");
+        $("#kol_purchase_kol_attributes_description").val("");
+        $("#kol_purchase_kol_attributes_interactions").val("");
+      }else{
+        $("#kol_purchase_kol_attributes_name").val(data.object.kol.name);
+        $("#kol_purchase_kol_attributes_id").val(data.object.kol.id);
+        $("#kol_purchase_kol_attributes_description").val(data.object.kol.description);
+        $("#kol_purchase_kol_attributes_interactions").val(data.object.kol.interactions);
+      }
+    })
+  })
+
+})
+
+</script>
+
+
+
+
+  <script>
+  $(function(){
+/*
+    $("#new_user").vatrdate({
+      
+        showErrors: function(errorMap, errortrst) {
+          $(errortrst).each(function(idx,obj){
+            
+            $(obj.element).parents("div.oForm_unit").first().next(".point").html("<div class='formError'>"+obj.message+"</div>");
+            
+          });
+          $("#summary").html("Your form contains "
+                                         + this.numberOfInvatrds() 
+                                         + " errors, see details below.");
+          //this.defaultShowErrors();
+        }
+    
+      });
+*/
+    $("ul.form-unit tr:odd").addClass("bg");
+
+
+
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        loadImageFileTypes:/^image\/(gif|jpeg|png)$/,
+        acceptFileTypes:/(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+          var goUpload = true;
+          var uploadFile = data.files[0];
+          if (!(/\.(gif|jpg|jpeg|png)$/i).test(uploadFile.name)) {
+              alert("只能上传图片文件 (gif|jpg|jpeg|png).");
+              goUpload = false;
+          }
+          if (uploadFile.size > 5000000)   { // 5mb
+            alert("文件大小不能超过5M")
+              goUpload = false;
+          }
+          if (goUpload == true) {
+              data.submit();
+          }
+        },
+        done: function (e, data) {
+          var image = data.result.image;
+          var path = image.file_path.thumb;
+          $("#kol_purchase_forward_weibo_image_id").val(image.id);
+          $(e.target).parents("span.upload-button").show();
+          $("#post-image-form-container .uploading-progress").hide();
+          $("form .image-thumb")
+            .html("<img src='"+path+"'/>").show();
+        },
+        start:function(e,data){
+          $(e.target).parents("span.upload-button").hide();
+          $("#post-image-form-container .uploading-progress").show();
+
+        },
+        progress: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        },
+
+        progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        }
+    });
+
+  });
+
+  </script>
+
+<%end%>

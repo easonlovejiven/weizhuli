@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title><%=_('思易网')%> <%= @html_title.to_s %></title>
+  <%=render "common/init_js"%>
+  <%= javascript_include_tag "jquery","jquery.tools.js","jquery-ui","jrails","rails", :cache => true %>
+  <%= javascript_include_tag "jquery-combobox.js"%>
+  <%= stylesheet_link_tag "web_app_theme", "web_app_theme_override", "themes/drastic-dark/style","jquery-ui.css", :cache => true %>
+  <%=yield(:special_head)%>
+</head>
+<body>
+  <div id="dialog">
+    <div id="wrapper" class="wat-cf">
+      <div class="flash">
+        <% flash.each do |type, message| -%>
+          <div class="message <%= type %>">
+            <p><%= message %></p>
+          </div>
+        <% end -%>
+      </div>
+      <div id="main">
+        <%= yield %>
+      </div>
+    </div>    
+  </div>
+  </div>
+</body>
+</html>

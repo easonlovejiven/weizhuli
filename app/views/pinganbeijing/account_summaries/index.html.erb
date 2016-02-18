@@ -1,0 +1,170 @@
+  <div class="info_name">
+    控制面版
+  </div>
+
+
+  <%=render "summary"%>
+
+  <div class="row-fluid fans-list-box radius-3" style='font-size:12px'>
+    <div class='title'>
+      <strong>各监控帐号概况(每日更新)</strong>
+      <div class="btn-right">
+        <div class="date-selector pull-right">
+            <%=@date_start%> 至 <%=@date_end%>
+        </div>
+      </div>
+    </div>
+    
+    <div class='nav'>
+      <ul class="nav nav-tabs">
+        <li class="<%= @account_type.blank? ? "active" : ""%>"><a href="<%=pinganbeijing_account_summaries_path()%>">全部</a></li>
+        <li class="<%= @account_type == "1" ? "active" : ""%>"><a href="<%=pinganbeijing_account_summaries_path(params.merge(account_type:"1",accounts_sort:@accounts_sort))%>">分局和总队</a></li>
+        <li class="<%= @account_type == "2" ? "active" : ""%>"><a href="<%=pinganbeijing_account_summaries_path(params.merge(account_type:"2",accounts_sort:@accounts_sort))%>">派出所/警务站</a></li>
+        <li class="<%= @account_type == "3" ? "active" : ""%>"><a href="<%=pinganbeijing_account_summaries_path(params.merge(account_type:"3",accounts_sort:@accounts_sort))%>">民警个人</a></li>
+        <li class="<%= @account_type == "4" ? "active" : ""%>"><a href="<%=pinganbeijing_account_summaries_path(params.merge(account_type:"4",accounts_sort:@accounts_sort))%>">社区民警</a></li>
+      </ul>
+    </div>
+
+    <div class="list">
+      <table class='table'>
+        <tr>
+          <!--
+          <th>UID</th>
+          <th>关注数</th>
+          <th>原创被转发数</th>
+          <th>原创被评论数</th>
+          <th>统计日期</th>
+          <th>原创数</th>
+          <th>转发数</th>
+          ↑
+          -->
+          <th width="8%">头像</th>
+          <th width="10%">昵称</th>
+          <th width="6%">粉丝数</th>
+          <th width="5%">发博数</th>
+          <th width="6%">新增粉丝</th>
+          <th width="6%">新增微博</th>
+          <th width="8%">新增转发</th>
+          <th width="8%">新增评论</th>
+          <th width="8%">微博原创率</th>
+          <th width="8%">转发官微次数</th>
+          <th width="8%">评论官微次数</th>
+
+          <%
+          s1 = sort_type(@sort_col,"last_mention_time",@sort_type)
+          s2 = sort_type(@sort_col,"mentions_count",@sort_type)
+          s3 = sort_type(@sort_col,"mentions_count_30",@sort_type)
+          s4 = sort_type(@sort_col,"mentions_count_7",@sort_type)
+
+          l1 = sort_label(@sort_col,"last_mention_time",@sort_type)
+          l2 = sort_label(@sort_col,"mentions_count",@sort_type)
+          l3 = sort_label(@sort_col,"mentions_count_30",@sort_type)
+          l4 = sort_label(@sort_col,"mentions_count_7",@sort_type)
+          %>
+
+          <!--
+          <th><%=link_to "最后一条@#{l1}",pinganbeijing_account_summaries_path(account_type:@account_type,sort_type:s1,sort_col:"last_mention_time")%></th>
+          <th width="8%"><%=link_to "@总数#{l2}",pinganbeijing_account_summaries_path(account_type:@account_type,sort_type:s2,sort_col:"mentions_count")%></th>
+          <th width="8%"><%=link_to "30天@#{l3}",pinganbeijing_account_summaries_path(account_type:@account_type,sort_type:s3,sort_col:"mentions_count_30")%></th>
+          <th width="8%"><%=link_to "7天@#{l4}",pinganbeijing_account_summaries_path(account_type:@account_type,sort_type:s4,sort_col:"mentions_count_7")%></th>
+        -->
+        </tr>
+        <%@accounts.each{|account|
+          u = WeiboAccount.find_by_uid(account.uid)
+          as = @account_stats[account.uid]
+        %>
+
+
+        <tr>
+          <td><%=link_to image_tag(u.profile_image_url),pinganbeijing_mentions_path(:uid=>account.uid)%></td>
+          <td><%=link_to account.screen_name, pinganbeijing_weibos_path(:uid=>account.uid)%></td>
+          <td><%=account.followers_count%></td>
+          <td><%=link_to account.statuses_count, pinganbeijing_weibos_path(:uid=>account.uid)%></td>
+          <td><%=as[:new_fans]%></td>
+          <td><%=as[:new_statuses]%></td>
+          <td><%=as[:new_forwards]%></td>
+          <td><%=as[:new_comments]%></td>
+          <td><%=as[:origin_rate]%>%</td>
+          <td><%=as[:forwards_main]%></td>
+          <td><%=as[:comments_main]%></td>
+        </tr>
+
+        <!--
+        <tr class="info-row">
+          <td colspan="7">
+            <table class="detail-info">
+              <tr>
+                <th>关注</th>
+                <td><%=account.friends_count%></td>
+                <th>原创微博</th>
+                <td><%=account.origin_statuses_count%></td>
+                <th>转发微博</th>
+                <td><%=account.forward_statuses_count%></td>
+                <td></td>
+                <td></td>
+
+              </tr>
+              <tr>
+                <th>转发＋评论</th>
+                <td><%=account.forwards_count+account.comments_count%></td>
+                <th>昨日原创微博被转发</th>
+                <td><%=account.origin_status_forwards_in_day%></td>
+                <th>昨日原创微博被评论</th>
+                <td><%=account.origin_status_comments_in_day%></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      -->
+
+        <%}%>
+      </table>
+    </div>
+  </div>
+
+
+<%content_for :tail do%>
+
+  <script type="text/javascript">
+  $(function(){
+    $(".date-selector").dateRangePicker({
+      format: 'YYYY-MM-DD',
+      separator: ' 至 ',
+    }).bind('datepicker-change',function(event,obj)
+    {
+      console.log(obj);
+      // obj will be something like this:
+      // {
+      //    date1: (Date object of the earlier date),
+      //    date2: (Date object of the later date),
+      //    value: "2013-06-05 to 2013-06-07"
+      // }
+    })
+    .bind('datepicker-apply',function(event,obj)
+    {
+      // $(".date-selector").text(obj.date1+" 至 "+obj.date2);
+      $(".date-selector").text(obj.value);
+
+      var url = "<%=pinganbeijing_account_summaries_path(params.select{|k,v| !["start_date","end_date"].include?(k)}).html_safe%>";
+      var ds = obj.value.split("至");
+      if(url.match('\\?')){
+        url = url+"&"
+      }else{
+        url = url+"?"
+      }
+      url = url+"start_date="+ds[0].trim()+"&end_date="+ds[1].trim();
+      location.href = url;
+      console.log(obj);
+    })
+    .bind('datepicker-close',function()
+    {
+      console.log('close');
+    });;
+
+
+    $(".date-selector").data('dateRangePicker').setDateRange('<%=@date_start%>','<%=@date_end%>')
+  });
+
+  </script>
+
+<%end%>

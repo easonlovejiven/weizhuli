@@ -1,0 +1,846 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>微日报</title>
+<link href="/assets/mobile.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/assets/jquery.js"></script>
+<script type="text/javascript" src="/assets/twitter/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/highcharts.js"></script>
+<script type="text/javascript" src="/assets/highcharts/highcharts-more.js"></script>
+
+<style>
+  body{
+    background-color: #fff;
+  }
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav_in">
+            <section>
+                <span><a href="#summary_header">Summary</a></span>
+                <span><a href="#fans_growth_header">Fans</a></span>
+                <span><a href="#7_days_weibo_chart_header">Tweets</a></span>
+                <span><a href="#">Engagement</a></span>
+      </section>
+  </div>
+</header>
+
+<!--form begin-->
+<!--hellow begin-->
+<section class="show-chart-container">
+  <select id='account_select' style='width:100%'>
+    <%current_user.authentications.weibo.each{|auth|
+      auth_account = WeiboAccount.find_by_uid(auth.uid)
+      %>
+    <option value='<%=auth_account.uid%>' <%=params[:id] == auth_account.uid.to_s ? 'selected' : ''%>><%=auth_account.screen_name%></option>
+    <%}%>
+    <option value='bind-new'>绑定新帐号</option>
+  </select>
+
+<%
+    # queries
+    @account_today = WeiboAccountSnapDaily.where(uid:@uid,date:@date).first
+    @account_yesterday = WeiboAccountSnapDaily.where(uid:@uid,date:@yesterday).first
+    @content_today = WeiboContentCountSnapDaily.where(uid:@uid,date:@date).first
+    @content_yesterday = WeiboContentCountSnapDaily.where(uid:@uid,date:@yesterday).first
+
+    @account_7_days = WeiboAccountSnapDaily.where(uid:@uid).where("date <= ?",@date).limit(7)
+    @account_24_hours= WeiboAccountSnapHourly.where(uid:@uid,date:@date).order("hour asc")
+    @content_7_days = WeiboContentCountSnapDaily.where(uid:@uid).where("date <= ?",@date).limit(7)
+    @content_24_hours= WeiboContentCountSnapHourly.where(uid:@uid,date:@date).order("hour asc")
+
+
+
+    @yesterday_new_fans_count = WeiboUserRelation.find_by_sql(<<-EOF
+        select count(1) counts from weibo_user_relations rels
+        left join weibo_accounts a on a.uid = rels.by_uid
+        where rels.follow_time between '#{@yesterday}' and '#{@date}'
+        and rels.uid= #{@uid}
+        and a.id is not null
+    EOF
+    ).first.counts
+
+
+    @gender_ratio = WeiboUserRelation.find_by_sql <<-EOF
+        select a.gender, count(1) counts from weibo_user_relations rels
+        left join weibo_accounts a on a.uid = rels.by_uid
+        where rels.follow_time between '#{@yesterday}' and '#{@date}'
+        and rels.uid= #{@uid}
+        and a.id is not null
+        group by a.gender
+    EOF
+
+
+    @area_ratio = WeiboUserRelation.find_by_sql <<-EOF
+        select a.location, a.province, count(1) counts from weibo_user_relations rels
+        left join weibo_accounts a on a.uid = rels.by_uid
+        where rels.follow_time between '#{@yesterday}' and '#{@date}'
+        and rels.uid= #{@uid}
+        and a.id is not null
+        group by a.province
+    EOF
+
+
+
+    @followers_range_ratio = WeiboUserRelation.find_by_sql <<-EOF
+        select   
+        case 
+        when acc.followers_count <=10 then "0~10"
+        when acc.followers_count >10 and acc.followers_count <= 50  then "11~50"
+        when acc.followers_count >50 and acc.followers_count <= 100  then "51~100"
+        when acc.followers_count >100 and acc.followers_count <= 500  then "101~500"
+        when acc.followers_count >500 and acc.followers_count <= 5000  then "501~5000"
+        when acc.followers_count >5000  then "5000+"
+        END  fans_level , 
+          count(1) as counts
+        from  weibo_user_relations relation
+        left join weibo_accounts acc on acc.uid = relation.by_uid
+        where relation.follow_time>= '#{@yesterday}'  and relation.follow_time < '#{@date}'
+        and relation.uid = #{@uid}
+        and acc.id is not null
+
+         group by  fans_level
+
+      EOF
+
+    @verify_ratio = WeiboUserRelation.find_by_sql <<-EOF
+        select a.verified_type, count(1) counts from weibo_user_relations rels
+        left join weibo_accounts a on a.uid = rels.by_uid
+        where rels.follow_time between '#{@yesterday}' and '#{@date}'
+        and rels.uid= #{@uid}
+        and a.id is not null
+        group by a.verified_type
+    EOF
+
+
+
+    @kol_ratio = WeiboUserRelation.find_by_sql <<-EOF
+        select if(a.followers_count>2000 or a.verified , 1, 0) is_kol, count(1) counts 
+        from weibo_user_relations rels
+        left join weibo_accounts a on a.uid = rels.by_uid
+        where rels.follow_time between '#{@yesterday}' and '#{@date}'
+        and rels.uid= #{@uid}
+        and a.id is not null
+        group by is_kol
+    EOF
+
+    @kols = WeiboUserRelation.includes(:by_user).where(uid:@uid).where("weibo_accounts.id is not null and follow_time between ? and ?",@yesterday,@date).order("verified desc, followers_count desc").limit(10)
+
+
+
+
+
+    @asdf
+%>
+
+
+      <!-- Docs nav
+      ================================================== -->
+      <div class="">
+        <!--
+        <div class="span3 bs-docs-sidebar">
+          <ul class="nav nav-list bs-docs-sidenav">
+            <li><a href="#global"><i class="icon-chevron-right"></i> 左侧菜单 </a></li>
+          </ul>
+        </div>
+      -->
+        <div class="">
+          <div class=" chart-block">
+            <h3 id="summary_header"><i class="icon-reorder"></i>概况</h3>
+            <p id="summary">
+              <table width="100%" border="0" cellspacing="1" bgcolor="#d9d9d9">
+                <tbody>
+                  <tr bgcolor="#f3f3f3">
+                    <td>&nbsp;</td>
+                    <td style="text-align:center; font-weight:bold;">This week</td>      <td style="text-align:center; ">Previous week</td>
+                    <td style="text-align:center; ">Growth</td>
+                  </tr>
+                  <tr bgcolor="#ffffff">
+                    <td style="text-align:left; padding:0 5px;"># of Total Fans</td>
+                    <td style="padding:0 5px; text-align:center;"><%=@account_today.followers_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@account_yesterday ? @account_yesterday.followers_count : "未知"%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@account_yesterday ? @account_today.followers_count-@account_yesterday.followers_count : "未知"%></td>
+                  </tr>
+                  <tr bgcolor="#f9f9f9">
+                    <td style="text-align:left; padding:0 5px;"># of New Fans</td>
+                    <td style="padding:0 5px; text-align:center;"><%=@account_today.new_fans_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@account_yesterday ? @account_yesterday.new_fans_count : "未知" %></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@account_yesterday ? @account_today.new_fans_count-@account_yesterday.new_fans_count : "未知"%>%</td>
+                  </tr>
+                  <tr bgcolor="#f9f9f9">
+                    <td style="text-align:left; padding:0 5px;"># of KOL Fans</td>
+                    <td style="padding:0 5px; text-align:center;">56</td>
+                    <td style="padding:0 5px;text-align:center;">16</td><td style="padding:0 5px;text-align:center;">40</td>
+                  </tr>
+                  <tr bgcolor="#ffffff">
+                    <td style="text-align:left; padding:0 5px;"># of Tweets</td>
+                    <td style="padding:0 5px; text-align:center;"><%=@content_today.statuses_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@account_yesterday ? @content_yesterday.statuses_count : "未知"%></td><td style="padding:0 5px;text-align:center; color:#F00;"><%=@account_yesterday ? @content_today.statuses_count-@content_yesterday.statuses_count : "未知"%></td>
+                  </tr>
+                  <tr bgcolor="#f9f9f9">
+                    <td style="text-align:left; padding:0 5px;"># of Engagement</td>
+                    <td style="padding:0 5px; text-align:center;"><%=@content_today.be_forwarded_count+@content_today.be_commented_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_yesterday.be_forwarded_count+@content_yesterday.be_commented_count  : "未知"%></td><td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_today.be_forwarded_count+@content_today.be_commented_count - @content_yesterday.be_forwarded_count+@content_yesterday.be_commented_count : "未知"%>%</td>
+                  </tr>
+                  <tr bgcolor="#ffffff">
+                    <td style="text-align:left; padding:0 5px;"># of Initiative Engagement</td>
+                    <td style="padding:0 5px; text-align:center;">569</td>
+                    <td style="padding:0 5px;text-align:center;">569</td>
+                    <td style="padding:0 5px;text-align:center;">0%</td>
+                  </tr>
+                  <tr bgcolor="#f9f9f9">
+                    <td style="text-align:left; padding:0 5px;"># of Share</td>
+                    <td style="padding:0 5px; text-align:center;"><%=@content_today.be_forwarded_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_yesterday.be_forwarded_count : "未知"%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_today.be_forwarded_count - @content_yesterday.be_forwarded_count : "未知"%></td>
+                  </tr>
+                  <tr bgcolor="#ffffff">
+                    <td style="text-align:left; padding:0 5px;"># of Comment </td>
+                    <td style="padding:0 5px; text-align:center;"><%=@content_today.be_commented_count%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_yesterday.be_commented_count : "未知"%></td>
+                    <td style="padding:0 5px;text-align:center;"><%=@content_yesterday ? @content_today.be_commented_count - @content_yesterday.be_commented_count : "未知"%>%</td>
+                  </tr>
+                  <tr bgcolor="#f9f9f9">
+                    <td style="text-align:left; padding:0 5px;"># of Engagement Rate</td>
+                    <td style="padding:0 5px; text-align:center;">563</td>
+                    <td style="padding:0 5px;text-align:center;">364</td>
+                    <td style="padding:0 5px;text-align:center;">35%</td>
+                  </tr>
+                  <tr bgcolor="#ffffff">
+                    <td style="text-align:left; padding:0 5px;">% of Engagement Rate</td>
+                    <td style="padding:0 5px; text-align:center;">0.026</td>
+                    <td style="padding:0 5px;text-align:center;">0.018</td>
+                    <td style="padding:0 5px;text-align:center;">30%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </p>
+          </div>
+          
+          <div id="fans_growth_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>粉丝变化趋势</h3>
+            <p id="fans_growth">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_growth_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增粉丝变化趋势</h3>
+            <p id="new_fans_growth">正在加载...</p>
+          </div>
+          
+          <div id="24_hour_fans_growth_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>24小时粉丝变化趋势</h3>
+            <p id="24_hour_fans_growth">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_sex_ratio_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增粉丝性别比例</h3>
+            <p id="new_fans_sex_ratio">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_area_ratio_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增粉丝地域分布</h3>
+            <p id="new_fans_area_ratio">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_quaility_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增粉丝粉丝数分布</h3>
+            <p id="new_fans_quaility">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_verify_ratio_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增粉丝认证分布</h3>
+            <p id="new_fans_verify_ratio">正在加载...</p>
+          </div>
+          
+          <div id="new_fans_kol_ratio_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增KOL占比</h3>
+            <p id="new_fans_kol_ratio">正在加载...</p>
+          </div>
+          
+          <div id="new_kol_list_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>新增KOL列表 Top 10</h3>
+            <p id="new_kol_list">
+                <table width="100%" border="0" cellspacing="1" bgcolor="#d9d9d9">
+                    <tbody>
+                        <tr bgcolor="#f3f3f3">
+                          <td style="text-align:center; font-weight:bold;">User Name</td>
+                          <td style="text-align:center; font-weight:bold;">UID</td>      <td style="text-align:center; font-weight:bold; ">Follow</td>
+                          <td style="text-align:center;  font-weight:bold;">District</td>
+                          <td style="text-align:center;  font-weight:bold;">Verify</td>
+                          <td style="text-align:center; font-weight:bold; ">Engagement</td>      
+                          </tr>
+                        <%
+                        @kols.each{|rel|
+                        a = rel.by_user
+                        %>
+                        <tr bgcolor="#ffffff">
+                          <td style="text-align:left; padding:0 5px;"><%=a.screen_name%></td>
+                          <td style="padding:0 5px; text-align:center;"><%=a.uid%></td>
+                          <td style="padding:0 5px;text-align:center;"><%=a.followers_count%></td>
+                          <td style="padding:0 5px;text-align:center;"><%=a.location%></td>      
+                          <td style="text-align:center; "><%=a.human_verified_type[1]%></td>
+                          <td style="text-align:center; ">未知</td>
+                        </tr>
+                        <%
+                        }
+                        %>
+                    </tbody>
+                </table>
+            </p>
+          </div>
+          
+          <div id="7_days_weibo_chart_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>7天微博发布</h3>
+            <p id="7_days_weibo_chart">正在加载...</p>
+          </div>
+          
+          <div id="24_hours_weibo_chart_header" class=" chart-block">
+            <h3><i class="icon-reorder"></i>24小时微博发布</h3>
+            <p id="24_hours_weibo_chart">正在加载...</p>
+          </div>
+          
+          
+        </div>
+      </div>
+    
+</section>
+<!--hellow end-->
+<!--form end-->
+
+
+    <script type="text/javascript">
+$(function () {
+
+
+
+
+
+        <%
+        followers_in_7days = @account_7_days.map{|snap|[snap.date,snap.followers_count]}
+        %>
+
+        var followers_in_7days = <%=raw followers_in_7days.to_json%>;
+
+
+
+        // 7天新增粉丝数
+        $('#fans_growth').highcharts({
+            chart: {
+                type: 'spline',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: $(followers_in_7days).map(function(){this[0]}),
+                labels: {
+                    rotation: 80,
+                    y: 50
+                }
+
+            },
+            yAxis: {
+                title: {
+                    text: '粉丝数量'
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        Highcharts.dateFormat('%e. %b', this.x) +': '+ this.y +' m';
+                }
+            },
+            
+            series: [{
+                name: '新增粉丝数',
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: followers_in_7days
+            }]
+        });
+
+
+
+        <%
+        new_fans_7_days = @account_7_days.map{|snap|[snap.date,snap.new_fans_count]}
+        %>
+
+        var new_fans_7_days = <%=raw new_fans_7_days.to_json%>;
+
+        // 7天粉丝变化趋势
+        $('#new_fans_growth').highcharts({
+            chart: {
+                type: 'spline',
+                height: 250
+
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: $(new_fans_7_days).map(function(){this[0]}),
+                labels: {
+                    rotation: 80,
+                    y: 50
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '新增粉丝数量'
+                },
+                min: 0
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        Highcharts.dateFormat('%e. %b', this.x) +': '+ this.y +' m';
+                }
+            },
+            
+            series: [{
+                name: '新增粉丝数',
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: new_fans_7_days
+            }]
+        });
+
+
+
+        var fans_in_24_hours = <%=raw @account_24_hours.map{|snap| [snap.hour, snap.followers_count]}.to_json%>;
+     // 24小时粉丝变化趋势
+        $('#24_hour_fans_growth').highcharts({
+            chart: {
+                type: 'spline',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories:$(fans_in_24_hours).map(function(){return this[0]}),
+                labels:{
+                  step: 2
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '粉丝数量'
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        Highcharts.dateFormat('%e. %b', this.x) +': '+ this.y +' m';
+                }
+            },
+            
+            series: [{
+                name: '粉丝数',
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: fans_in_24_hours
+            }]
+        });
+
+
+
+        <%
+        genders = {1=>"男",0=>"女"}
+        %>
+        var gender_ratio = <%=raw @gender_ratio.map{|a| a.gender.blank? ? nil : {name:genders[a.gender], y:(a.counts.to_f/@yesterday_new_fans_count*100).round(2)}}.compact.to_json%>;
+        //新增粉丝男女比例
+        $('#new_fans_sex_ratio').highcharts({
+            chart: {
+                type: 'pie',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: '%'
+            },
+            series: [{
+                name: 'Browsers',
+                data: gender_ratio,
+                size: '60%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }]
+        });
+
+
+
+    
+    
+
+        var area_ratio = <%=raw @area_ratio.map{|a| a.province.blank? ? nil : {name:a.location.split(" ").first, y:(a.counts.to_f/@yesterday_new_fans_count*100).round(2)}}.compact.to_json%>;
+
+        // 新增粉丝地域分布
+        $('#new_fans_area_ratio').highcharts({
+            chart: {
+                type: 'pie',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: '%'
+            },
+            series: [{
+                name: 'Browsers',
+                data: area_ratio,
+                size: '60%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }]
+        });
+
+
+        var quality_ratio = <%=raw @followers_range_ratio.map{|a| {name:a.fans_level, y:(a.counts.to_f/@yesterday_new_fans_count*100).round(2)}}.compact.to_json%>;
+
+        // 新增粉丝粉丝数分布
+        $('#new_fans_quaility').highcharts({
+            chart: {
+                type: 'pie',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: '%'
+            },
+            series: [{
+                name: 'Browsers',
+                data: quality_ratio,
+                size: '60%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }]
+        });
+
+
+
+        var verify_ratio = <%=raw @verify_ratio.map{|a| {name:WeiboAccount.human_verified_type(a.verified_type)[0], y:(a.counts.to_f/@yesterday_new_fans_count*100).round(2)}}.compact.to_json%>;
+    
+        // 新增粉丝认证分布
+        $('#new_fans_verify_ratio').highcharts({
+            chart: {
+                type: 'pie',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: '%'
+            },
+            series: [{
+                name: 'Browsers',
+                data: verify_ratio,
+                size: '60%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }]
+        });
+
+        var kol_ratio = <%=raw @kol_ratio.map{|a| {name:{1=>"KOL",0=>"非KOL"}[a.is_kol], y:(a.counts.to_f/@yesterday_new_fans_count*100).round(2)}}.compact.to_json%>;
+
+        // 新增粉丝KOL分布
+        $('#new_fans_kol_ratio').highcharts({
+            chart: {
+                type: 'pie',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false,
+                    center: ['50%', '50%']
+                }
+            },
+            tooltip: {
+              valueSuffix: '%'
+            },
+            series: [{
+                name: 'Browsers',
+                data: kol_ratio,
+                size: '60%',
+                dataLabels: {
+                    formatter: function() {
+                        return this.y > 5 ? this.point.name : null;
+                    },
+                    color: 'white',
+                    distance: -30
+                }
+            }]
+        });
+
+
+
+
+
+
+
+        var weibos_7day = <%=raw @content_7_days.map{|c| [c.date,c.new_statuses_count]}.to_json%>;
+
+        // 7天微博发布
+        $('#7_days_weibo_chart').highcharts({
+            chart: {
+                type: 'column',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: $(weibos_7day).map(function(){return this[0]}),
+                labels: {
+                    rotation: 80,
+                    y: 50
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '发布数量',
+                data: $(weibos_7day).map(function(){return this[1]})
+    
+            }]
+        });
+
+
+
+        var weibos_24hours = <%=raw @content_24_hours.map{|c| [c.hour,c.new_statuses_count]}.to_json%>;
+
+        // 7天微博发布
+        $('#24_hours_weibo_chart').highcharts({
+            chart: {
+                type: 'column',
+                height: 250
+            },
+            credits: { 
+              enabled: false
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: $(weibos_24hours).map(function(){return this[0]}),
+                labels:{
+                  step: 2
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '微博数'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '发布数量',
+                data: $(weibos_24hours).map(function(){return this[1]})
+    
+            }]
+        });
+
+
+
+
+
+
+
+  $("#account_select").change(function(){
+    if($(this).val() == 'bind-new'){
+      window.location.href='/omniauth/weibo?return=/reports/create_authentications&display=mobile&forcelogin=true'
+    }else{
+      window.location.href='/reports/dailies/'+$(this).val()+"?date=<%=params[:date]%>"
+    }
+  })
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+<footer>
+<div>
+            魔丽游&nbsp;微助力&nbsp;创建于二零一零年<br /><span style="font-family:Times New Roman;">&copy;</span> 2013&nbsp;魔丽游、微助力&nbsp;版权所有<br />ICP许可证号&nbsp;京ICP备13028567号
+        </div>
+    </footer>
+
+
+
+</body>
+</html>
+
+

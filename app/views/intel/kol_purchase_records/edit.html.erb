@@ -1,0 +1,292 @@
+  <div class="info_name">
+    编辑KOL采买记录
+  </div>
+
+
+
+
+  <!--  form begin  -->
+  <div class="form-wrap">
+
+    <%if flash[:success]%>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%=flash[:success]%>
+      </div>
+    <%end%>
+      <%=form_for @purchase, :url=>intel_kol_purchase_record_path(@purchase) do |form|%>
+
+    <ul class="form-unit">
+      <%=form.fields_for :kol do |kf|%>
+      <%=kf.hidden_field :id%>
+      <table>
+      <tr>
+        <td><%=_('KOL UID')%>: </td>
+        <td>
+          <%=@purchase.kol.uid%>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 昵称')%>: </td>
+        <td>
+          <%=@purchase.kol.name%>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 备注')%>: </td>
+        <td>
+          <%=@purchase.kol.description%>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('KOL 互动数量')%>: </td>
+        <td>
+          <%=@purchase.kol.interactions%>
+        </td>
+      </tr>
+      <%end%>
+      <tr>
+        <td><%=_('使用帐号')%>: </td>
+        <td>
+          <%=form.text_field  :account%>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('使用时间')%>: </td>
+        <td>
+          <%=form.text_field  :use_time%>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('转发微博地址')%>: </td>
+        <td>
+          <%=form.text_field  :forward_weibo, :placeholder=>"转发微博地址，如：http://weibo.com/2637370927/AzntrfyO2"%>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('转发微博内容截图')%>: </td>
+        <td>
+          <%=form.hidden_field  :forward_weibo_image_id%>
+                <span class='upload-button'>
+                  <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>选择图片...</span>
+                    <input id="fileupload" type="file" name="upload[attachment]" data-url="/uploads" multiple>
+                  </span>
+                </span>
+                <span class='image-thumb'>
+                  <%if @purchase.forward_weibo_image_id?
+                    image = Image.find @purchase.forward_weibo_image_id
+                    size, scaling_ratio = image.get_scale_size_for_paperclip(:attachment,100,100)
+                    %>
+                    <%=image_tag image.attachment.url(:thumb),size:size%>
+                  <%end%>
+
+                </span>
+          <em>*</em>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('二次转发数')%>: </td>
+        <td>
+          <%=form.text_field  :second_level_forwards%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :second_level_forwards%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('二次评论数')%>: </td>
+        <td>
+          <%=form.text_field  :second_level_comments%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :second_level_comments%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('原微博转发数')%>: </td>
+        <td>
+          <%=form.text_field  :origin_weibo_forwards%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :origin_weibo_forwards%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('原微博评论数')%>: </td>
+        <td>
+          <%=form.text_field  :origin_weibo_comments%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :origin_weibo_comments%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('采买价格')%>: </td>
+        <td>
+          <%=form.text_field  :price%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :price%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('采买方')%>: </td>
+        <td>
+          <%=form.text_field  :buyer%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :buyer%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('合作类型')%>: </td>
+        <td>
+          <%=form.text_field  :cooperation_type%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :cooperation_type%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('所属项目')%>: </td>
+        <td>
+          <%=form.text_field  :project%>
+          <em>*</em>
+          <span class="erro-msg"><%=raw form.error_message_on :project%></span>
+        </td>
+      </tr>
+      <tr>
+        <td><%=_('备注')%>: </td>
+        <td>
+          <%=form.text_field  :description%>
+          <span class="erro-msg"><%=raw form.error_message_on :description%></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="submit" name="" value="<%=_('保存')%>" class="btn btn-primary"/>
+          |
+          <%=link_to "返回",intel_kol_purchase_records_path%>
+        </td>
+      </tr>
+
+    </table>
+
+    </ul>
+    <div class="form-buttom">
+    </div>
+    <%end%>
+  </div>
+  <!--  form end  -->
+
+
+
+
+
+
+
+
+
+<%content_for :tail do%>
+
+<script type="text/javascript">
+$(function(){
+  $("#kol_purchase_use_time").datepicker({dateFormat: "yy-mm-dd"});
+
+  $("#kol_purchase_kol_attributes_uid").change(function(){
+    $.getJSON("/intel/kols?uid="+$(this).val(),function(data){
+      if(data.object == null){
+        $("#kol_purchase_kol_attributes_name").val("");
+        $("#kol_purchase_kol_attributes_id").val("");
+        $("#kol_purchase_kol_attributes_description").val("");
+        $("#kol_purchase_kol_attributes_interactions").val("");
+      }else{
+        $("#kol_purchase_kol_attributes_name").val(data.object.kol.name);
+        $("#kol_purchase_kol_attributes_id").val(data.object.kol.id);
+        $("#kol_purchase_kol_attributes_description").val(data.object.kol.description);
+        $("#kol_purchase_kol_attributes_interactions").val(data.object.kol.interactions);
+      }
+    })
+  })
+
+})
+
+</script>
+
+
+
+
+  <script>
+  $(function(){
+/*
+    $("#new_user").vatrdate({
+      
+        showErrors: function(errorMap, errortrst) {
+          $(errortrst).each(function(idx,obj){
+            
+            $(obj.element).parents("div.oForm_unit").first().next(".point").html("<div class='formError'>"+obj.message+"</div>");
+            
+          });
+          $("#summary").html("Your form contains "
+                                         + this.numberOfInvatrds() 
+                                         + " errors, see details below.");
+          //this.defaultShowErrors();
+        }
+    
+      });
+*/
+    $("ul.form-unit tr:odd").addClass("bg");
+
+
+
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        loadImageFileTypes:/^image\/(gif|jpeg|png)$/,
+        acceptFileTypes:/(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+          var goUpload = true;
+          var uploadFile = data.files[0];
+          if (!(/\.(gif|jpg|jpeg|png)$/i).test(uploadFile.name)) {
+              alert("只能上传图片文件 (gif|jpg|jpeg|png).");
+              goUpload = false;
+          }
+          if (uploadFile.size > 5000000)   { // 5mb
+            alert("文件大小不能超过5M")
+              goUpload = false;
+          }
+          if (goUpload == true) {
+              data.submit();
+          }
+        },
+        done: function (e, data) {
+          var image = data.result.image;
+          var path = image.file_path.thumb;
+          $("#kol_purchase_forward_weibo_image_id").val(image.id);
+          $(e.target).parents("span.upload-button").show();
+          $("#post-image-form-container .uploading-progress").hide();
+          $("form .image-thumb")
+            .html("<img src='"+path+"'/>").show();
+        },
+        start:function(e,data){
+          $(e.target).parents("span.upload-button").hide();
+          $("#post-image-form-container .uploading-progress").show();
+
+        },
+        progress: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        },
+
+        progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $("#post-image-form-container .uploading-progress .bar").css("width",progress+"%");
+          console.debug(e,data); 
+        }
+    });
+
+  });
+
+  </script>
+
+<%end%>

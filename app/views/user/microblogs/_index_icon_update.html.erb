@@ -1,0 +1,31 @@
+
+			<!--title begin-->
+      <div class="title32">
+      	<strong><%=_("动态更新")%>&nbsp;&gt;</strong>
+      	<%= link_to _('返回%s的首页')%[user_salutation(@user)], user_path(@user)%>
+      </div>
+      <!--title end-->
+
+      <!--tip begin-->
+      <div class="tips_40">
+      	<strong><%=_('共有')%> <%=@icon_updates.total_entries%> <%=_('条动态')%></strong>
+      </div>
+      <!--tip end-->     
+      <!--trends begin-->
+			<div class="u_content">
+				<ul class="t_list">
+				 <%@icon_updates.each do |info| %>
+          	 <li>
+          	 <%=link_to client_icon_update_path(info) do %>
+            	 <span><%=info.title%></span>
+            	 <var><%= (info.date.nil?) ? info.created_at.to_date : info.date.to_date  %></var>
+          	 <%end%>
+          	</li>
+        	<%end%>
+        </ul>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--trends end-->
+      <!--pagination begin-->
+       <%=will_paginate(@icon_updates)%>
+      <!--pagination begin-->    

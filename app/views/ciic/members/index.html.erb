@@ -1,0 +1,285 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<title>中智北京</title>
+<%=stylesheet_link_tag "bootstrap_and_overrides"%>
+<script type="text/javascript" src="/assets/jquery.js"></script>
+<style type="text/css">
+body{
+  background-image: url(/assets/ciic/member_bg.png);
+  background-repeat: repeat;
+  background-size: 20px;
+  padding: 0;
+}
+
+header img{
+  width:100%;
+}
+
+.nav_in{
+  position: relative;
+}
+
+.member_id{
+  position: absolute;
+  bottom: 0px;
+  padding: 8% 18%;
+  font-size: 24px;
+  color: #FAFF58;
+}
+.content{
+  background: rgba(255,255,255,.8);
+  padding: 20px;
+}
+
+table{
+  width:100%;
+}
+td{
+  padding: 10px;
+}
+input{
+  width:80%;
+}
+
+
+div.bar{
+  height:16px;
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  margin:0 15px;
+  color:#fff;
+  font-size:16px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 16px;
+  padding: 16px 0;
+}
+div.bar1{
+  background-image:url(/assets/ciic/member_bar1.jpg);
+}
+div.bar2{
+  background-image:url(/assets/ciic/member_bar2.jpg);
+}
+div.bar3{
+  background-image:url(/assets/ciic/member_bar3.png);
+  margin-top:20px;
+}
+
+div.gray_mask{
+  margin:0px 25px;
+  background: rgba(0,0,0,0.15);
+  color: #69A1FF;
+  padding: 30px;
+  line-height: 50px;
+  font-size: 24px;
+  text-align: center;
+}
+
+div.help_content{
+  margin:0px 25px;
+  background: #fff;
+  padding: 30px;
+  color: #666;
+  font-size: 12px;
+}
+
+div.help_content h4 span{
+  padding: 5px;
+  background: #6592E4;
+  color: #fff;
+  font-size: 16px;
+}
+
+</style>
+
+
+</head>
+
+<body>
+<header>
+  <div class="nav_in">
+    <%=image_tag "ciic/member_header.png"%>
+    <div class="member_id">
+      <%if @member.card.blank?%>
+      尚未申领
+      <%else%>
+      <%=@member.card%>
+      <%end%>
+    </div>
+  </div>
+</header>
+
+    <%if @member.card.blank?%>
+
+<div class="gray_mask" id="user_form">
+
+
+          <%=form_for @member, :url=>ciic_member_path(@member) do |form|%>
+    <table id="apply_form" style="">
+      <tr>
+        <td>
+          姓名
+        </td>
+        <td>
+          <%=form.text_field :name, :placeholder=>"姓名"%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          微信昵称
+        </td>
+        <td>
+          <%=form.text_field :wxname, :placeholder=>"微信昵称"%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          手机号
+        </td>
+        <td>
+          <%=form.text_field :phone, :placeholder=>"手机号"%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          公司
+        </td>
+        <td>
+          <%=form.text_field :company, :placeholder=>"公司"%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          职务
+        </td>
+        <td>
+          <%=form.text_field :title, :placeholder=>"职务"%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%=form.submit "申  领", class:"btn btn-primary btn-large"%>
+        </td>
+      </tr>
+    </table>
+    
+          <%end%>
+
+</div>
+
+    <%end%>
+
+
+
+<div class="bar bar1">
+  面值100元 中智沙龙代金券(5张)
+</div>
+<div class="gray_mask">
+
+      <%if @member.card.blank?%>
+      尚未申领
+      <%else%>
+        <%=(@member.cards*"<br/>").html_safe%>
+      <%end%>
+
+</div>
+
+
+<div class="bar bar2">
+  500元代金券
+</div>
+<div class="gray_mask" id="card_cont">
+
+        <%if @member.card.blank?%>
+          尚未申领
+        <%else%>
+          <%=@member.card%>
+        <%end%>
+
+
+
+</div>
+
+<div class="bar bar3">
+使用说明
+</div>
+<div class="help_content">
+
+        <p>
+          <h4><span>HR沙龙会员卡</span></h4>
+          尊享中智HR沙龙会员身份，所有课程享受95折优惠。<br/>
+          会员卡有效期：即日起—2015年12月31日。
+        </p>
+
+        <p>
+          <h4><span>HR沙龙代金券</span></h4>
+          有效期至 2015年12月31日。<br/>
+          1、代金券使用需遵循：领券——在线报名（限微信发布的沙龙活动使用）——参会的使用流程用券。不得沙龙现场关注后要求现场折扣，但可下次报名使用。<br/>
+          2、参加同一次沙龙各类优惠不累计使用。此券不折现使用，不开具发票。
+        </p>
+
+        <p>
+        </p>
+</div>
+
+      <td></td>
+
+
+
+
+<script type="text/javascript">
+$("#apply").click(function(){
+  $("#apply_form").show();
+})
+
+
+
+var member_id = '<%=@member.member_id%>';
+var cards = "<%=@member.cards.to_json%>";
+var card = "<%=@member.card%>";
+
+var set_numbers = function(){
+  $(".member_id").text(member_id);
+  $("#cards_cont").html(cards.join("<br/>"));
+  $("#card_cont").text("card");
+}
+<%if !@member.card.blank?%>
+  set_numbers();
+<%end%>
+
+$(document.forms[0]).submit(function(){
+  var errors = [];
+
+  if(this['m_zhongzhi_member[name]'].value.trim()=="") errors.push("姓名不能为空");
+  if(this['m_zhongzhi_member[wxname]'].value.trim()=="") errors.push("微信昵称不能为空");
+  if(this['m_zhongzhi_member[phone]'].value.trim()=="") errors.push("手机号不能为空");
+  if(this['m_zhongzhi_member[company]'].value.trim()=="") errors.push("公司不能为空");
+  if(this['m_zhongzhi_member[title]'].value.trim()=="") errors.push("职务不能为空");
+
+  if(errors.length > 0){
+    alert(errors.join("\n"));
+    return false;
+  }
+
+})
+</script>
+
+
+
+
+ <footer>
+    <div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="/assets/twitter/bootstrap.js"></script>
+
+
+</body>
+</html>
+
+

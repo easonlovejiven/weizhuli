@@ -1,0 +1,77 @@
+<div class="bg720_240">
+	<!--left670 begin-->
+  <div class="left720">
+		<!--search begin-->
+		<div class="w_600">
+    <%=form_for :search, :url=>search_path,:html=>{:id=>"search_form",:method=>:get} do |form|%>
+
+
+			<div class="search_co">
+        <%=form.label :classes_,_("所有"),:class=>(@search[:classes].blank? ? "current":"")%>
+        <%=form.radio_button :classes,"",:checked=>@search[:classes].blank?,:style=>"display:"%>
+        <%=form.label :classes_organization,_("公司 "),:class=>(@search[:classes]=="Organization" ? "current":"")%>
+        <%=form.radio_button :classes,"Organization",:checked=>@search[:classes]=="Organization",:style=>"display:"%>
+        <%=form.label :classes_user,_("人物"),:class=>(@search[:classes]=="User" ? "current":"")%>
+        <%=form.radio_button :classes,"User",:checked=>@search[:classes]=="User",:style=>"display:"%>
+        <%=form.label :classes_event,_("活动"),:class=>(@search[:classes]=="Event" ? "current":"")%>
+        <%=form.radio_button :classes,"Event",:checked=>@search[:classes]=="Event",:style=>"display:"%>
+        <%=form.label :classes_news,_("新闻"),:class=>(@search[:classes]=="News" ? "current":"")%>
+        <%=form.radio_button :classes,"News",:checked=>@search[:classes]=="News",:style=>"display:"%>
+			</div>
+			<div class="sear_for">
+        <%=form.text_field :q, :value=>@search[:q]%>
+        <%=form.submit _("搜一下"), :class=>"for_submit"%>
+			</div>
+    <%end%>
+		</div>
+		<!--search end-->
+    <!--box begin-->   
+    <div class="w_600">
+      <div class="title28">
+      	<strong><%=_('共搜索到')%> <%=@results.count%> <%=_('条相关信息')%></strong>
+      </div>
+      <!--search result begin-->
+      <div class="">
+        <%@results.compact.each{|result|%>
+          <%= render "item_#{result.class.to_s.underscore}",result.class.to_s.underscore.to_sym=>result%>
+        <%}%>
+        <div class="clear">&nbsp;</div>	
+      </div>
+        <%=will_paginate @results%>
+      <!--search result end-->
+      <div class="clear">&nbsp;</div>	
+    </div>    
+		<!--box end-->
+    <div class="clear">&nbsp;</div>	
+	</div>
+	<!--left670 end-->
+
+	<!--right255 begin-->
+  <div class="right240">
+		<!--industry begin-->	
+    <div class="box_240">
+    	<%= render "/client/events/industries_list"  %>
+    </div>            	
+    <!--industry end-->
+		<div class="box_240">
+    <%=render "/client/common/recommended_events"%>
+		</div>
+		<div class="clear">&nbsp;</div>	
+	</div>
+	<!--right255 end-->
+
+  <div class="clear">&nbsp;</div>
+</div>
+
+
+
+
+
+<script>
+
+
+  $("#search_form input:[type=radio]").change(function(){
+    $("#search_form").submit();
+  });
+
+</script>

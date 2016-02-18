@@ -1,0 +1,18 @@
+<div class="nav40 header_tabs">
+  <%
+    h_class = " "
+    c_class = h_class+"current"
+    type = params[:type] || {}
+    type = type.to_s
+  %>
+  <%=link_to _('Upcoming Events'), now_and_future_client_events_path,:class=>(type.blank? && action_name == "index") ? c_class : h_class %>
+  <%=link_to _("Past Events"), past_client_events_path,:class=>(type.blank? && action_name == "past") ? c_class : h_class  %>
+  <%#=link_to _("Events Sort"), sort_client_events_path,:class=>(action_name == "sort") ? c_class : h_class  %>
+  <%=link_to _("Search Events"), '#',:onclick=>"$('#event_search_div').css('display','');$(this).siblings().each(function(){$(this).removeClass('current')});$(this).addClass('current');return false;", :class=>"last #{(params[:search].blank?) ? h_class : c_class}"%>
+</div>
+
+<script>
+$(function(){
+	$(".header_tabs").tabs(".second_tabs", {effect:'ajax'});
+})
+</script>

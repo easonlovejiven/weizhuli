@@ -1,0 +1,45 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_news_index_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_news_path %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_news_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.title", :default => t("activerecord.labels.title", :default => "Title")) %>:</b>
+          <%= @news.title %>
+        </p>
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.article_source", :default => t("activerecord.labels.article_source", :default => "Article Source")) %>:</b>
+          <%= @news.article_source %>
+        </p>
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.article_source_url", :default => t("activerecord.labels.article_source_url", :default => "Article Source Url")) %>:</b>
+          <%= @news.article_source_url %>
+        </p>
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.online_time", :default => t("activerecord.labels.online_time", :default => "Online time")) %>:</b>
+          <%=l @news.online_time %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.category_id", :default => t("activerecord.labels.category_id", :default => "Category")) %>:</b>
+          <%= @news.category_name %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_news.content", :default => t("activerecord.labels.content", :default => "Content")) %>:</b>
+          <%=raw @news.content %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_admin_news_path(@news), :class => "button" %> 
+        <%= link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), admin_news_index_path(@news), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+      </div>      
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,31 @@
+        <div class="follow_list">
+          <div class="e_pic">
+						<%=link_to  client_organization_path(organization) do %>
+						<%=ce_image(organization, :image, :thumb, :size=>"60x60", :scaling=>true)%>
+						<%end%>
+          </div> 
+          <!--follow_485 begin-->           
+          <div class="follow_485">
+            <!--center user_c begin-->
+            <div class="follow_c">
+              <div class="user_name"><%=link_to organization.name,client_organization_path(organization)%></div>
+              <div class="user_position"><span>公司</span><span></span></div>
+              <div class="bar_ffs">
+                <a href="#">粉丝<em><%=organization.followed%></em></a>
+              </div> 
+              <div class="description">
+              	<strong>公司简介：</strong>
+              	<%=strip_tags(organization.description).html_safe%>
+              </div>
+            </div>
+            <!--center user_c end-->
+            <!--right bar 120 begin-->
+            <ol class="rightbar_120">
+              <li ><%=link_to _('关注'),:class=>"ce_follow_company" %></li>
+            </ol>
+            <!--right bar 120 end-->
+            <div class="clear">&nbsp;</div>
+          </div>            
+          <!--follow_485 end-->
+          <div class="clear">&nbsp;</div>
+        </div>

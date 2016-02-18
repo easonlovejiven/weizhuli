@@ -1,0 +1,28 @@
+
+			<!--title begin-->
+      <div class="title32">
+      	<strong><%=user_salutation(@user)+_('的动态更新')%>&nbsp;&gt;</strong>
+      <%= link_to _('返回%s的首页')%[user_salutation(@user)], user_path(@user)%>
+      </div>
+      <!--title end-->    
+      <!--follow list begin-->
+      <div class="mg_t10 follow_box">
+      	<!--tip begin-->
+        <div class="tips_40">
+        	<strong><%=_('共有')+@activities.count.to_s+_('条分享')%></strong>
+        </div>
+        <!--tip end-->
+        <!--share list box begin-->
+     		<div id="activity-list" class="trends_list">
+          <%=render :partial=>"activity", :collection=>@activities%>
+        </div>
+        <!--share list box end-->
+        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+			<!--pagination begin-->   
+			  <%=will_paginate(@activities)%>  
+      <!--pagination begin-->    
+      <div class="clear">&nbsp;</div>
+

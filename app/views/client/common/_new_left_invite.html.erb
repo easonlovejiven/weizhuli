@@ -1,0 +1,7 @@
+ <!--invite friend begin-->
+      <div class="invite_f mg_t10 pd_bottom100">
+      	<em>&nbsp;</em>
+        <%=link_to _("邀请商业伙伴"), new_client_invite_path, :class=>"fancybox",:title=>_("邀请商业伙伴")%>
+        <span><%=raw(_("You have %s invitations left")%[content_tag :var, @user.property.limit_invites-@user.property.used_invites, :id=>"invitation_count"])%></span>
+      </div>
+      <!--invite friend end--> 

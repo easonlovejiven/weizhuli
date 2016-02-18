@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9"/>
+  <%=stylesheet_link_tag "home.css","basic","fancybox/jquery.fancybox-1.3.4"%>
+  <% if I18n.locale==:en%>
+    <%=stylesheet_link_tag "basic_en.css"%>
+  <%end%>
+  <meta name="keywords" content="思易, 思易网, ce180, ce, 思易180, 思易活动, 商业活动, 思易，思易网, 商业会议, 资本会议, 法律会议, 市场营销会议, event, cebexgroup" />
+  <meta name="Description" content="思易 通过 线下丰富的 商业活动 以及 线上的 社交平台 拓展您的商业人脉"/>
+  <meta name="google-site-verification" content="i5-0mKjY9_L1ZN6gH_63Gyd573R73EnucOisnuvLdRA" />
+  <script src="/js_languages/<%=I18n.locale%>"></script>
+  <%=javascript_include_tag "jquery-1.7.2.min.js","rails","jrails","jquery.lazyload.min.js","fancybox/jquery.fancybox-1.3.4.pack","jquery_validate/jquery.validate.js",:cache => "home-end-all-lib"%>
+  <%=javascript_include_tag "home", :cache => "home-end-all-custom"%>
+  <%= csrf_meta_tag %>
+  <title><%=_('思易网')%></title>
+</head>
+<body class="bge">
+<%=render "common/header"%>
+  <div class="main">
+    <%=render "common/left_bar"%>
+    <div class="fr w850 percent100">
+      <%=yield%>
+			<div class="clear">&nbsp;</div>
+		</div>
+    <div class="clear">&nbsp;</div>
+  </div>
+  <%=render "common/bottom"%>
+  <%=render "common/bottom_js"%>
+  <%=render "/client/common/buy_now"%>
+<div class="feedback_bar">
+	<div class="feedback_unit">
+		<% if I18n.locale.to_s == "zh_CN" %>
+				<%= link_to '' ,feedbacks_path ,:class=>"feedback_zh_CN fancybox"%>		
+			<% else %>
+				<%= link_to '' ,feedbacks_path ,:class=>"feedback_en fancybox"%>
+		<% end %>
+	</div>		
+</div>
+<script type="text/javascript">
+  var jiathis_config = {}
+  function setShare(title, url) {
+      jiathis_config.title = title;
+      jiathis_config.url = url;
+  }
+</script>  
+<script type="text/javascript" src="http://v1.jiathis.com/code/jia.js?uid=1585960" charset="utf-8"></script>
+</body></html>

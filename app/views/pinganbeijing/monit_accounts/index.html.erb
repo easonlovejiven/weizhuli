@@ -1,0 +1,77 @@
+  <div class="info_name">
+    其它帐号记录
+  </div>
+
+
+  <div class="row-fluid fans-list-box radius-3" style='font-size:12px'>
+    <div class='title'>
+      <strong>其它站点帐号记录</strong>
+      <div class="btn-right">
+        
+      </div>
+    </div>
+
+    <div class='nav'>
+      <ul class="nav nav-tabs">
+        <li class="<%= @site == "sohu" ? "active" : ""%>"><a href="<%=pinganbeijing_monit_accounts_path(site:"sohu")%>">搜狐微博</a></li>
+        <li class="<%= @site == "renmin" ? "active" : ""%>"><a href="<%=pinganbeijing_monit_accounts_path(site:"renmin")%>">人民微博</a></li>
+      </ul>
+    </div>
+    
+
+    <div class="list">
+      <table class='table'>
+        <tr>
+          <!--
+          <th>UID</th>
+          <th>关注数</th>
+          <th>原创被转发数</th>
+          <th>原创被评论数</th>
+          <th>统计日期</th>
+          <th>原创数</th>
+          <th>转发数</th>
+          ↑
+          -->
+          <th>站点</th>
+          <th>粉丝数</th>
+          <th>关注数</th>
+          <th>微博数</th>
+          <th>被转发数</th>
+          <th>被评论数</th>
+          <th>被@数</th>
+          <th>日期</th>
+          <th>
+            <%=link_to new_pinganbeijing_monit_account_path(site:@site), :class=>"btn btn-min btn-primary" do%>
+              <i class='icon-plus'></i> 添加
+            <%end%>
+          </th>
+        </tr>
+        <%@monit_accounts.each{|account|
+          site = {"sohu"=>"搜狐微博","renmin"=>"人民微博"}[account.site]
+
+          date = account.date
+        %>
+
+
+        <tr>
+          <td><%=site%></td>
+          <td><%=account.followers_count%></td>
+          <td><%=account.friends_count%></td>
+          <td><%=account.statuses_count%></td>
+          <td><%=account.forwards_count%></td>
+          <td><%=account.comments_count%></td>
+          <td><%=account.mentions_count%></td>
+          <td><%=l date%></td>
+          <td>
+            <%=link_to "编辑", edit_pinganbeijing_monit_account_path(account)%>
+            |
+            <%=link_to "删除", pinganbeijing_monit_account_path(account),:method=>:delete,:confirm=>"确定删除吗"%>
+          </td>
+        </tr>
+
+        <%
+        }
+        %>
+      </table>
+    </div>
+  </div>

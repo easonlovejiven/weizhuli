@@ -1,0 +1,137 @@
+
+  <div class="info_name">
+    礼品申请记录
+  </div>
+
+
+  <div class="row-fluid search-box radius-3">
+    <div class='title'>
+      <strong>搜索</strong>
+    </div>
+    <div class="span12 conditions">
+      <%=form_for :search, :method=>"GET" do |form|%>
+
+      <%
+        @s = params[:search] || {}
+      %>
+        <table>
+          <tr>
+            <td>
+              <%=_("使用项目")%>:
+            </td>
+            <td>
+              <%=form.text_field :campaign_eq,:value=>@s[:campaign_eq],:size=>10,:placeholder=>"使用项目"%>
+            </td>
+            <td>&nbsp;</td>
+            <td>
+              <%=_("使用时间")%>: 
+            </td>
+            <td>
+              <%=form.text_field :use_time_gt,:value=>@s[:use_time_gt],:size=>10,:placeholder=>"开始日期"%> - <%=form.text_field :use_time_lt,:value=>@s[:use_time_lt],:size=>10,:placeholder=>"结束日期"%> 
+            </td>
+          </tr>
+        </table>
+
+        <div style='text-align:center'>
+          <%=form.submit _("搜索"),:class=>"btn btn-warning"%> <%=link_to "清除", intel_gift_applies_path, :class=>""%>
+        </div>
+      <%end%>
+    </div>
+  </div>
+
+  <div class="row-fluid fans-list-box radius-3">
+    <div class='title'>
+      <strong>礼品申请管理</strong>
+      <!--
+      <div class="btn-right">
+        <button type="button" class="btn btn-default">添加备注</button>
+        <button type="button" class="btn btn-default">添加分组</button>
+      </div>
+    -->
+    </div>
+    <div class="list">
+      <table class="table table-bordered table-hover post-list">
+        <tr class="bg_color">
+          <th colspan>申请人</th>
+          <th colspan>使用项目 </th>
+          <th colspan>使用时间</th>
+          <th colspan>使用商品</th>
+          <th colspan>商品库存</th>
+          <th colspan>使用数量</th>
+          <th colspan>总金额</th>
+          <th colspan>审批人</th>
+          <th colspan>状态</th>
+          <th nowrap>
+            <%if has_role? :gift_applyer%>
+            <%=link_to "新建申请",new_intel_gift_apply_path, :class=>"btn btn-primary"%>
+            <%end%>
+          </th>
+        </tr>
+        <%
+
+        @intel_gift_applies.each{|apply|
+        %>
+        <tr>
+          <td>
+            <%=apply.applyer.login%>
+          </td>
+          <td>
+            <%=apply.campaign%>
+          </td>
+          <td>
+            <%=l apply.use_time%>
+          </td>
+          <td>
+            <%=apply.items.map{|item| item.intel_gift ? item.intel_gift.name : "未知"} * "<br/>"%>
+          </td>
+          <td>
+            <%=apply.items.map{|item| item.intel_gift ? item.intel_gift.number : "未知"} * "<br/>"%>
+          </td>
+          <td>
+            <%=apply.items.map(&:number).join("<br/>")%>
+          </td>
+          <td>
+            <%=apply.total_price%>
+          </td>
+          <td>
+            <%=apply.approver%>
+          </td>
+          <td>
+            <%=apply.human_status%>
+          </td>
+          <td>
+            <%=link_to  "查看", intel_gift_apply_path(apply), :class=>"icon-th-list"%>
+            |
+            <%if current_user.has_role?(:gift_admin) && apply.status == 0%>
+            <%=link_to "通过", intel_gift_apply_path(apply,:ac=>:approve),:method=>:put, :class=>"icon-ok", :confirm=>"确定 通过此申请吗"%> | 
+            <%=link_to "拒绝", intel_gift_apply_path(apply,:ac=>:reject),:method=>:put, :class=>"icon-ban-circle", :confirm=>"确定拒绝此申请吗"%> | 
+            <%end%>
+            <%=link_to "删除",intel_gift_apply_path(apply.id), :method=>:delete, :class=>"icon-remove",:confirm=>"确定要删除吗?"%>
+          </td>
+        </tr>
+        <%}%>
+        
+        <tr>
+          <td colspan=9 class='text-right'>
+            <div class="span10 pull-right">
+              <%=will_paginate(@intel_gift_applies)%>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+<%content_for :tail do%>
+
+<script type="text/javascript">
+$("#search_use_time_gt").datepicker({dateFormat: "yy-mm-dd"});
+$("#search_use_time_lt").datepicker({dateFormat: "yy-mm-dd"});
+</script>
+
+<%end%>

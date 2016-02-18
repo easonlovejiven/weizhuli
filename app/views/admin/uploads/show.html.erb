@@ -1,0 +1,53 @@
+<div class="block">
+  <div class="secondary-navigation">
+    <ul class="wat-cf">
+      <li class="first"><%= link_to "#{t("web-app-theme.list", :default => "List")}", admin_uploads_path  %></li>
+      <li><%= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_upload_path %></li>
+      <li class="active"><%= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_upload_path %></li>
+    </ul>
+  </div>          
+  <div class="content">
+    <div class="inner">
+      
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_width", :default => t("activerecord.labels.attachment_width", :default => "Attachment width")) %>:</b>
+          <%= @upload.attachment_width %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_height", :default => t("activerecord.labels.attachment_height", :default => "Attachment height")) %>:</b>
+          <%= @upload.attachment_height %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.type", :default => t("activerecord.labels.type", :default => "Type")) %>:</b>
+          <%= @upload.type %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_file_name", :default => t("activerecord.labels.attachment_file_name", :default => "Attachment file name")) %>:</b>
+          <%= @upload.attachment_file_name %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_content_type", :default => t("activerecord.labels.attachment_content_type", :default => "Attachment content type")) %>:</b>
+          <%= @upload.attachment_content_type %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_file_size", :default => t("activerecord.labels.attachment_file_size", :default => "Attachment file size")) %>:</b>
+          <%= @upload.attachment_file_size %>
+        </p>
+
+        <p>
+          <b><%= t("activerecord.attributes.admin_upload.attachment_updated_at", :default => t("activerecord.labels.attachment_updated_at", :default => "Attachment updated at")) %>:</b>
+          <%= @upload.attachment_updated_at %>
+        </p>
+      <div class="wat-cf">
+        <%= link_to "#{image_tag("web-app-theme/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}")} #{t("web-app-theme.edit", :default=> "Edit")}", edit_admin_upload_path(@upload), :class => "button" %> 
+        <%= link_to "#{image_tag("web-app-theme/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}")} #{t("web-app-theme.delete", :default => "Delete")}", admin_upload_path(@upload), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}" %>
+      </div>      
+    </div>
+  </div>
+</div>
+

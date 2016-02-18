@@ -1,0 +1,460 @@
+<%content_for(:special_js) do%>
+  <%- session_key_name = Rails.application.config.session_options[:key] -%>
+  <script>
+    var upload_iframe_link  = null;
+  
+    function after_image_upload(fileObj){
+      website.log(fileObj);
+      if(upload_iframe_link){
+        var thumb_div = $(upload_iframe_link).parents(".basic_information").find(".image_uploaded");
+        thumb_div.html("<img src='"+fileObj.image.file_path.thumb+"'/>");
+        $(upload_iframe_link).parents(".basic_information").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+      }
+    }
+
+
+    //
+    function crop_avatar(fileObj){
+      website.log(fileObj);
+      if(upload_iframe_link){
+      
+        var limit_width = 300;
+        var limit_height = 300;
+      
+        var thumb_div = $(upload_iframe_link).parents(".basic_information").find(".image_uploaded");
+        var org_width = fileObj.image.attachment_width;
+        var org_height = fileObj.image.attachment_height;
+        var new_width, new_height = 0;
+        var scale = 0;
+        if(org_width > org_height){
+          scale = limit_width/org_width;
+          new_width = limit_width;
+          new_height = org_height * scale;
+        }else{
+          scale = limit_height/org_height;
+          new_height = limit_height;
+          new_width = org_width * scale;
+        }
+        
+        
+        thumb_div.html("<img src='"+fileObj.image.file_path.original+"' width='"+new_width+"' height='"+new_height+"' />");
+        $(upload_iframe_link).parents(".basic_information").find('input[id$="upload_id"]').val(fileObj.image.id);
+        $.fancybox.close();
+        upload_iframe_link  = null;
+        
+        $(".image_uploaded img").imgAreaSelect({
+          aspectRatio: '1:1',
+          handles: true,
+          onSelectEnd: function image_on_cropped(img, selection){
+            website.log(selection);
+            $("#avatar_crop_top").val(selection.y1/scale);
+            $("#avatar_crop_left").val(selection.x1/scale);
+            $("#avatar_crop_height").val(selection.height/scale);
+            $("#avatar_crop_width").val(selection.width/scale);
+          }
+        });
+
+        
+        $("#avatar_scale").val(scale);
+        $("#avatar_image_id").val(fileObj.image.id);
+        
+        
+        
+      }
+    }
+
+  // for activity comment post form
+  $("#crop_avatar_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+      $(".notice",this).text("success");
+    });
+
+
+
+    $(function(){
+      $("a.iframe").fancybox({width:543 , height:170});
+      
+      $("a.upload_iframe_link").click(function(){
+        upload_iframe_link = this;
+      });
+    });
+
+  </script>
+
+<%end%>
+
+
+
+
+
+
+
+
+			<!--title begin-->
+      <div class="title32">
+        <%= render :partial => "edit_header" %>
+        <!--basic info box begin-->
+     		<div style="display: block;" class="change_info tab_show">
+     		  <div class="basic_information">
+       		  <%=form_for :avatar, :url=>crop_avatar_client_user_path, :html=>{:id=>"crop_avatar_form"}, :remote=>true do |form|%>
+       		  <div class="notice"></div>
+       		  <%=hidden_field_tag :avatar_scale%>
+       		  <%=hidden_field_tag :avatar_image_id%>
+       		  <%=hidden_field_tag :avatar_crop_top%>
+       		  <%=hidden_field_tag :avatar_crop_left%>
+       		  <%=hidden_field_tag :avatar_crop_width%>
+       		  <%=hidden_field_tag :avatar_crop_height%>
+       		  
+       		  
+       		  <%=link_to _('上传图片'),new_client_upload_type_path("image",:layout=>'dialog',:content_type=>"User",:callback=>"crop_avatar"), :class=>"iframe upload_iframe_link"%>
+       		  <div class="image_uploaded">
+       		  </div>
+       		  <%=form.submit _("保存")%>
+       		  <%end%>
+
+     		  </div>
+     		  
+     		  
+     		  
+     		</div>
+
+
+
+        <!--basic info box begin-->
+     		<div style="display: block;" class="change_info tab_show">
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	    <span class="notice"></span>
+        	  </div>
+							<%=nested_form_for @user,:url=>client_user_path, :remote=>true,:html=>{:id=>"basic_info_edit_form",:"data-type"=>:json} do |form|%>
+							<div class="notice"></div>
+  						<div class="edit_f">
+							<%if @user.profiles.size==1
+									if @user.profile.locale=="en"
+							%>
+									<button class="add_profile_language_btn" data-language='zh_CN' data-profile-type='profile'><%=_('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除中文PROFILE')%></button>
+							<%
+									end
+									if @user.profile.locale=="zh_CN"
+							%>
+									<button class="add_profile_language_btn" data-language='en' data-profile-type='profile'><%= _('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除English PROFILE')%></button>
+							<%  
+									end
+								end
+							%>
+  						</div>
+            <%=form.fields_for :profiles do |profile_form|%>
+            <fields class="profile_fields">
+            <legend><%=Const::value(:languages, profile_form.object.locale)%></legend>
+          	<div class="edit_f">
+          	<label><%=_('姓名')%></label>
+          	<%=profile_form.text_field :name%>
+          	<span class="error"><%=profile_form.error_message_on :name%></span>
+          	</div>
+            <div class="edit_f w_d13">
+            	<label><%=_('性别')%></label>
+              <%=profile_form.radio_button :gender,1, :checked=>profile_form.object.gender == true%><%=profile_form.label :gender,_("男"),:class=>'w_auto'%>
+              <%=profile_form.radio_button :gender,0, :checked=>profile_form.object.gender == false%><%=profile_form.label :gender,_("女"),:class=>'w_auto'%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('生日')%></label>
+              <%=profile_form.date_select :birthday, :start_year=>1960%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('邮箱')%></label>
+            	<%=profile_form.text_field :email%>
+            	<span></span>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('所在地')%></label>
+            	<%=profile_form.select :country_id, Country.all.map{|c|[c.name,c.id]}%>
+            	<%=profile_form.select :city_id, City.all.map{|c|[c.name,c.id]}%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('QQ')%></label>
+              <%=profile_form.text_field :qq%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('MSN')%></label>
+            	<%=profile_form.text_field :msn%>
+            </div>
+
+            </fields>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+        	  <%=form.fields_for  :microblog_info do |f|%>
+            <div class="edit_f text_area100">
+            	<label><%=_('一句话简介')%></label>
+            	<%=f.text_area :description%>
+            </div>
+        	  <%end%>
+
+            <div class="edit_b"><input value="<%=_('保存')%>" type="submit"/></div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--basic info  box end-->
+
+
+
+
+        <!--edu box begin-->
+     		<div style="display: none;" class="change_info tab_show">
+        	
+       		  <%=nested_form_for @user,:url=>client_user_path, :remote=>true, :html=>{:id=>"edu_edit_form",:"data-type"=>:json} do |form|%>
+							<div class="notice"></div>
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	    <span class="notice"></span>
+        	  </div>
+						<div class="edit_f">
+         		  <%if @user.profiles.size==1
+         		      if @user.profile.locale=="en"
+         		  %>
+             		  <button class="add_profile_language_btn" data-language='zh_CN' data-profile-type='edu'><%=_('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除中文PROFILE')%></button>
+         		  <%
+         		      end
+         		      if @user.profile.locale=="zh_CN"
+         		  %>
+             		  <button class="add_profile_language_btn" data-language='en' data-profile-type='edu'><%= _('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除English PROFILE')%></button>
+         		  <%  
+         		      end
+         		    end
+         		  %>
+						</div>	
+            <%=form.fields_for :profiles do |profile_form|%>
+            <fields class="profile_fields">
+            <legend><%=Const::value(:languages, profile_form.object.locale)%></legend>
+            <%=profile_form.hidden_field :created_at%>
+            <%=profile_form.fields_for :edu do |profile_edu_form|%>
+          	<div class="edit_f"><label><%=_('学校名称')%></label><%=profile_edu_form.text_field :school_name%><span></span></div>
+            <div class="edit_f"><label><%=_('主修专业')%></label><%=profile_edu_form.text_field :college_major%><span></span></div>
+            <div class="edit_f">
+            	<label><%=_('在校时间')%></label>
+              <%=profile_edu_form.date_select :start_date, :discard_day=>true%>
+	      <var>-</var> 
+              <%=profile_edu_form.date_select :end_date, :discard_day=>true%>
+            </div>
+
+            <%end%>
+            <%=profile_form.link_to_add "", :edu, :class=>"add_more_edu_btn"%>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+            </fields>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+            
+            <div class="edit_b"><input value="<%=_('保存')%>" type="submit"></div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--edu box end-->
+
+
+        <!--position box begin-->
+     		<div style="display: none;" class="change_info tab_show">
+        	
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	    <span class="notice"></span>
+        	  </div>
+         	  <%=nested_form_for @user,:url=>client_user_path, :remote=>true, :html=>{:id=>"company_edit_form",:"data-type"=>:json} do |form|%>
+							<div class="notice"></div>
+         		  <div class="edit_f">
+								<%if @user.profiles.size==1
+										if @user.profile.locale=="en"
+								%>
+										<button class="add_profile_language_btn" data-language='zh_CN' data-profile-type='company'><%=_('添加中文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除中文PROFILE')%></button>
+								<%
+										end
+										if @user.profile.locale=="zh_CN"
+								%>
+										<button class="add_profile_language_btn" data-language='en' data-profile-type='company'><%= _('添加英文PROFILE')%></button>
+									<button class="remove_profile_language_btn"><%=_('删除English PROFILE')%></button>
+								<%  
+										end
+									end
+								%>
+						  </div>	
+            <%=form.fields_for :profiles do |profile_form|%>
+            <fields class="profile_fields">
+            <legend><%=Const::value(:languages, profile_form.object.locale)%></legend>
+            <%=profile_form.hidden_field :created_at%>
+            <%=profile_form.fields_for :company do |profile_company_form|%>
+          	<div class="edit_f">
+							<label><%=_('公司名称')%></label>
+							<%=profile_company_form.text_field :company_name%>
+							<span></span>
+						</div>
+            <div class="edit_f">
+            	<label><%=_('所属行业')%></label>
+            	<%=profile_company_form.select :industry_id,  ["请选择"]+Industry.all.map{|i|[i.name,i.id]}%>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('详细地址')%></label>
+              <%=profile_company_form.text_field :address%>
+            </div>
+            <div class="edit_f">
+
+            	<label><%=_('职位')%></label>
+              <%=profile_company_form.text_field :position%>
+            </div>
+            <div class="edit_f text_area100">
+            	<label><%=_('职位描述')%></label>
+            	<%=profile_company_form.text_area :description%>
+            </div>
+            <%end%>
+            <%=profile_form.link_to_add "", :company, :class=>"add_more_company_btn"%>
+            <%=profile_form.link_to_remove "", :class=>"remove_profiles_btn"%>
+
+            </fields>
+            <%end%>
+            <%=form.link_to_add "", :profiles, :class=>"add_more_profiles_btn"%>
+            <div class="edit_b"><input value="<%=_('保存')%>" type="submit"/></div>
+            <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--position box end-->
+        
+        <!--change password box begin-->
+     		<div style="display: none;" class="change_info tab_show">
+        	
+       	  <%=form_for @user,:url=>client_update_password_path, :remote=>true, :html=>{:id=>"password_edit_form",:"data-type"=>:json} do |form|%>
+        	  <div class="edit_e">
+        	    <span class="base_error"></span>
+        	    <span class="notice"></span>
+        	  </div>
+          	<div class="edit_f"><label><%=_('输入原密码')%></label>
+            	<%=password_field_tag :old_password%>
+            	<span></span>
+          	</div>
+            <div class="edit_f">
+            	<label><%=_('输入新密码')%></label>
+            	<%=form.password_field :password%>
+              <span></span>
+            </div>
+            <div class="edit_f">
+            	<label><%=_('确认新密码')%></label>
+            	<%=form.password_field :password_confirmation%>
+            </div>
+            <div class="edit_b"><input value="<%=_('保存')%>" type="submit"/></div>
+          <%end%>
+          	
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--change password box end-->
+                                        
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--follow list end-->
+  
+      <div class="clear">&nbsp;</div>
+    
+<script type="text/javascript">
+	// tabs 
+	$(function() {
+		$(".tab").tabs(".tab_show");
+	});
+	
+	
+
+  // for activity comment post form
+  $("#basic_info_edit_form, #edu_edit_form, #company_edit_form, #password_edit_form")
+    .live("ajax:loading",  toggleLoading)
+    .live("ajax:complete", toggleLoading)
+    .live("ajax:success", function(xhr, data, status) {
+    data = $.parseJSON(data);
+      if(data.errors){
+        for(var key in data.errors){
+          var msg = data.errors[key];
+          $("."+key+"_error", this).text(msg.join(","));
+        }
+      }else{
+        $(".notice",this).text("success");
+      }
+
+    });
+  
+	
+	//
+	$(".add_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	    // add profile form
+  	  form.find(".add_more_profiles_btn").click();
+	    var type = $(this).attr("data-profile-type");
+	    switch(type){
+	      case  "profile":{
+	        break;
+	      }
+	      case  "edu":{
+	        form.find(".add_more_edu_btn:last").click();
+	        break;
+	      }
+	      case  "company":{
+	        form.find(".add_more_company_btn:last").click();
+	        break;
+	      }
+	      case  "addition":{
+	        form.find(".add_nested_fields:last").click();
+	        break;
+	      }
+	    }
+	    
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").show();
+	    form.find(".profile_fields:last input[name*=destroy]").val("0");
+	  }
+	  
+    form.find(".profile_fields:last legend").text("English");
+	  // hide ADD  button, show remove button
+	  $(this).hide();
+	  form.find(".remove_profile_language_btn").show();
+	  
+	  
+	  return false;
+	});
+	
+	// 
+	$(".remove_profile_language_btn").click(function(){
+	  var form = $(this).parents("form");
+	  
+	  // for add 
+	  if(form.find(".profile_fields").size() == 1){
+	      
+	  }else{
+	  // for remove
+	    form.find(".profile_fields:last").hide();
+	    form.find(".profile_fields:last input[name*=destroy]").val("1");
+	  }
+	  
+	  // hide REMOVE  button, show ADD button
+	  $(this).hide();
+	  form.find(".add_profile_language_btn").show();
+	  
+	  return false;
+	});
+	
+	
+	
+	
+	
+	
+</script>
+

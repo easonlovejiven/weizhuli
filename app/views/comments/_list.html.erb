@@ -1,0 +1,22 @@
+
+            <div class="comments_list">
+            	<ol>
+            	  <%@comments.each{|comment|%>
+                	<li>
+                  	<p><%=comment.content%></p>
+                    <em><%=comment.user.login%>点评</em>
+                  </li>
+                <%}%>
+                <!--pagination begin-->
+                <%=will_paginate @comments%>
+                <!--
+                <div class="pagination">
+                	<span class="disabled prev_page">&lt;</span>
+                    <span class="current">1</span>
+                    <a rel="next" href="/news?page=2">2</a> <a href="/news?page=3">3</a>
+                    <a href="/news?page=4">4</a>
+                    <a rel="next" class="next_page" href="/news?page=2">&gt;</a>
+                </div>
+                -->
+            	<!--pagination end-->
+            </div>

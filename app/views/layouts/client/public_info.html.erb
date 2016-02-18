@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=_('思易网')%> <%= @html_title.to_s %></title>
+<%=render "/client/common/head_tag_content_for_client"%>
+<%=javascript_include_tag "jquery.masonry.js"%>
+</head>
+
+
+<body class="bgf5">
+<%=render "common/header"%>
+<!--main start-->
+<div class="main border_top3">
+	<!--left 160 begin-->
+  <div class="f_left w160">
+  		<%=render "/client/common/new_user_pane", :user=>@user%>
+      <%=render "/client/common/new_left_main_menu"%>
+      <%=render "/client/common/new_left_weibo"%>
+      <%=render "/client/common/new_left_invite"%>
+    	<div class="clear">&nbsp;</div>   
+  </div>
+	<!--left 160 end-->
+
+  <%=yield%>
+
+	<div class="clear">&nbsp;</div>
+</div>
+<!--main end-->
+<%=render "common/bottom"%>
+<%=render "common/bottom_js"%>
+<script type="text/javascript">
+ $(".hide_show h4").toggle(
+    function() {
+		  var element=$(this).parent().parent();
+			element.addClass("focu");			
+      $(this).find('span').text("<%=_('隐藏部分标签')%>");
+    },
+    function() {
+		 	  var element=$(this).parent().parent();
+			  element.removeClass("focu");				
+        $(this).find('span').text("<%=_('更多')%>"); 
+    }
+ );
+ if ("<%=controller_name%>" == "my_orders" || "<%=controller_name%>" == "my_comments"){
+     $(".hide_show h4").parent().parent().addClass("focu");
+ }else{
+     $(".hide_show h4").parent().parent().find('span').text("<%=_('更多')%>"); 
+ }
+</script> 
+</body>
+</html>
+

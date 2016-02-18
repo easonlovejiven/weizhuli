@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=_('思易网')%> <%= @html_title.to_s %></title>
+    <meta name="keywords" content="思易, 思易网, ce180, ce, 思易180, 思易活动, 商业活动, 思易，思易网, 商业会议, 资本会议, 法律会议, 市场营销会议, event, cebexgroup, <%=@html_meta_keywords%>"/>
+    <meta name="Description" content="思易 通过 线下丰富的 商业活动 以及 线上的 社交平台 拓展您的商业人脉"/>
+		<%=stylesheet_link_tag "index_page.css"%>
+		<%=javascript_include_tag "jquery_tools.js","jquery.html5-placeholder-shim.js"%>
+	</head>
+  <body>
+
+	  <!--header begin-->
+    <div class="header_outer">
+      <div class="header pdtb10">
+        <div class="logo fl">
+          <a href="/">&nbsp;</a>
+					<% if I18n.locale.to_s == "zh_CN" %>
+						<span class="zh_CN_beta">&nbsp;</span>						
+					<% else %>
+						<span class="en_beta">&nbsp;</span>
+					<% end %>
+        </div>
+			  <!--status begin-->
+			  <div class="status_bar fr w540">
+          <div class="language fr">
+				<%=link_to '中文', language_path("zh_CN"),:class=>(I18n.locale==:zh_CN ? "focus " : " " )%>|
+				<%=link_to "English", language_path("en"),:class=>(I18n.locale==:en ? "focus " : " " )%>
+          </div>          
+          <div class="login_register fr">
+			      <% if current_user %>
+			        <a href="<%=logout_path%>" class='radius3 bc'><%=_('退出')%></a>
+							<span>
+								<%=_("您好")%>,
+								<%=current_user.displayable_name if !current_user.displayable_name.blank? %>
+			        </span>
+			      <%else%>
+					    <% if params[:controller]=="user_sessions" && params[:action]=="new" %>
+							<a href="<%=login_path%>" class='radius3 bc'><%=_('登录')%></a>
+							<% else %>
+							<a href="<%=login_path(:return => request.url)%>" class='radius3 bc'><%=_('登录')%></a>
+							<% end %>
+							<a href="<%=signin_path%>" class='radius3 bc'><var>&nbsp;</var><%=_('注册')%></a>
+			      
+			      <% end %>
+          </div>
+          <div class="clear">&nbsp;</div>
+        </div>      
+        <!--status end-->
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <!--header end-->
+
+   	<!--main begin-->
+   	<%=yield%>
+    <!--main end-->
+    <!--footer begin-->
+      <%=render "common/bottom"%>
+    <!--footer end-->
+  </body>
+</html>
+

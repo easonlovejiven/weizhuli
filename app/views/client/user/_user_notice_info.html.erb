@@ -1,0 +1,216 @@
+<div class="">
+			<!--title 40 begin-->
+      <div class="status_bar bg40 tab_notice">
+        <div class="bg40_left">
+          <div class="bg40_right">
+            <ul>
+              <li><%=link_to _('编辑我的名片'), (I18n.locale==:en)?  my_en_card_client_user_business_cards_path : my_card_client_user_business_cards_path,:title=>_('点击此链接编辑我的名片...') %></li>
+            <li><%=link_to _("编辑我的履历"), client_profiles_path,:title=>_('点击此链接编辑我的履历...')%></li>
+            <li> 
+              <% 
+             	# logic is : display invitations size ,once null , display exchange card size
+	            #if @card_requests.blank?
+		          # path = exchanged_invites_client_user_business_cards_path
+		          #size = 0
+	            #else
+		          # path = receive_invites_client_user_business_cards_path
+		          #size = @card_requests.size
+	            #end		
+            %>		
+            <%=link_to receive_invites_client_user_business_cards_path ,:title=>_('点击此链接处理您所收到的交换名片邀请...') do %>
+	          <%=_('交换名片请求')%>
+	            <% if !@card_requests.blank? && @card_requests.size != 0%> 
+	              <var>[<em class="sta_on"><%=@card_requests.size%></em>]</var> 
+	            <% else %>
+	              <var>[<em class="">0</em>]</var> 
+	            <%end%>
+            <% end %>
+          </li>
+         <li>
+            <%=link_to receive_appointment_client_appointments_path ,:title=>_('点击此链接处理您所收到的会面邀请...') do%>
+               <%=_('会面邀请')%> 
+               <% if !@user_appointments.blank? && @user_appointments.size != 0%>
+                  <var>[<em class="sta_on"><%=@user_appointments.size%></em>]</var>
+               <%else%>
+                  <var>[<em class="">0</em>]</var>
+               <%end%>
+            <%end%>
+          </li>
+          <li>
+              <%=link_to client_private_messages_path ,:title=>_('点击此链接处理您所收到私信...') do%>
+                <%=_("私信")%>  
+                <%
+                  if @user_unread_messages.count > 0
+                %>
+                 <var>[<em class="new_private_message_notice new_private_message_number sta_on">0</em>]</var> 
+                <%else%>
+                 <var>[<em>0</em>]</var>
+                <%end%>
+            <%end%>
+           </li> 
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--title 40 end-->
+     
+
+      <!--Edit My E-Name Card begin-->
+      <div class="backg_cf status_content tab_show_info">
+        <div class="status_tip">
+        	<div class="triangle15"><var class="lefta25">&nbsp;</var></div>
+        	<div class="card_progress">
+          	<span><%=_('您的名片完整度')%>：</span>
+            <div class='progress_bar'>
+            <var style="width:<%=user_progress_bar(current_user,I18n.locale)%>"><%=user_progress_bar(current_user,I18n.locale)%></var>
+            </div>
+          </div>
+          <div class="status_tip_con">
+          <%=_('真实、完整的名片信息可以让您结交到更多的商业伙伴，完善您的名片信息，点击这里')%>
+          <%=link_to _('编辑我的名片'), (I18n.locale==:en)?  my_en_card_client_user_business_cards_path : my_card_client_user_business_cards_path,:title=>_('点击此链接编辑我的名片...') %>
+          </div>
+        </div>
+        <div class="clear">&nbsp;</div>     
+      </div>
+      <!--Edit My E-Name Card end-->
+      
+      <!--Edit My Profile begin-->
+      <div class="backg_cf status_content tab_show_info">
+        
+        <div class="status_tip">
+        	<div class="triangle15"><var class="lefta175">&nbsp;</var></div>
+          <div class="status_tip_con">
+          <%=_('真实、完整的履历信息,可以让我们更有效的给您推荐合适的商业伙伴,商业活动和商业资讯。完善您的履历信息，点击这里')%>
+          <%=link_to _("编辑我的履历"), client_profiles_path,:title=>_('点击此链接编辑我的履历...')%></div>
+        </div>
+        
+     	 	<div class="clear">&nbsp;</div>
+      </div>
+      <!--Edit My Profile end--> 
+      
+      <!--E-Name Card Invitations begin-->
+      <div class="backg_cf status_content tab_show_info">
+     <% if false %> 
+        <% if @card_requests.blank? %>
+        <div class="status_tip status_tip400">
+          <p>
+          <%=_('您还没有与任何人交换名片，马上寻找合适的')%>
+          <%=link_to _('商业伙伴'), exchanged_invites_client_user_business_cards_path %>
+          </p>
+        </div>
+        <% else %>
+        <div class="related_infor">
+        	<!--related_unit begin-->
+          <% @card_requests.limit(2).each do |card| %>
+          <div class="related_unit">
+          	<div class="related_unit_user">
+            	<%=link_to user_avatar_tag(card.business_card.user,:thumb,:size=>"35x35", :scaling=>true), user_path(card.business_card.user),:class=>"u_avatar35"%>
+              <div class="unit_user_name">
+              	<%=link_to card.business_card.display_name, user_path(card.business_card.user) %>
+                <span><%=card.business_card.title %></span>
+              </div>
+              <div class="request_info">
+                <span><%=_('请求与您交换名片')%></span>
+              	<%=link_to _("查看"),receive_invites_client_user_business_cards_path %>
+              </div>              
+            </div>
+            <% if !card.send_info.blank? %>
+						<div class="user_messages">
+            	<div class="triangle15"><var class="tr15">&nbsp;</var></div>
+              <p><%=card.send_info%></p>
+            </div>
+            <% end %>	          
+          	<div class="clear">&nbsp;</div>
+          </div>  
+					<% end %>
+					<!--related_unit end-->
+        	
+          <div class="d_more mg_t5"><%=link_to _("更多"),receive_invites_client_user_business_cards_path %></div>        
+          <div class="clear">&nbsp;</div>
+        </div>
+        <% end %>
+        
+        	<% end %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <!--E-Name Card Invitations end-->
+     
+      <!--Appointments begin-->
+      <div class="backg_cf status_content tab_show_info">
+      <% if @user_appointments.blank? %>
+        <div class="status_tip status_tip400">
+          <p>
+          <%=_('您还没有与任何人发起会面邀请，点击这里，给您的合作伙伴发起')%>
+          <%=link_to _('会面邀请'), exchanged_invites_client_user_business_cards_path %>
+          </p>
+        </div>
+      <% else %>
+        <div class="related_infor">
+        	<!--related_unit begin-->
+        	<% @user_appointments.limit(2).each do |appointment| %>
+          <div class="related_unit">
+          	<div class="related_unit_user">
+            	<%=link_to user_avatar_tag(appointment.send_user,:thumb,:size=>"35x35", :scaling=>true), user_path(appointment.send_user),:class=>"u_avatar35"%>
+              <div class="unit_user_name">
+            	  <%=link_to appointment.send_user.displayable_name,user_path(appointment.send_user) %>
+                <span><%=appointment.send_user.business_card.title if appointment.send_user.business_card && appointment.send_user.business_card.title%></span>
+              </div>
+              <div class="request_info">
+                <span><%=_('给您发送了会面邀请')%></span>
+              	<%=link_to _("查看"),receive_appointment_client_appointments_path%>
+              </div>              
+            </div>          
+          	<div class="clear">&nbsp;</div>
+          </div>  
+        	<% end %>
+					<!--related_unit end-->					
+          <div class="d_more mg_t5"><%=link_to _("更多"),receive_appointment_client_appointments_path %></div>        
+          <div class="clear">&nbsp;</div>
+        </div>
+        <% end %>   
+      	<div class="clear">&nbsp;</div>
+      </div>
+      <!--Appointments end-->
+      
+      <!--Messages begin-->
+      <div class="backg_cf status_content tab_show_info">
+      <% if @user_unread_messages.blank? %>
+        <div class="status_tip status_tip400">
+          <p><%=_('收信夹为空，经常和朋友联系吧')%><br/>
+          <%=link_to _('发私信'), new_client_private_message_path, :id=>"new_private_message_link" %>
+          </p>
+        </div>
+      <% else %>
+        <div class="related_infor" style="display:block;">
+        	<!--related_unit begin-->
+        	<% @user_unread_messages.limit(2).each do |private_message| %>
+          <div class="related_unit">
+          	<div class="related_unit_user">
+          	 <%=link_to user_avatar_tag(private_message.user,:thumb,:size=>"35x35", :scaling=>true), user_path(private_message.user),:class=>"u_avatar35"%>
+              <div class="unit_user_name">
+              	<%=link_to private_message.user.displayable_name, user_path(private_message.user)%>
+                <span><%=private_message.user.business_card.title if private_message.user.business_card && private_message.user.business_card.title %></span>
+              </div>
+              <div class="request_info">
+                <span><%=_('给您发送了私信')%></span>
+              	<%=link_to _("查看"),client_private_messages_path %>
+              </div>              
+            </div>          
+          	<div class="clear">&nbsp;</div>
+          </div> 
+          <% end %> 
+					<!--related_unit end-->
+          <div class="d_more mg_t5"><%=link_to _("更多"),client_private_messages_path %></div>        
+          <div class="clear">&nbsp;</div>
+        </div>        
+      	<div class="clear">&nbsp;</div>
+      <!--Messages end--> 
+      <% end %>                     
+      </div>
+			<div class="bottom2"><span><em>&nbsp;</em></span></div>      	
+      <div class="clear">&nbsp;</div>   
+    </div>
+
+    <script>
+    $(".tab_notice").tabs(".tab_show_info");
+    </script>

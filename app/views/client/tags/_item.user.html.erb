@@ -1,0 +1,23 @@
+					<!--list begin-->
+					<div class="search_list">
+						<h5>
+						<%=link_to user_path(user) do%>
+						<img src="images/news_pic01.jpg" width="75" height="75" alt="">
+						<%end%>
+						</h5>
+						<div class="search_text">
+							<div class="search_title">
+								<h3><%=link_to  user.displayable_name, user_path(user)%></h3>
+								<div class="search_bar">
+								<%=link_to user_path(user) do %>
+								<em><%=user.microblog_info.followers%></em><%=_("人关注")%></a>
+								<%end%>
+								</div>
+							</div>
+							<h4><%=_('人物')%></h4>
+							<p><%=user.microblog_info.description%></p>
+						</div>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<!--list end-->
+

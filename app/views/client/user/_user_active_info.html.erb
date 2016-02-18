@@ -1,0 +1,37 @@
+<!--content begin-->
+        <div class="height370 backg_cf" id="user_active_info">
+         <%if !@activities.blank? && @activities.size > 0 %>
+        	<%@activities.each{|activity|%>
+	           <!--unit begin-->
+              <div class="trends_unit">
+              	<div class="u_avatar35">
+                	<%=link_to user_path(activity.user) do%>
+                    <%=user_avatar_tag(activity.user, :thumb,:size=>"35x35",:scaling=>true, :alt=>"")%>
+                  <%end%>
+                </div>
+                <div class="f_right w_430">
+                  <div class="name_v">
+                   <%=link_to activity.user.displayable_name+":", user_path(activity.user),:"data-dynamic-user-card"=>activity.user.id %>
+                   <%=render "/client/activities/activity_content", :activity=>activity%>
+                  </div>
+                  <div class="bar_scale">
+                    <var><%= activity_time(activity.created_at.to_datetime)%></var>
+                    <% if activity.activity_type == "microblog"%>
+                    <%=link_to _('评论')+"(#{activity.commented})",client_activity_path(activity), :class=>"aomment_ad"%>&nbsp;&nbsp;
+                    <%=link_to _('转发')+"(#{activity.forwarded})", new_client_activity_path(:forward=>activity), :class=>"fancybox aomment_ad"%>
+                    <%end%>
+                  </div>
+                </div>
+              </div>
+            <!--unit end-->
+          <%}%>
+      <div class="e_more mg_t5"><%=link_to _("查看更多"), client_activities_path,:class=>"view_all"%> </div>   
+        <%else%>
+            <%=render "/client/user/search_user"%>
+        <%end%>                                           
+          <div class="clear">&nbsp;</div>
+        </div>
+        <!--content end-->
+<script>
+$(".trends_unit:odd").addClass("back_eee");
+</script>

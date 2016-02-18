@@ -1,0 +1,35 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="Description" content="" />
+</head>
+<body>
+<div style="width:650px;margin:0px auto; background-color:#fff;padding:0px 75px;font-size:12px;font-family:tahoma,Arial,sans-serif;">
+	
+  	<%=render :partial => "mail_header_en"%> 
+  	<!--text 1 begin-->
+    <div style="width:610px;margin:0px;line-height:24px;background-color:#eee;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;">
+    	<div style="width:610px;line-height:20px;">
+    	  <div style="line-height:30px;font-size:14px;color:#333;">
+        <%= @current_user.profiles.where("locale = ?", @locale).name %> <%= link_to("detail", admin_user_url(@current_user)) %><br />
+				<%= @current_user.potential_users.each do |p| %>
+				  <%= p.name + ' ' + link_to("detail", admin_potential_user_url(p)) %><br />
+				<% end %>
+        </div>
+			  
+    	</div>
+      <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+    </div>
+  	<!--text 1 end-->
+  		
+   <%=render :partial => "mail_bottom_en"%> 
+  	
+		
+  <div style="clear:both;height:0px; font-size:0px; line-height:0px;">&nbsp;</div>
+</div>
+</body>
+</html>
+
+
+
