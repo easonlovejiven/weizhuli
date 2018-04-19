@@ -47,20 +47,13 @@
 
   #查询中国的最近50条微博的转发数和评论数(并得到名称)(有问题:得到每条微博的转发数和评论数的各自的sum)
 
-  filename = 'china.csv'
-  CSV.open filename,"wb" do |csv|
-  csv << %w{URL 转发 评论}
-  f_sum = 0 #转发的总数
-  c_sum = 0 #评论的总数
-  uid = 2637370927
-  weibos = WeiboDetail.where("uid = ?",uid).order("post_at desc").limit(50)
-    weibos.each do |weibo|
-      url = "http://weibo.com/"+uid.to_s+"/"+WeiboMidUtil.mid_to_str(weibo.weibo_id.to_s)
-      f_num = WeiboForward.where("weibo_id = ?",weibo.weibo_id).count
-      c_num = WeiboComment.where("weibo_id = ?",weibo.weibo_id).count
-      csv << [url,f_num,f_num]
-    end
+  filename = '厂商信息.csv'
+  CSV.open filename, "wb" do |csv|
+  csv << %w{id 名称 企业性质 税率}
+  Mind::BusinessUser.all.find_each do |shop|
+    csv << [shop.id, shop.name, shop.shop_type_name, shop.tax_rate]
   end
+end
   #查询(8.9-8.12)这两天的听众人数各有多少(有问题)某个主号的粉丝数量
 
   #我想要一下上周（8.12-8.18）英特尔中国: 2637370927,、美丽说: 2183473425 的参与互动的总人数
