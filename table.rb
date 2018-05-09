@@ -17,4 +17,5 @@ create table teacher{
 create table t_s{
   t_id int,
   s_id int
+  s_id
 }
